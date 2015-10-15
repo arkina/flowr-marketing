@@ -1,0 +1,62 @@
+<div>
+	<table class=" ng-scope"  id="bigParent" style="width:100%;background:#E3E3E3;">
+		<tbody>
+			<tr>
+				<td  align="center" style="">
+					<table class=""  id="content" style="width:580px;background:#FFFFFF;">
+						<tbody>
+							<tr>
+								<td  style="">
+									<table class=""  id="row1" style="width:580px;background:#FFFCFC;">
+										<tbody>
+											<tr>
+												<td  style="">
+													<table  align="center" class=""  id="element2" style="">
+														<tbody>
+															<tr>
+																<td  style="">
+																	<h1>Reminder for {{event.title}}</h1>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+													<table class=""  id="element4" style="">
+														<tbody>
+															<tr>
+																<td  style="color: gray;">
+																	{{event.description}}
+																</td>
+															</tr>
+															<tr>
+																<td  style="">
+																	Addres :{{event.address}}
+																</td>
+															</tr>
+															<tr>
+																<td  style="">
+																	At {{event.startDate | date('g:ia \o\n l jS F Y')}}
+																	{% if event.endDate%}
+																		to {{event.endDate | date ('g:ia')}}
+																	{% endif %}
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</td>
+											</tr>
+											<tr style="text-align: right;">
+												<td style="font-size: 10px;">
+												 	Flower team
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

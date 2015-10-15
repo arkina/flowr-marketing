@@ -1,0 +1,35 @@
+{
+    "name" : "flowcode/marketingbundle",
+    "description" : "marketing bundle",
+    "type" : "symfony-bundle",
+    "authors" : [{
+        "name" : "Francisco Memoli",
+        "email" : "fmemoli@flowcode.com.ar"
+    },
+    {
+        "name" : "Juan Manuel Agüero",
+        "email" : "jaguero@flowcode.com.ar"
+    }],
+    "keywords" : [
+        "marketing bundle"
+    ],
+    "license" : [
+        "MIT"
+    ],
+    "require" : {
+        "friendsofsymfony/marketing-bundle": "~2.0@dev"
+    },
+    "autoload" : {
+        "psr-0" : {
+            "Flowcode\\MarketingBundle" : ""
+        }
+    },
+    "target-dir" : "Flowcode/MarketingBundle",
+    "repositories" : [{
+    }],
+    "extra" : {
+    "branch-alias" : {
+            "dev-master" : "1.0.0-dev"
+        }
+    }
+}
