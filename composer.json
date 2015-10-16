@@ -17,7 +17,7 @@
         "MIT"
     ],
     "require" : {
-        "friendsofsymfony/marketing-bundle": "~2.0@dev"
+        "flower/clientsbundle": "dev-master"
     },
     "autoload" : {
         "psr-0" : {
