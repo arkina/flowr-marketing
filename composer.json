@@ -1,5 +1,5 @@
 {
-    "name" : "flowcode/marketingbundle",
+    "name" : "flower/marketingbundle",
     "description" : "marketing bundle",
     "type" : "symfony-bundle",
     "authors" : [{
