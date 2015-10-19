@@ -1,26 +1,23 @@
 <?php
 
-namespace Flower\ModelBundle\Entity;
+namespace Flower\MarketingBundle\Model;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * MailTemplate
+ * ContactList
  *
- * @ORM\Table(name="mail_template")
- * @ORM\Entity(repositoryClass="Flower\ModelBundle\Repository\MailTemplateRepository")
  */
-class MailTemplate
+abstract class ContactList
 {
-    
-    const TYPE_PLAIN = 'plain';
-    const TYPE_HTML = 'html';
-
-
     /**
      * @var integer
      *
@@ -28,36 +25,38 @@ class MailTemplate
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
-    private $name;
+    protected $name;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="type", type="string", length=255)
-     */
-    private $type;
-    
+     * @ManyToMany(targetEntity="\Flower\ModelBundle\Entity\Clients\Contact")
+     * @JoinTable(name="contactlists_contacts",
+     *      joinColumns={@JoinColumn(name="contactlist_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="contact_id", referencedColumnName="id")}
+     *      )
+     **/
+    protected $contacts;
+
     /**
-     * @var string
+     * @var boolean
      *
-     * @ORM\Column(name="content", type="text", nullable=true)
+     * @ORM\Column(name="enabled", type="boolean")
      */
-    private $content;
+    protected $enabled;
 
     /**
      * @var DateTime
-     *
+     * 
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
      */
-    private $created;
+    protected $created;
 
     /**
      * @var DateTime
@@ -65,33 +64,14 @@ class MailTemplate
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated", type="datetime")
      */
-    private $updated;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="enabled", type="boolean")
-     */
-    private $enabled;
+    protected $updated;
     
-    function __construct()
-    {
-        $this->enabled = true;   
+    public function __construct() {
+        $this->contacts = new ArrayCollection();
+        $this->enabled = true;
     }
 
-    
-    /**
-     * Set id
-     *
-     * @param string $id
-     * @return MailTemplate
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
 
-        return $this;
-    }
     /**
      * Get id
      *
@@ -106,7 +86,7 @@ class MailTemplate
      * Set name
      *
      * @param string $name
-     * @return MailTemplate
+     * @return ContactList
      */
     public function setName($name)
     {
@@ -126,33 +106,33 @@ class MailTemplate
     }
 
     /**
-     * Set type
+     * Set enabled
      *
-     * @param string $type
-     * @return MailTemplate
+     * @param boolean $enabled
+     * @return ContactList
      */
-    public function setType($type)
+    public function setEnabled($enabled)
     {
-        $this->type = $type;
+        $this->enabled = $enabled;
 
         return $this;
     }
 
     /**
-     * Get type
+     * Get enabled
      *
-     * @return string 
+     * @return boolean 
      */
-    public function getType()
+    public function getEnabled()
     {
-        return $this->type;
+        return $this->enabled;
     }
 
     /**
      * Set created
      *
      * @param DateTime $created
-     * @return MailTemplate
+     * @return ContactList
      */
     public function setCreated($created)
     {
@@ -175,7 +155,7 @@ class MailTemplate
      * Set updated
      *
      * @param DateTime $updated
-     * @return MailTemplate
+     * @return ContactList
      */
     public function setUpdated($updated)
     {
@@ -195,49 +175,36 @@ class MailTemplate
     }
 
     /**
-     * Set enabled
+     * Add contacts
      *
-     * @param boolean $enabled
-     * @return MailTemplate
+     * @param \Flower\ModelBundle\Entity\Clients\Contact $contacts
+     * @return ContactList
      */
-    public function setEnabled($enabled)
+    public function addContact(\Flower\ModelBundle\Entity\Clients\Contact $contacts)
     {
-        $this->enabled = $enabled;
+        $this->contacts[] = $contacts;
 
         return $this;
     }
 
     /**
-     * Get enabled
+     * Remove contacts
      *
-     * @return boolean 
+     * @param \Flower\ModelBundle\Entity\Clients\Contact $contacts
      */
-    public function getEnabled()
+    public function removeContact(\Flower\ModelBundle\Entity\Clients\Contact $contacts)
     {
-        return $this->enabled;
+        $this->contacts->removeElement($contacts);
     }
 
     /**
-     * Set content
+     * Get contacts
      *
-     * @param string $content
-     * @return MailTemplate
+     * @return Collection 
      */
-    public function setContent($content)
+    public function getContacts()
     {
-        $this->content = $content;
-
-        return $this;
-    }
-
-    /**
-     * Get content
-     *
-     * @return string 
-     */
-    public function getContent()
-    {
-        return $this->content;
+        return $this->contacts;
     }
     
     public function __toString()

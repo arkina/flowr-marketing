@@ -1,6 +1,6 @@
 <?php
 
-namespace Flower\ModelBundle\Entity;
+namespace Flower\MarketingBundle\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
@@ -9,10 +9,8 @@ use Doctrine\ORM\Mapping\ManyToOne;
 /**
  * CampaignEmailMessage
  *
- * @ORM\Table(name="campaign_mail_message")
- * @ORM\Entity(repositoryClass="Flower\ModelBundle\Repository\CampaignEmailMessageRepository")
  */
-class CampaignEmailMessage
+abstract class CampaignEmailMessage
 {
 
     /**
@@ -22,55 +20,55 @@ class CampaignEmailMessage
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="providerId", type="string", length=255)
      */
-    private $providerId;
+    protected $providerId;
 
     /**
-     * @ManyToOne(targetEntity="CampaignMail", inversedBy="messages")
+     * @ManyToOne(targetEntity="\Flower\ModelBundle\Entity\Marketing\CampaignMail", inversedBy="messages")
      * @JoinColumn(name="campaign_mail_id", referencedColumnName="id")
      * */
-    private $campaign;
+    protected $campaign;
 
     /**
      * @var string
      *
      * @ORM\Column(name="sender", type="string", length=255)
      */
-    private $sender;
+    protected $sender;
 
     /**
      * @var string
      *
      * @ORM\Column(name="toemail", type="string", length=255)
      */
-    private $toemail;
+    protected $toemail;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="opens", type="integer")
      */
-    private $opens;
+    protected $opens;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="clicks", type="integer")
      */
-    private $clicks;
+    protected $clicks;
 
     /**
      * @var string
      *
      * @ORM\Column(name="state", type="string", length=255)
      */
-    private $state;
+    protected $state;
 
     /**
      * Get id
@@ -200,10 +198,10 @@ class CampaignEmailMessage
     /**
      * Set campaign
      *
-     * @param \Flower\ModelBundle\Entity\CampaignMail $campaign
+     * @param \Flower\ModelBundle\Entity\Marketing\CampaignMail $campaign
      * @return CampaignEmailMessage
      */
-    public function setCampaign(\Flower\ModelBundle\Entity\CampaignMail $campaign = null)
+    public function setCampaign(\Flower\ModelBundle\Entity\Marketing\CampaignMail $campaign = null)
     {
         $this->campaign = $campaign;
 
@@ -213,7 +211,7 @@ class CampaignEmailMessage
     /**
      * Get campaign
      *
-     * @return \Flower\ModelBundle\Entity\CampaignMail 
+     * @return \Flower\ModelBundle\Entity\Marketing\CampaignMail 
      */
     public function getCampaign()
     {

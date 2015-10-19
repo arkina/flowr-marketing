@@ -1,6 +1,6 @@
 <?php
 
-namespace Flower\ModelBundle\Entity;
+namespace Flower\MarketingBundle\Model;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,10 +16,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * CampaignMail
  *
- * @ORM\Table(name="campaign_mail")
- * @ORM\Entity(repositoryClass="Flower\ModelBundle\Repository\CampaignMailRepository")
  */
-class CampaignMail
+abstract class CampaignMail
 {
 
     const STATUS_DRAFT = "status_draft";
@@ -33,76 +31,76 @@ class CampaignMail
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="queued", type="integer")
      */
-    private $queued;
+    protected $queued;
 
     /**
      * @var string
      *
      * @ORM\Column(name="status", type="string", length=255)
      */
-    private $status;
+    protected $status;
 
     /**
-     * @ManyToOne(targetEntity="MailTemplate")
+     * @ManyToOne(targetEntity="\Flower\ModelBundle\Entity\Marketing\MailTemplate")
      * @JoinColumn(name="template_id", referencedColumnName="id")
      * */
-    private $template;
+    protected $template;
 
     /**
-     * @ManyToMany(targetEntity="ContactList")
+     * @ManyToMany(targetEntity="\Flower\ModelBundle\Entity\Marketing\ContactList")
      * @JoinTable(name="campaignmail_contactlist",
      *      joinColumns={@JoinColumn(name="campaign_mail_id", referencedColumnName="id")},
      *      inverseJoinColumns={@JoinColumn(name="contact_list_id", referencedColumnName="id")}
      *      )
      */
-    private $contactLists;
+    protected $contactLists;
 
     /**
      * @var string
      *
      * @ORM\Column(name="mailFrom", type="string", length=255)
      */
-    private $mailFrom;
+    protected $mailFrom;
 
     /**
      * @var string
      *
      * @ORM\Column(name="mailSubject", type="string", length=255)
      */
-    private $mailSubject;
+    protected $mailSubject;
 
     /**
      * @var string
      *
      * @ORM\Column(name="mailFromName", type="string", length=255)
      */
-    private $mailFromName;
+    protected $mailFromName;
 
     /**
-     * @OneToMany(targetEntity="CampaignEmailMessage", mappedBy="campaign")
+     * @OneToMany(targetEntity="\Flower\ModelBundle\Entity\Marketing\CampaignEmailMessage", mappedBy="campaign")
      * */
-    private $messages;
+    protected $messages;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="enabled", type="boolean")
      */
-    private $enabled;
+    protected $enabled;
 
     /**
      * @var DateTime
@@ -110,7 +108,7 @@ class CampaignMail
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
      */
-    private $created;
+    protected $created;
 
     /**
      * @var DateTime
@@ -118,7 +116,7 @@ class CampaignMail
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated", type="datetime")
      */
-    private $updated;
+    protected $updated;
 
     public function __construct()
     {
@@ -303,10 +301,10 @@ class CampaignMail
     /**
      * Set template
      *
-     * @param MailTemplate $template
+     * @param \Flower\ModelBundle\Entity\Marketing\MailTemplate $template
      * @return CampaignMail
      */
-    public function setTemplate(MailTemplate $template = null)
+    public function setTemplate(\Flower\ModelBundle\Entity\Marketing\MailTemplate $template = null)
     {
         $this->template = $template;
 
@@ -316,7 +314,7 @@ class CampaignMail
     /**
      * Get template
      *
-     * @return MailTemplate 
+     * @return \Flower\ModelBundle\Entity\Marketing\MailTemplate 
      */
     public function getTemplate()
     {
@@ -326,10 +324,10 @@ class CampaignMail
     /**
      * Add contactLists
      *
-     * @param ContactList $contactLists
+     * @param \Flower\ModelBundle\Entity\Marketing\ContactList $contactLists
      * @return CampaignMail
      */
-    public function addContactList(ContactList $contactLists)
+    public function addContactList(\Flower\ModelBundle\Entity\Marketing\ContactList $contactLists)
     {
         $this->contactLists[] = $contactLists;
 
@@ -339,9 +337,9 @@ class CampaignMail
     /**
      * Remove contactLists
      *
-     * @param ContactList $contactLists
+     * @param \Flower\ModelBundle\Entity\Marketing\ContactList $contactLists
      */
-    public function removeContactList(ContactList $contactLists)
+    public function removeContactList(\Flower\ModelBundle\Entity\Marketing\ContactList $contactLists)
     {
         $this->contactLists->removeElement($contactLists);
     }
@@ -387,10 +385,10 @@ class CampaignMail
     /**
      * Add messages
      *
-     * @param CampaignEmailMessage $messages
+     * @param \Flower\ModelBundle\Entity\Marketing\CampaignEmailMessage $messages
      * @return CampaignMail
      */
-    public function addMessage(CampaignEmailMessage $messages)
+    public function addMessage(\Flower\ModelBundle\Entity\Marketing\CampaignEmailMessage $messages)
     {
         $this->messages[] = $messages;
 
@@ -400,9 +398,9 @@ class CampaignMail
     /**
      * Remove messages
      *
-     * @param CampaignEmailMessage $messages
+     * @param \Flower\ModelBundle\Entity\Marketing\CampaignEmailMessage $messages
      */
-    public function removeMessage(CampaignEmailMessage $messages)
+    public function removeMessage(\Flower\ModelBundle\Entity\Marketing\CampaignEmailMessage $messages)
     {
         $this->messages->removeElement($messages);
     }

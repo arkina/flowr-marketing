@@ -1,6 +1,6 @@
 <?php
 
-namespace Flower\ModelBundle\Entity;
+namespace Flower\MarketingBundle\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -8,10 +8,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * ImportProcess
  *
- * @ORM\Table(name="import_process")
- * @ORM\Entity(repositoryClass="Flower\ModelBundle\Repository\ImportProcessRepository")
  */
-class ImportProcess
+abstract class ImportProcess
 {
 
     const STATUS_READY = 0;
@@ -24,55 +22,55 @@ class ImportProcess
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="filename", type="string", length=255)
      */
-    private $filename;
+    protected $filename;
 
     /**
      * @var string
      *
      * @ORM\Column(name="coldef", type="string", length=255)
      */
-    private $coldef;
+    protected $coldef;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="status", type="smallint")
      */
-    private $status;
+    protected $status;
 
     /**
-     * @ORM\ManyToOne(targetEntity="ContactList")
+     * @ORM\ManyToOne(targetEntity="\Flower\ModelBundle\Entity\Marketing\ContactList")
      * @ORM\JoinColumn(name="contact_list_id", referencedColumnName="id")
      */
-    private $contactList;
+    protected $contactList;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="failCount", type="bigint")
      */
-    private $failCount;
+    protected $failCount;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="successCount", type="bigint")
      */
-    private $successCount;
+    protected $successCount;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="totalCount", type="bigint")
      */
-    private $totalCount;
+    protected $totalCount;
 
     /**
      * @var DateTime
@@ -80,7 +78,7 @@ class ImportProcess
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
      */
-    private $created;
+    protected $created;
 
     /**
      * @var DateTime
@@ -88,7 +86,7 @@ class ImportProcess
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated", type="datetime")
      */
-    private $updated;
+    protected $updated;
 
     public function __construct()
     {
@@ -136,11 +134,11 @@ class ImportProcess
     /**
      * Set contactList
      *
-     * @param \Flower\ModelBundle\Entity\ContactList $contactList
+     * @param \Flower\ModelBundle\Entity\Marketing\ContactList $contactList
      *
      * @return ImportProcess
      */
-    public function setContactList(\Flower\ModelBundle\Entity\ContactList $contactList = null)
+    public function setContactList(\Flower\ModelBundle\Entity\Marketing\ContactList $contactList = null)
     {
         $this->contactList = $contactList;
 
@@ -150,7 +148,7 @@ class ImportProcess
     /**
      * Get contactList
      *
-     * @return \Flower\ModelBundle\Entity\ContactList
+     * @return \Flower\ModelBundle\Entity\Marketing\ContactList
      */
     public function getContactList()
     {
