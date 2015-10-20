@@ -1,0 +1,158 @@
+{% extends "FlowerCoreBundle::layout.html.twig" %}
+
+{% block title %}ContactList - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <section class="content-header">
+        <h1>{{ 'ContactList' | trans({}, 'ContactList')}}</h1>
+        <ol class="breadcrumb">
+            <li><a href={{ path('dashboard') }}><i class="fa fa-dashboard"></i> {{"Dashboard" | trans({}, 'ContactList')}}</a></li>
+            <li><a href="{{ path('contactlist') }}"> {{ '%entity% list'|trans({'%entity%': 'ContactList'}, 'ContactList') }}</a></li>
+            <li class="active" >{{ '%entity%'|trans({'%entity%': 'ContactList'}, 'ContactList') }}</li>
+        </ol>
+    </section>
+    <section class="content">    
+        <div class="box">
+            <div class="box-header">
+                <h2 class="box-title">{{ contactlist.name|capitalize }}</h2>
+                <div class="box-tools">
+                    <a class="btn btn-default" href="{{ path('contactlist_edit', {id: contactlist.id}) }}">
+                        {{ 'edit'|trans|capitalize }}
+                    </a>
+                </div>
+            </div>
+            <div class="box-body">
+
+            </div>
+
+        </div>
+
+        <div class="box box-solid">
+            <div class="box-header">
+                <h4 class="box-title"></h4> 
+                <div class="box-tools">
+                    <a class="btn btn-link" href="{{ path('contactlist_contact_new', {id: contactlist.id}) }}">
+                        <i class="fa fa-plus"></i> {{'create contact'|trans|capitalize}}
+                    </a>
+                    <a class="btn btn-default" href="{{ path('contactlist_import', {id: contactlist.id}) }}">
+                        <i class="fa fa-plus"></i> {{'import'|trans|capitalize}}
+                    </a>
+                    <a class="btn btn-default" href="{{ path('contactlist_imports', {id: contactlist.id}) }}">
+                        <i class="fa fa-upload"></i> {{'imports'|trans|capitalize}}
+                    </a>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ "Action"|trans|capitalize }} <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu multi-level">
+                        <li><a href="#">{{ "unsuscribe"|trans|capitalize }}</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-submenu">
+                            <a href="#" >{{ "move to list"|trans|capitalize }}</a>
+                            <ul class="dropdown-menu">
+                                {% for list in availablelists %}
+                                    <li>
+                                        <a href="#" class="bulk-move" data-id="{{list.id}}" >{{ list|capitalize }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#">{{ "copy to list"|trans|capitalize }}</a>
+                            <ul class="dropdown-menu">
+                                {% for list in availablelists %}
+                                    <li>
+                                        <a href="#" class="bulk-copy" data-id="{{list.id}}" >{{ list|capitalize }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">{{ 'Firstname'|trans }}</th>
+                            <th scope="col">{{ 'Lastname'|trans }}</th>
+                            <th scope="col">{{ 'Email'|trans }}</th>
+                            <th scope="col">{{ 'Address'|trans }}</th>
+                            <th scope="col">{{ 'Phone'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for contact in paginator %}
+                            <tr>
+                                <td><input type="checkbox" value="{{contact.id}}" name="contacts[]" class="bulk-check" ></td>
+                                <td>
+                                    <a href="{{ path('contact_show', {id: contact.id}) }}">{{ contact.firstname }}</a>
+                                </td>
+                                <td>
+                                    <a href="{{ path('contact_show', {id: contact.id}) }}">{{ contact.lastname }}</a>
+                                </td>
+                                <td>
+                                    <a href="{{ path('contact_show', {id: contact.id}) }}">{{ contact.email }}</a>
+                                </td>
+                                <td>{{ contact.address }}</td>
+                                <td>{{ contact.phone }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="box-footer">
+                {{ knp_pagination_render(paginator) }}
+            </div>
+
+        </div>
+
+    </section>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        var rootPath = "{{ path('dashboard') }}";
+        var bulkMove = "{{ path('contactlist_bulk_move',{'id':contactlist.id}) }}";
+        var bulkCopy = "{{ path('contactlist_bulk_move',{'id':contactlist.id}) }}";
+
+        $(".bulk-move").click(function () {
+            var contactListIdDest = $(this).attr("data-id");
+            var contactIds = [];
+            $("input.bulk-check:checked").each(function () {
+                contactIds.push($(this).val());
+            });
+
+            $.ajax({
+                "url": bulkMove,
+                "type": "post",
+                "data": {"list_dest": contactListIdDest, "contacts": contactIds},
+                "success": function () {
+                    location.reload();
+                }
+            });
+
+        });
+        $(".bulk-copy").click(function () {
+            var contactListIdDest = $(this).attr("data-id");
+            var contactIds = [];
+            $("input.bulk-check:checked").each(function () {
+                contactIds.push($(this).val());
+            });
+            $.ajax({
+                "url": bulkCopy,
+                "type": "post",
+                "data": {"list_dest": contactListIdDest, "contacts": contactIds},
+                "success": function () {
+                    location.reload();
+                }
+            });
+
+        });
+    </script>
+{% endblock%}

@@ -1,0 +1,72 @@
+{% extends "FlowerCoreBundle::layout.html.twig" %}
+
+{% block title %}{{ '%entity% list'|trans({'%entity%': 'ContactList'}) }} - {{ parent() }}{% endblock %}
+{% macro thead(name, field, label) %}
+    {% spaceless %}
+        {% set sort = app.session.get('sort.' ~ name) %}
+        {% if sort and sort.field == field %}
+            {% if sort.type == 'DESC' %}
+                <a href="{{ path('contactlist_sort', {field: field, type: 'ASC'}) }}">{{ label | trans({},'ContactList')}} <i class="fa fa-sort-down"></i></a>
+                {% elseif sort.type == 'ASC' %}
+                <a href="{{ path('contactlist_sort', {field: field, type: 'DESC'}) }}">{{ label | trans({},'ContactList')}} <i class="fa fa-sort-up"></i></a>
+                {% endif %}
+            {% else %}
+            <a href="{{ path('contactlist_sort', {field: field, type: 'ASC'}) }}">{{ label | trans({},'ContactList')}} <i class="fa fa-sort"></i></a>
+            {% endif %}
+        {% endspaceless %}
+    {% endmacro %}
+
+{% from _self import thead %}
+
+
+{% block body %}
+    <section class="content-header">
+        <h1>{{ 'contactlists' | trans|capitalize }}</h1>
+        <ol class="breadcrumb">
+            <li><a href={{ path('dashboard') }}><i class="fa fa-dashboard"></i> {{"Dashboard" | trans({})}}</a></li>
+            <li class="active" >{{ '%entity% list'|trans({'%entity%': 'ContactList'}) }}</li>
+        </ol>
+    </section>
+    <section class="content">    
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">{{ 'lists'|trans|capitalize }}</h3>
+                <div class="box-tools pull-right">                    <a class="btn btn-default" href={{ path('contactlist_new') }}>
+                        <i class="fa fa-plus"></i> {{ 'new contactlist'|trans|capitalize }}
+                    </a>
+                    {% include 'FlowerMarketingBundle:ContactList:filter.html.twig' with {form: form} %}
+                </div>
+            </div>
+            <div class="box-body">    
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th scope="col">{{ thead('contactlist', 'name', 'Name') }}</th>
+                            <th scope="col">{{ thead('contactlist', 'updated', 'Updated') }}</th>
+                            <th scope="col">{{ 'Subcriptos'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for contactlist in paginator %}
+                            <tr>
+                                <td><input type="checkbox" /></td>
+                                <td><a href="{{ path('contactlist_show', {id: contactlist.id}) }}">{{ contactlist.name }}</a></td>
+                                <td>{% if contactlist.updated %}{{ contactlist.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                <td>
+                                    2
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                {{ knp_pagination_render(paginator) }}
+            </div>
+            <div class="box-footer">
+
+            </div>
+
+    </section>        
+
+{% endblock %}

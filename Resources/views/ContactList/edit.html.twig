@@ -1,0 +1,64 @@
+{% extends "FlowerCoreBundle::layout.html.twig" %}
+
+{% block title %}{{ '%entity% edit'|trans({'%entity%': 'ContactList'}) }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <section class="content-header">
+        <h1>{{ 'contactlists' | trans|capitalize }}</h1>
+        <ol class="breadcrumb">
+            <li><a href={{ path('dashboard') }}><i class="fa fa-dashboard"></i> {{"Dashboard" | trans({})}}</a></li>
+            <li><a href="{{ path('contactlist') }}"> {{ '%entity% list'|trans({'%entity%': 'ContactList'}) }}</a></li>
+            <li class="active" >{{ '%entity% edit'|trans({'%entity%': 'ContactList'}) }}</li>
+        </ol>
+    </section>    
+    <section class="content">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">{{ '%entity% edit'|trans({'%entity%': 'ContactList'}) }}</h3>
+            </div>
+            <div class="box-body">
+
+            {{ form_start(edit_form) }}
+                {{ form_widget(edit_form) }}
+                <p>
+                    <button class="btn btn-primary" type="submit"><i class="fa fa-edit"></i> {{ 'Edit'|trans({}) }}</button>
+                </p>
+            {{ form_end(edit_form) }}
+            </div>
+            <div class="box-footer">
+            {{ form_start(delete_form) }}
+        {{ form_widget(delete_form) }}
+
+        <div class="btn-group record_actions">
+
+            <button class="btn btn-danger" type="submit"><i class="fa fa-trash-o"></i> {{ 'Delete'|trans({}) }}</button>
+
+        </div>
+
+        <input name="modal" type="hidden" value="0">
+    {{ form_end(delete_form) }}
+
+    <div id="delete_confirm" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3>{{ 'Confirm delete'|trans({}) }}</h3>
+                </div>
+                <div class="modal-body">
+                    <p>{{ 'You are about to delete an item'|trans({}) }}, {{ 'this procedure is irreversible'|trans({}) }}.</p>
+                    <p>{{ 'Do you want to proceed?'|trans({}) }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger">{{ 'Yes'|trans({}) }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ 'No'|trans({}) }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        </div>
+    </section>
+{% endblock %}
+
+

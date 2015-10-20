@@ -1,0 +1,30 @@
+.tools{  }
+.editorContainer{
+	position: relative;
+}
+
+.editorButton{
+	  cursor: pointer;
+  background-color: white;
+  padding: 20px;
+  border: 1px solid gray;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  margin: 20px;
+  -webkit-box-shadow: 4px 4px 21px -8px rgba(0,0,0,0.75);
+  -moz-box-shadow: 4px 4px 21px -8px rgba(0,0,0,0.75);
+  box-shadow: 4px 4px 21px -8px rgba(0,0,0,0.75);
+}
+.editorButton.draggin{
+-webkit-box-shadow: inset 4px 4px 21px -8px rgba(0,0,0,0.75);
+-moz-box-shadow: inset 4px 4px 21px -8px rgba(0,0,0,0.75);
+box-shadow: inset 4px 4px 21px -8px rgba(0,0,0,0.75);
+}
+
+
+
+
+
+
+

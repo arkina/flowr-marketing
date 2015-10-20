@@ -1,0 +1,44 @@
+
+
+#overall
+save: guardar
+edit: editar
+copy: copiar
+import: importar
+imports: importaciones
+overview: vista general
+
+#projects
+project: proyecto
+projects: proyectos
+overview: vista general
+
+status_backlog: backlog
+status_in_progress: en desarrollo
+status_testing: en testing
+status_finished: terminados
+
+new project: nuevo proyecto
+
+#contacts
+contacts: contactos
+
+#contact lists
+lists: listas
+ContactList: lista de contacto
+contactlist: lista de contacto
+contactlists: listas de contactos
+new contactlist: nueva lista
+Lastname: Apellido
+Firstname: Nombre
+Address: Dirección
+Phone: Teléfono
+Action: Acciones
+unsuscribe: remover
+move to list: mover a lista
+copy to list: copiar a lista
+#users
+profile: perfil
+
+
+

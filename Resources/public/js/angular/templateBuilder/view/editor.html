@@ -1,0 +1,128 @@
+<div class="col-sm-8" style="height: 800px;overflow-y: scroll;">
+    <div class="box" >
+        <div class="box-header">
+            <h3 class="box-title">{{ template.name }}</h3>
+        </div>
+        <div class="box-body  ">
+            <div ng-init="load()" id="template-editor" class="canvan" ng-bind-html="template.content | rawHtml">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-4">
+    <div class="box box-danger">
+        <div class="box-header">
+            <h3 class="box-title">Controls</h3>
+            <div class="box-tools">
+
+            </div>
+        </div>
+        <div class="box-body">
+            <button ng-click="save()" class="btn btn-primary">Guardar</button>
+        </div>
+    </div>
+    <div class="box box-danger">
+        <div class="box-header">
+            <h3 class="box-title">{{'Template Settings' }}</h3>
+            <div class="box-tools">
+                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="table table-condensed">
+                        <tr>
+                            <td>{{'Background' }}</td>
+                            <td><input class="color" ng-model="bgcolorBackground" /></td>
+                        </tr>
+                        <tr>
+                            <td>{{'Content Background' }}</td>
+                            <td><input class="color"  ng-model="bgcolorContent" /></td>
+                        </tr>
+                        <tr>
+                            <td>{{'Content Border color' }}</td>
+                            <td><input class="color"  ng-model="borderColorContent" /></td>
+                        </tr>
+                        <tr>
+                            <td>{{'Border color' }}</td>
+                            <td><input class="border-slider" ng-model="borderSizeContent"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box box-danger">
+        <div class="box-header">
+            <h3 class="box-title">{{'Elements' }}</h3>
+            <div class="box-tools">
+                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <button title="Agregar Item" ng-click="addNewItem('default_content')" class="btn btn-app bg-fuchsia">
+                        <i class="fa fa-edit"></i> {{'Editor row'  }}
+                    </button>
+                </div>
+                <div class="col-sm-4">
+                    <button title="Agregar Item" ng-click="addNewItem('default_content_6')" class="btn btn-app bg-fuchsia">
+                        <i class="fa fa-edit"></i> {{'Editor column'  }}
+                    </button>
+                </div>
+                <div class="col-sm-4">
+                    <button title="Agregar Item" ng-click="addNewItem('placeholder_row')" class="btn btn-app bg-maroon">
+                        <i class="fa fa-square-o"></i> {{'Add row'  }}
+                    </button>
+                </div>
+                <div class="col-sm-4">
+                    <button title="Agregar Item" ng-click="addNewItem('placeholder_6')" class="btn btn-app bg-maroon">
+                        <i class="fa fa-square-o"></i> {{'Add column'  }} 
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box box-danger">
+        <div class="box-header">
+            <h3 class="box-title">{{'Actions to active' }}</h3>
+            <div class="box-tools">
+                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+        </div>
+        <div class="box-body">
+            <button ng-click="removeElement()" class="btn btn-default">
+                <i class="fa fa-remove"></i> {{'Borrar' }}
+            </button>
+            <button ng-click="replicateElement()" ng-disabled='!replicable' class="btn btn-default">
+                <i class="fa fa-copy"></i> {{'Copiar' }}
+            </button>
+            
+            <table class="table table-condensed">
+                <tr>
+                    <td>{{'Background' }}</td>
+                    <td><input class="color" ng-model="bgcolor" /></td>
+                </tr>
+                <tr>
+                    <td>{{'Border color top' }}</td>
+                    <td><input class="color" ng-model="borderColorTop" /></td>
+                </tr>
+                <tr>
+                    <td>{{'Border Size top' }}</td>
+                    <td><input class="border-slider"  ng-model="borderSizeTop"></td>
+                </tr>
+                <tr>
+                    <td>{{'Border color bottom' }}</td>
+                    <td><input class="color"  ng-model="borderColorBottom" /></td>
+                </tr>
+                <tr>
+                    <td>{{'Border Size bottom' }}</td>
+                    <td><input class="border-slider"  ng-model="borderSizeBottom"</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

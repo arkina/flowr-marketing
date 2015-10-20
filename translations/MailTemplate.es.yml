@@ -1,0 +1,20 @@
+%entity% list: Lista de Templates de emails
+%entity% edit: Edición de Templates de emails
+Edit: Editar
+Delete: Borrar
+You are about to delete an item: Usted esta por borrar el ítem
+this procedure is irreversible: este proceso será irreversible
+Do you want to proceed?: ¿Desea continuar?
+Yes: Si
+No: No
+Type: Tipo
+Name: Nombre
+Created: Creado
+MailTemplate: Templates de emails
+Create a new %entity%: Crear nuevo template
+%entity% creation: Creando nuevo template
+Enabled: Habilitado
+
+Create: Crear
+Copy: Copiar
+New %entity%: Nuevo template

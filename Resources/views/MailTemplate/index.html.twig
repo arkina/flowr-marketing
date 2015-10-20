@@ -1,0 +1,67 @@
+{% extends "FlowerCoreBundle::layout.html.twig" %}
+
+{% block title %}{{ '%entity% list'|trans({'%entity%': 'MailTemplate'}, 'MailTemplate') }} - {{ parent() }}{% endblock %}
+{% macro thead(name, field, label) %}
+    {% spaceless %}
+        {% set sort = app.session.get('sort.' ~ name) %}
+        {% if sort and sort.field == field %}
+            {% if sort.type == 'DESC' %}
+                <a href="{{ path('mailtemplate_sort', {field: field, type: 'ASC'}) }}">{{ label | trans({},'MailTemplate')}} <i class="fa fa-sort-down"></i></a>
+                {% elseif sort.type == 'ASC' %}
+                <a href="{{ path('mailtemplate_sort', {field: field, type: 'DESC'}) }}">{{ label | trans({},'MailTemplate')}} <i class="fa fa-sort-up"></i></a>
+                {% endif %}
+            {% else %}
+            <a href="{{ path('mailtemplate_sort', {field: field, type: 'ASC'}) }}">{{ label | trans({},'MailTemplate')}} <i class="fa fa-sort"></i></a>
+            {% endif %}
+        {% endspaceless %}
+    {% endmacro %}
+
+{% from _self import thead %}
+
+
+{% block body %}
+    <section class="content-header">
+        <h1>{{ 'MailTemplate' | trans({}, 'MailTemplate')}}</h1>
+        <ol class="breadcrumb">
+            <li><a href={{ path('dashboard') }}><i class="fa fa-dashboard"></i> {{"Dashboard" | trans({}, 'MailTemplate')}}</a></li>
+            <li class="active" >{{ '%entity% list'|trans({'%entity%': 'MailTemplate'}, 'MailTemplate') }}</li>
+        </ol>
+    </section>
+    <section class="content">    
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">{{ '%entity% list'|trans({'%entity%': 'MailTemplate'}, 'MailTemplate') }}</h3>
+                <div class="box-tools pull-right">                    <a class="btn btn-default" href={{ path('mailtemplate_new') }}>
+                        <i class="fa fa-plus"></i> {{ 'Create a new %entity%'|trans({'%entity%': 'MailTemplate'}, 'MailTemplate') }}
+                    </a>
+                </div>
+            </div>
+            <div class="box-body">    
+                <table class="table table-striped table-hover table-bordered records_list">
+                    <thead>
+                        <tr>
+                            <th scope="col">{{ thead('mailtemplate', 'name', 'Name') }}</th>
+                            <th scope="col">{{ thead('mailtemplate', 'type', 'Type') }}</th>
+                            <th scope="col">{{ thead('mailtemplate', 'created', 'Created') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for mailtemplate in paginator %}
+                            <tr>
+                                <td><a href="{{ path('mailtemplate_show', {id: mailtemplate.id}) }}">{{ mailtemplate.name }}</a></td>
+                                <td>{{ mailtemplate.type }}</td>
+                                <td>{% if mailtemplate.created %}{{ mailtemplate.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                {{ knp_pagination_render(paginator) }}
+            </div>
+            <div class="box-footer">
+
+            </div>
+
+    </section>        
+
+{% endblock %}

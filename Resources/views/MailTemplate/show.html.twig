@@ -1,0 +1,78 @@
+{% extends "FlowerCoreBundle::layout.html.twig" %}
+
+{% block title %}MailTemplate - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <section class="content-header">
+        <h1>{{ 'MailTemplate' | trans({}, 'MailTemplate')}}</h1>
+        <ol class="breadcrumb">
+            <li><a href={{ path('dashboard') }}><i class="fa fa-dashboard"></i> {{"Dashboard" | trans({}, 'MailTemplate')}}</a></li>
+            <li><a href="{{ path('mailtemplate') }}"> {{ '%entity% list'|trans({'%entity%': 'MailTemplate'}, 'MailTemplate') }}</a></li>
+            <li class="active" >{{ '%entity%'|trans({'%entity%': 'MailTemplate'}, 'MailTemplate') }}</li>
+        </ol>
+    </section>
+    <section class="content">    
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">{{ mailtemplate.name|capitalize }}</h3>
+                        <div class="box-tools">
+                            {{ form_start(delete_form) }}
+                            {{ form_widget(delete_form) }}
+
+                            <div class="btn-group">
+
+                                <a class="btn btn-default" href="{{ path('mailtemplate_edit', {id: mailtemplate.id}) }}">
+                                    <i class="fa fa-edit"></i> {{ 'Edit'|trans({}, 'MailTemplate') }}
+                                </a>
+                                <a class="btn btn-default" href="{{ path('mailtemplate_clone', {id: mailtemplate.id}) }}">
+                                    <i class="fa fa-copy"></i> {{ 'Copy'|trans({}, 'MailTemplate') }}
+                                </a>
+                                <button class="btn btn-default" type="submit"><i class="fa fa-trash-o"></i> {{ 'Delete'|trans({}, 'MailTemplate') }}</button>
+                                <a href="{{ path('mailtemplate_editor', { 'id': mailtemplate.id }) }}" class="btn btn-primary">
+                                    <i class="fa fa-magic"></i> {{ 'editor'|trans|capitalize }}
+                                </a>
+                            </div>
+
+                            <input name="modal" type="hidden" value="0">
+                            {{ form_end(delete_form) }}
+
+                            <div id="delete_confirm" class="modal fade">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h3>{{ 'Confirm delete'|trans({}, 'MailTemplate') }}</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>{{ 'You are about to delete an item'|trans({}, 'MailTemplate') }}, {{ 'this procedure is irreversible'|trans({}, 'MailTemplate') }}.</p>
+                                            <p>{{ 'Do you want to proceed?'|trans({}, 'MailTemplate') }}</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-danger">{{ 'Yes'|trans({}, 'MailTemplate') }}</button>
+                                            <button class="btn btn-default" data-dismiss="modal">{{ 'No'|trans({}, 'MailTemplate') }}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                    <div class="box-body">
+                            
+                        {{ mailtemplate.content|raw }}
+                    </div>
+                    <div class="box-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+
+{% endblock %}
