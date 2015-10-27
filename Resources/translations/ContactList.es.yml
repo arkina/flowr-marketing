@@ -1,0 +1,7 @@
+'%entity%': '%entity%'   # FIXME
+'%entity% list': 'Lista de %entity%'
+ContactList: Lista de contactos   # FIXME
+Dashboard: Dashboard   # FIXME
+Filter: Filtros
+'Reset filters': 'Resetear filtros'
+'Show/hide filters': 'mostrar/ocultar filtros'

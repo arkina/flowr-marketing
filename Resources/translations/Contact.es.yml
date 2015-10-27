@@ -1,0 +1,29 @@
+'%entity%': '%entity%'   # FIXME
+'%entity% List': 'Lista de %entity%'
+'%entity% creation': 'Creación de %entity%'
+'%entity% edit': 'Edición de %entity%'
+'%entity% list': 'Lista de %entity%'
+Actions: Acciones
+Address: Dirección
+'Confirm delete': 'Confirmar borrado'
+Contact: Contacto
+Create: Crear
+'Create a new %entity%': 'Crear nueva %entity%'
+Created: Creado
+Dashboard: Dashboard   # FIXME
+Delete: Borrar
+'Do you want to proceed?': '¿Desea continuar de todos modos?'
+Edit: Editar
+Email: Email   # FIXME
+Firstname: Nombre
+Id: Id   # FIXME
+Lastname: Apellido
+'New %entity%': 'Nueva %entity%'
+'No': 'No'   # FIXME
+Phone: Teléfono
+Updated: Actualizado
+'Yes': 'Si'
+'You are about to delete an item': 'Usted esta por borrar un elemento'
+edit: editar
+show: ver
+'this procedure is irreversible': 'esta accion será irreversible'

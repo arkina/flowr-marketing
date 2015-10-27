@@ -1,0 +1,20 @@
+'%entity% creation': 'Creación de %entity%'
+'%entity% edit': 'Edición de %entity%'
+'%entity% list': 'Lista de %entity%'
+Actions: Acciones
+CampaignMail: Campaña de emails   # FIXME
+'Confirm delete': 'Confirmar borrado'
+Create: Crear
+'Create a new %entity%': 'Crear nueva %entity%'
+Delete: Borrar
+'Do you want to proceed?': '¿Desea continuar de todos modos?'
+Edit: Editar
+Enabled: Habilitado
+Mailfrom: para
+Mailfromname: nombre para
+Mailsubject: asunto
+'No': 'No'   # FIXME
+'Yes': 'Si'
+'You are about to delete an item': 'Usted esta por borrar un elemento'
+show: ver
+'this procedure is irreversible': 'esta accion será irreversible'

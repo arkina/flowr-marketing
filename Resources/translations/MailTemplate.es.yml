@@ -1,0 +1,20 @@
+'%entity%': '%entity%'   # FIXME
+'%entity% creation': 'Creación de %entity%'
+'%entity% edit': 'Edición de %entity%'
+'%entity% list': 'Lista de %entity%'
+'Confirm delete': 'Confirmar borrado'
+Copy: Copiar
+Create: Crear
+'Create a new %entity%': 'Crear nueva %entity%'
+Dashboard: Dashboard   # FIXME
+Delete: Borrar
+'Do you want to proceed?': '¿Desea continuar de todos modos?'
+Edit: Editar
+MailTemplate: Template de emails
+'New %entity%': 'Nuevo %entity%'
+'No': 'No'   # FIXME
+'Yes': 'Si'
+'You are about to delete an item': 'Usted esta por borrar un elemento'
+html: html   # FIXME
+'plain text': 'texto plano'   # FIXME
+'this procedure is irreversible': 'esta accion será irreversible'
