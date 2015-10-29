@@ -1,5 +1,7 @@
-Lastname: Apellido
-Firstname: Nombre
-
-Name: Nombre
-Updated: Actualiado
+'%entity%': 'Lista de contactos'
+'%entity% List': 'Lista de lista de contactos'
+ContactList: Lista de contactos
+Dashboard: Dashboard
+Filter: Filtrado
+'Reset filters': 'Limpiar filtros'
+'Show/hide filters': 'Mostrar/Ocultar filtros'

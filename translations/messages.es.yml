@@ -1,44 +1,41 @@
-
-
-#overall
-save: guardar
+'%entity% List': 'Lista de %entity%'
+'%entity% creation': 'Creación de %entity%'
+'%entity% edit': 'Edición de %entity%'
+'%entity% List': 'Lista de %entity%'
+Action: Acciones
+Address: Dirección
+'Confirm delete': 'Confirmar borrado'
+Dashboard: Dashboard
+Delete: Borrar
+'Do you want to proceed?': '¿Desea continuar de todos modos?'
 edit: editar
+Email: Email
+Firstname: Nombre
+Lastname: Apellido
+'New %entity%': 'Nuevo %entity%'
+'No': 'No'
+Phone: Teléfono
+Status: Estado
+Subcriptos: Subcriptos
+'Yes': 'Si'
+'You are about to delete an item': 'Usted esta por borrar un elemento'
+clicks: clicks
+contactlists: 'listas de contactos'
 copy: copiar
+'copy to list': 'copiar a lista'
+'create contact': 'crear contacto'
+draft: borrador
+edit: editar
+editor: editor
+finished: finalizado
 import: importar
 imports: importaciones
-overview: vista general
-
-#projects
-project: proyecto
-projects: proyectos
-overview: vista general
-
-status_backlog: backlog
-status_in_progress: en desarrollo
-status_testing: en testing
-status_finished: terminados
-
-new project: nuevo proyecto
-
-#contacts
-contacts: contactos
-
-#contact lists
+'in progress': 'en progreso'
+launch: lanzado
 lists: listas
-ContactList: lista de contacto
-contactlist: lista de contacto
-contactlists: listas de contactos
-new contactlist: nueva lista
-Lastname: Apellido
-Firstname: Nombre
-Address: Dirección
-Phone: Teléfono
-Action: Acciones
+'move to list': 'mover a lista'
+'new contactlist': 'nueva lista'
+opens: abiertos
+save: guardar
+'this procedure is irreversible': 'esta accion será irreversible'
 unsuscribe: remover
-move to list: mover a lista
-copy to list: copiar a lista
-#users
-profile: perfil
-
-
-

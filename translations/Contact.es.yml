@@ -1,8 +1,8 @@
-'%entity%': '%entity%'   # FIXME
-'%entity% List': 'Lista de %entity%'
-'%entity% creation': 'Creación de %entity%'
-'%entity% edit': 'Edición de %entity%'
-'%entity% list': 'Lista de %entity%'
+'%entity%': 'Contacto'   # FIXME
+'%entity% List': 'Lista de Contactos'
+'%entity% creation': 'Creación de Contacto'
+'%entity% edit': 'Edición de Contacto'
+'%entity% List': 'Lista de Contactos'
 Actions: Acciones
 Address: Dirección
 'Confirm delete': 'Confirmar borrado'
@@ -10,16 +10,16 @@ Contact: Contacto
 Create: Crear
 'Create a new %entity%': 'Crear nueva %entity%'
 Created: Creado
-Dashboard: Dashboard   # FIXME
+Dashboard: Dashboard
 Delete: Borrar
 'Do you want to proceed?': '¿Desea continuar de todos modos?'
-Edit: Editar
-Email: Email   # FIXME
+edit: editar
+Email: Email
 Firstname: Nombre
-Id: Id   # FIXME
+Id: Id
 Lastname: Apellido
-'New %entity%': 'Nueva %entity%'
-'No': 'No'   # FIXME
+'New %entity%': 'Nuevo %entity%'
+'No': 'No'
 Phone: Teléfono
 Updated: Actualizado
 'Yes': 'Si'

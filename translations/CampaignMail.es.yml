@@ -1,20 +1,20 @@
-%entity% list: Lista de Campañas de emails
-%entity% edit: Edición de Campaña de emails
-Edit: Editar
-Delete: Borrar
-You are about to delete an item: Usted esta por borrar el ítem
-this procedure is irreversible: este proceso será irreversible
-Do you want to proceed?: ¿Desea continuar?
-Yes: Si
-No: No
-Type: Tipo
-Name: Nombre
-Created: Creado
-CampaignMail: Campaña de emails
-Create a new %entity%: Crear nueva campaña
-%entity% creation: Creando nueva campaña
-Enabled: Habilitado
-
+'%entity% creation': 'Creando nueva campaña'
+'%entity% edit': 'Edición de Campaña de emails'
+'%entity% list': 'Lista de Campañas de emails'
+Actions: Acciones
+CampaignMail: 'Campaña de emails'
+'Confirm delete': 'Confirmar borrado'
 Create: Crear
-Copy: Copiar
-New %entity%: Nueva Campaña
+'Create a new %entity%': 'Crear nueva campaña'
+Delete: Borrar
+'Do you want to proceed?': '¿Desea continuar?'
+Edit: Editar
+Enabled: Habilitado
+Mailfrom: Mail de
+Mailfromname: a nombre de
+Mailsubject: asunto
+'No': 'No'
+'Yes': Si
+'You are about to delete an item': 'Usted esta por borrar el ítem'
+show: ver
+'this procedure is irreversible': 'este proceso será irreversible'
