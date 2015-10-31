@@ -4,7 +4,7 @@ namespace Flower\MarketingBundle\Command;
 
 use Ddeboer\DataImport\Reader\CsvReader;
 use Flower\ModelBundle\Entity\Clients\Contact;
-use Flower\ModelBundle\Entity\ImportProcess;
+use Flower\ModelBundle\Entity\Marketing\ImportProcess;
 use SplFileObject;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -52,7 +52,7 @@ class ImporterCommand extends ContainerAwareCommand
 
         $this->entityManager = $this->getContainer()->get("doctrine.orm.entity_manager");
 
-        $importProcess = $this->entityManager->getRepository('FlowerModelBundle:ImportProcess')->find($importProcess_id);
+        $importProcess = $this->entityManager->getRepository('FlowerModelBundle:Marketing\ImportProcess')->find($importProcess_id);
 
         $filename = $importProcess->getFilename();
 
@@ -65,7 +65,7 @@ class ImporterCommand extends ContainerAwareCommand
         $reader->setStrict(false);
         $reader->setHeaderRowNumber(0);
 
-        $this->entityNameContact = $this->entityManager->getClassMetadata("FlowerModelBundle:Clients/Contact")->getName();
+        $this->entityNameContact = $this->entityManager->getClassMetadata("FlowerModelBundle:Clients\Contact")->getName();
 
         $contactList = $importProcess->getContactList();
 
@@ -87,8 +87,8 @@ class ImporterCommand extends ContainerAwareCommand
         $failCount = 0;
 
         $conn = $this->getEM()->getConnection();
-        $qInsertContact = 'INSERT INTO contact(firstname, lastname, email, address, phone, created, updated) VALUES(?, ?, ?, ?, ?, ?, ?)';
-        $qInsertContactRel = 'INSERT INTO contactlist_contact(contact_list_id, contact_id) VALUES(?, ?)';
+        $qInsertContact = 'INSERT INTO contact(firstname, lastname, email, address, phone, allow_campaign_mail, created, updated) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
+        $qInsertContactRel = 'INSERT INTO contactlists_contacts(contactlist_id, contact_id) VALUES(?, ?)';
         $stmtContact = $conn->prepare($qInsertContact);
         $stmtContactRel = $conn->prepare($qInsertContactRel);
 
@@ -133,7 +133,7 @@ class ImporterCommand extends ContainerAwareCommand
     }
 
     /**
-     * 
+     *
      * @return \Doctrine\ORM\EntityManagerInterface em
      */
     protected function getEM()
@@ -142,7 +142,7 @@ class ImporterCommand extends ContainerAwareCommand
     }
 
     /**
-     * 
+     *
      * @param type $coldef
      * @param type $rawrow
      * @return string
@@ -160,6 +160,7 @@ class ImporterCommand extends ContainerAwareCommand
             }
         }
 
+        array_push($mappedRow, '1');
         array_push($mappedRow, date("Y-m-d H:i:s"));
         array_push($mappedRow, date("Y-m-d H:i:s"));
         return $mappedRow;

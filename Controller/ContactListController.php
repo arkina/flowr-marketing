@@ -120,24 +120,13 @@ class ContactListController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $count = $em
-            ->createQuery('SELECT COUNT(c) FROM FlowerModelBundle:Clients\Contact c JOIN FlowerModelBundle:Marketing\ContactList cl WITH cl.id = '.$contactlist->getId())
-            ->getSingleScalarResult()
-        ;
-        $query = $em
-            ->createQuery('SELECT c FROM FlowerModelBundle:Clients\Contact c JOIN FlowerModelBundle:Marketing\ContactList cl WITH cl.id = '. $contactlist->getId() .' where cl.id = '.$contactlist->getId())
-            ->setHint('knp_paginator.count', $count)
-        ;
-
-        //$qb = $em->getRepository('FlowerModelBundle:Clients\Contact')->getByContactListQuery($contactlist->getId());
-        $paginator = $this->get('knp_paginator')->paginate($query, $request->query->get('page', 1), 20, array('distinct' => false));
-
+        $contacts = $em->getRepository('FlowerModelBundle:Clients\Contact')->getByContactList($contactlist->getId(), (($request->query->get('page', 1)-1)*50), 50);
         $availableLists = $em->getRepository('FlowerModelBundle:Marketing\ContactList')->findAll();
 
         return array(
             'contactlist' => $contactlist,
             'availablelists' => $availableLists,
-            'paginator' => $paginator
+            'contacts' => $contacts
         );
     }
 

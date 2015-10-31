@@ -11,7 +11,7 @@
             <li class="active" >{{ '%entity%'|trans({'%entity%': 'ContactList'}, 'ContactList') }}</li>
         </ol>
     </section>
-    <section class="content">    
+    <section class="content">
         <div class="box">
             <div class="box-header">
                 <h2 class="box-title">{{ contactlist.name|capitalize }}</h2>
@@ -29,7 +29,7 @@
 
         <div class="box box-solid">
             <div class="box-header">
-                <h4 class="box-title"></h4> 
+                <h4 class="box-title"></h4>
                 <div class="box-tools">
                     <a class="btn btn-link" href="{{ path('contactlist_contact_new', {id: contactlist.id}) }}">
                         <i class="fa fa-plus"></i> {{'create contact'|trans|capitalize}}
@@ -85,7 +85,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for contact in paginator %}
+                        {% for contact in contacts %}
                             <tr>
                                 <td><input type="checkbox" value="{{contact.id}}" name="contacts[]" class="bulk-check" ></td>
                                 <td>
@@ -106,7 +106,7 @@
 
             </div>
             <div class="box-footer">
-                {{ knp_pagination_render(paginator) }}
+                
             </div>
 
         </div>
