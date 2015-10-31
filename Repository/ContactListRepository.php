@@ -13,7 +13,6 @@ use Doctrine\ORM\Query\Expr\Join;
  */
 class ContactListRepository extends EntityRepository
 {
-
     public function getContactsQuery($contactListId)
     {
         $qb = $this->createQueryBuilder("cl");
@@ -36,4 +35,30 @@ class ContactListRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function getByContactId($contactId)
+    {
+        $qb = $this->createQueryBuilder("cl");
+        $qb->select("cl");
+        $qb->innerJoin("cl.contacts", "c", Join::WITH, "c.id = :contact_id");
+        $qb->where("c.id = :contact_id");
+        $qb->setParameter("contact_id", $contactId);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function removeContact($contactListId, $contactId)
+    {
+        $statement = "DELETE FROM contactlists_contacts "
+                . "WHERE contactlist_id = :contactlist_id "
+                . "AND contact_id = :contact_id ";
+
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare($statement);
+        $stmt->bindParam("contactlist_id", $contactListId);
+        $stmt->bindParam("contact_id", $contactId);
+
+        $stmt->execute();
+
+        return true;
+    }
 }

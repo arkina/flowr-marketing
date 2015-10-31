@@ -489,7 +489,6 @@ class ContactListController extends Controller
     public function createContactteAction(Request $request, ContactList $contactList)
     {
         $contact = new Contact();
-        //$contact->addContactList($contactList);
         $contactList->addContact($contact);
         $form = $this->createForm($this->get('form.type.contact'), $contact);
         if ($form->handleRequest($request)->isValid()) {
@@ -506,6 +505,45 @@ class ContactListController extends Controller
             'contact' => $contact,
             'contactList' => $contactList,
             'form' => $form->createView(),
+        );
+    }
+
+    /**
+     * Unsuscribe confirmation.
+     *
+     * @Route("/unsuscribe/{id}", name="contactlist_unsuscribe_confirm")
+     * @Method("GET")
+     * @Template()
+     */
+    public function unsuscribeConfirmAction(Request $request, Contact $contact){
+        $em = $this->getDoctrine()->getManager();
+        $contactLists = $em->getRepository("FlowerModelBundle:Marketing\ContactList")->getByContactId($contact->getId());
+        return array(
+            'contact' => $contact,
+            'contactLists' => $contactLists,
+        );
+    }
+
+    /**
+     * Unsuscribe confirmation.
+     *
+     * @Route("/unsuscribe/{id}", name="contactlist_unsuscribe")
+     * @Method("POST")
+     * @Template("")
+     */
+    public function unsuscribeAction(Request $request, Contact $contact){
+        $contactLists = $request->get('contactlists');
+        $em = $this->getDoctrine()->getManager();
+        if($contactLists){
+            foreach ($contactLists as $contactListId) {
+                $em->getRepository("FlowerModelBundle:Marketing\ContactList")->removeContact($contactListId, $contact->getId());
+            }
+            $this->addFlash('success', 'unsuscribed_succesfully');
+        }else{
+            $this->addFlash('warning', 'unsuscribed_failed');
+        }
+        return array(
+            'contact' => $contact,
         );
     }
 

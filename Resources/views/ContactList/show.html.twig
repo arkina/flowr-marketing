@@ -16,7 +16,7 @@
             <div class="box-header">
                 <h2 class="box-title">{{ contactlist.name|capitalize }}</h2>
                 <div class="box-tools">
-                    <a class="btn btn-default" href="{{ path('contactlist_edit', {id: contactlist.id}) }}">
+                    <a class="btn btn-link btn-xs" href="{{ path('contactlist_edit', {id: contactlist.id}) }}">
                         {{ 'edit'|trans|capitalize }}
                     </a>
                 </div>
@@ -31,13 +31,13 @@
             <div class="box-header">
                 <h4 class="box-title"></h4>
                 <div class="box-tools">
-                    <a class="btn btn-link" href="{{ path('contactlist_contact_new', {id: contactlist.id}) }}">
+                    <a class="btn btn-link btn-xs" href="{{ path('contactlist_contact_new', {id: contactlist.id}) }}">
                         <i class="fa fa-plus"></i> {{'create contact'|trans|capitalize}}
                     </a>
-                    <a class="btn btn-default" href="{{ path('contactlist_import', {id: contactlist.id}) }}">
+                    <a class="btn btn-link btn-xs" href="{{ path('contactlist_import', {id: contactlist.id}) }}">
                         <i class="fa fa-plus"></i> {{'import'|trans|capitalize}}
                     </a>
-                    <a class="btn btn-default" href="{{ path('contactlist_imports', {id: contactlist.id}) }}">
+                    <a class="btn btn-link btn-xs" href="{{ path('contactlist_imports', {id: contactlist.id}) }}">
                         <i class="fa fa-upload"></i> {{'imports'|trans|capitalize}}
                     </a>
                 </div>
@@ -106,7 +106,7 @@
 
             </div>
             <div class="box-footer">
-                
+
             </div>
 
         </div>

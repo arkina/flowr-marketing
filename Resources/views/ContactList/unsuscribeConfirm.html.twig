@@ -1,0 +1,41 @@
+{% extends 'FlowerCoreBundle::base.html.twig' %}
+
+{% block title %}{{ 'unsuscribe'|trans|capitalize }} - {{ parent() }}{% endblock %}
+
+{% block wrapper %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <section class="content-header">
+                <h1>{{ 'unsuscribe'|trans|capitalize }}</h1>
+            </section>
+            <section class="content">
+                <div class="box box-success">
+                    <div class="box-header">
+                        <h3 class="box-title">{{ 'unsuscribe'|trans }}</h3>
+                    </div>
+                    <div class="box-body">
+                        <form action="{{ path('contactlist_unsuscribe', {'id':contact.id}) }}" method="post">
+                            <select name="contactlists[]" class="form-control" multiple="multiple">
+                                {% for contactList in contactLists %}
+                                    <option value="{{ contactList.id }}">
+                                        {{ contactList.name|capitalize }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <p>
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fa fa-edit"></i> {{ 'confirm'|trans|capitalize }}
+                                </button>
+                            </p>
+                        </form>
+                    </div>
+                    <div class="box-footer">
+
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
