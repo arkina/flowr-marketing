@@ -4,12 +4,11 @@ namespace Flower\MarketingBundle\Controller;
 
 use Ddeboer\DataImport\Reader\CsvReader;
 use Doctrine\ORM\QueryBuilder;
-use Flower\CoreBundle\Form\Type\ContactType;
 use Flower\MarketingBundle\Form\Type\ContactListFilterType;
 use Flower\MarketingBundle\Form\Type\ContactListType;
-use Flower\ModelBundle\Entity\Marketing\Contact;
 use Flower\ModelBundle\Entity\Marketing\ContactList;
 use Flower\ModelBundle\Entity\Marketing\ImportProcess;
+use Flower\ModelBundle\Entity\Clients\Contact;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -40,13 +39,13 @@ class ContactListController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-        
+
         $form = $this->createForm(new ContactListFilterType());
         if (!is_null($response = $this->saveFilter($form, 'contactlist', 'contactlist'))) {
             return $response;
         }
         $qb = $em->getRepository('FlowerModelBundle:Marketing\ContactList')->createQueryBuilder('c');
-        
+
         $paginator = $this->filter($form, $qb, 'contactlist');
 
         return array(
@@ -120,8 +119,18 @@ class ContactListController extends Controller
     public function showAction(ContactList $contactlist, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $qb = $em->getRepository('FlowerModelBundle:Clients\Contact')->getByContactListQuery($contactlist->getId());
-        $paginator = $this->get('knp_paginator')->paginate($qb, $request->query->get('page', 1), 20);
+
+        $count = $em
+            ->createQuery('SELECT COUNT(c) FROM FlowerModelBundle:Clients\Contact c JOIN FlowerModelBundle:Marketing\ContactList cl WITH cl.id = '.$contactlist->getId())
+            ->getSingleScalarResult()
+        ;
+        $query = $em
+            ->createQuery('SELECT c FROM FlowerModelBundle:Clients\Contact c JOIN FlowerModelBundle:Marketing\ContactList cl WITH cl.id = '. $contactlist->getId() .' where cl.id = '.$contactlist->getId())
+            ->setHint('knp_paginator.count', $count)
+        ;
+
+        //$qb = $em->getRepository('FlowerModelBundle:Clients\Contact')->getByContactListQuery($contactlist->getId());
+        $paginator = $this->get('knp_paginator')->paginate($query, $request->query->get('page', 1), 20, array('distinct' => false));
 
         $availableLists = $em->getRepository('FlowerModelBundle:Marketing\ContactList')->findAll();
 
@@ -472,8 +481,7 @@ class ContactListController extends Controller
     public function newContactAction(ContactList $contactList)
     {
         $contact = new Contact();
-        $contact->addContactList($contactList);
-        $form = $this->createForm(new ContactType(), $contact);
+        $form = $this->createForm($this->get('form.type.contact'), $contact);
 
         return array(
             'contact' => $contact,
@@ -492,13 +500,13 @@ class ContactListController extends Controller
     public function createContactteAction(Request $request, ContactList $contactList)
     {
         $contact = new Contact();
-        $contact->addContactList($contactList);
+        //$contact->addContactList($contactList);
         $contactList->addContact($contact);
-        $form = $this->createForm(new ContactType(), $contact);
+        $form = $this->createForm($this->get('form.type.contact'), $contact);
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            
-            
+
+
             $em->persist($contact);
             $em->flush();
 

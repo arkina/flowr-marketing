@@ -13,9 +13,18 @@ use Doctrine\ORM\Query\Expr\Join;
  */
 class ContactListRepository extends EntityRepository
 {
-    
-    
-    
+
+    public function getContactsQuery($contactListId)
+    {
+        $qb = $this->createQueryBuilder("cl");
+        $qb->select("c");
+        $qb->innerJoin("cl.contacts", "c", Join::WITH, "cl.id = :contact_list_id");
+        $qb->where("cl.id = :contact_list_id");
+        $qb->setParameter("contact_list_id", $contactListId);
+
+        return $qb->getQuery();
+    }
+
     public function getContacts($contactListId, $offset, $limit)
     {
         $qb = $this->createQueryBuilder("cl");

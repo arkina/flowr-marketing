@@ -17,7 +17,8 @@
         "MIT"
     ],
     "require" : {
-        "flower/clientsbundle": "dev-master"
+        "flower/clientsbundle": "dev-master",
+        "flowcode/notificationbundle" : "dev-master"
     },
     "autoload" : {
         "psr-0" : {

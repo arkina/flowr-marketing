@@ -4,7 +4,7 @@ namespace Flower\MarketingBundle\Controller;
 
 use Doctrine\ORM\QueryBuilder;
 use Flower\MarketingBundle\Form\Type\MailTemplateType;
-use Flower\ModelBundle\Entity\MailTemplate;
+use Flower\ModelBundle\Entity\Marketing\MailTemplate;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -31,11 +31,9 @@ class MailTemplateController extends Controller
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $userAccount = $this->getUser()->getUserAccount();
-        
-        $qb = $em->getRepository('FlowerModelBundle:MailTemplate')->createQueryBuilder('m');
-        $qb->where("m.userAccount = :user_account")->setParameter("user_account", $userAccount);
-        
+
+        $qb = $em->getRepository('FlowerModelBundle:Marketing\MailTemplate')->createQueryBuilder('m');
+
         $this->addQueryBuilderSort($qb, 'mailtemplate');
         $paginator = $this->get('knp_paginator')->paginate($qb, $request->query->get('page', 1), 20);
 
@@ -137,10 +135,7 @@ class MailTemplateController extends Controller
         $form = $this->createForm(new MailTemplateType(), $mailtemplate);
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            
-            $userAccount = $this->getUser()->getUserAccount();
-            $mailtemplate->setUserAccount($userAccount);
-            
+
             $em->persist($mailtemplate);
             $em->flush();
 

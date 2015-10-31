@@ -8,7 +8,7 @@ namespace Flower\MarketingBundle\Command;
  * @author Juan Manuel Agüero <jaguero@flowcode.com.ar>
  */
 use Doctrine\ORM\EntityManagerInterface;
-use Flower\ModelBundle\Entity\CampaignMail;
+use Flower\ModelBundle\Entity\Marketing\CampaignMail;
 use Hip\MandrillBundle\Message;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -43,13 +43,13 @@ class SendMailCommand extends ContainerAwareCommand
         $this->setBatchSize(20);
 
         $this->setEM($this->getContainer()->get("doctrine.orm.entity_manager"));
-        $this->entityNameContact = $this->getEM()->getClassMetadata("FlowerModelBundle:Contact")->getName();
-        $campaignEmail = $this->getEM()->getRepository("FlowerModelBundle:CampaignMail")->find($campaignId);
-        $campaignEmailMessageRepo = $this->getEM()->getRepository("FlowerModelBundle:CampaignEmailMessage");
+        $this->entityNameContact = $this->getEM()->getClassMetadata("FlowerModelBundle:Clients\Contact")->getName();
+        $campaignEmail = $this->getEM()->getRepository("FlowerModelBundle:Marketing\CampaignMail")->find($campaignId);
+        $campaignEmailMessageRepo = $this->getEM()->getRepository("FlowerModelBundle:Marketing\CampaignEmailMessage");
         //$campaignEmail = new \Flower\ModelBundle\Entity\CampaignMail();
 
         /* mail dispatcher */
-        $dispatcher = $this->getContainer()->get('hip_mandrill.dispatcher');
+        $dispatcher = $this->getContainer()->get('flower.marketing.service.maildispatcher');
 
         /* campaignData */
         $mailFrom = $campaignEmail->getMailFrom();
@@ -61,14 +61,14 @@ class SendMailCommand extends ContainerAwareCommand
         $contactLists = $campaignEmail->getContactLists();
 
         $this->disableLogging();
-        
+
         $ids = array();
         foreach ($contactLists as $list) {
             $ids[] = $list->getId();
         }
-        $pageCount = $this->getEM()->getRepository("FlowerModelBundle:Contact")->getPageCountByContactsLists($ids, $this->getBatchSize());
+        $pageCount = $this->getEM()->getRepository("FlowerModelBundle:Clients\Contact")->getPageCountByContactsLists($ids, $this->getBatchSize());
             for ($page = 0; $page < $pageCount; $page++) {
-                $contacts = $this->getEM()->getRepository("FlowerModelBundle:Contact")->getDistinctEmailsByContactsLists($ids, $page, $this->getBatchSize());
+                $contacts = $this->getEM()->getRepository("FlowerModelBundle:Clients\Contact")->getDistinctEmailsByContactsLists($ids, $page, $this->getBatchSize());
                 foreach ($contacts as $contactEmail) {
                     $contactEmail = $contactEmail["email"];
                     $this->counter++;
@@ -81,10 +81,21 @@ class SendMailCommand extends ContainerAwareCommand
                             ->setSubject($mailSubject)
                             ->setHtml($campaignEmail->getTemplate()->getContent());
 
-                    $result = $dispatcher->send($message);
-                    //$result = array(array("_id"=> $contactEmail,"status" => 2) );
-                    $this->getContainer()->get("logger")->debug("Result: " . json_encode($result));
-                    $campaignEmailMessageRepo->rawInsert($stmt, $result[0]["_id"], $campaignId, $mailFrom,$contactEmail, $result[0]["status"]);
+                    $result = $dispatcher->dispatch(
+                        $contactEmail,
+                        "",
+                        $mailFrom,
+                        $mailFromName,
+                        $mailSubject,
+                        $campaignEmail->getTemplate()->getContent(),
+                        true
+                    );
+
+                    $externalId = null;
+                    if($result->getSuccess()){
+                        $externalId = $result->getId();
+                    }
+                    $campaignEmailMessageRepo->rawInsert($stmt, $externalId, $campaignId, $mailFrom,$contactEmail, $result->getStatus());
                 }
                 $this->flushAndClear();
         }
