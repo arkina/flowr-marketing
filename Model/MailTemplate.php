@@ -14,7 +14,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 abstract class MailTemplate
 {
-    
+
     const TYPE_PLAIN = 'plain';
     const TYPE_HTML = 'html';
 
@@ -41,7 +41,7 @@ abstract class MailTemplate
      * @ORM\Column(name="type", type="string", length=255)
      */
     protected $type;
-    
+
     /**
      * @var string
      *
@@ -71,13 +71,13 @@ abstract class MailTemplate
      * @ORM\Column(name="enabled", type="boolean")
      */
     protected $enabled;
-    
+
     function __construct()
     {
-        $this->enabled = true;   
+        $this->enabled = true;
     }
 
-    
+
     /**
      * Set id
      *
@@ -93,7 +93,7 @@ abstract class MailTemplate
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -116,7 +116,7 @@ abstract class MailTemplate
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -139,7 +139,7 @@ abstract class MailTemplate
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -162,7 +162,7 @@ abstract class MailTemplate
     /**
      * Get created
      *
-     * @return DateTime 
+     * @return DateTime
      */
     public function getCreated()
     {
@@ -185,7 +185,7 @@ abstract class MailTemplate
     /**
      * Get updated
      *
-     * @return DateTime 
+     * @return DateTime
      */
     public function getUpdated()
     {
@@ -208,7 +208,7 @@ abstract class MailTemplate
     /**
      * Get enabled
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEnabled()
     {
@@ -231,16 +231,40 @@ abstract class MailTemplate
     /**
      * Get content
      *
-     * @return string 
+     * @return string
      */
     public function getContent()
     {
         return $this->content;
     }
-    
+
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getHeader(){
+        $header = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> <title>Flowr Template</title> <meta name="viewport" content="width=device-width, initial-scale=1.0"/> </head><body style="margin: 0; padding: 0;">';
+        return $header;
+    }
+    public function getFooter(){
+        $header = '</body></html>';
+        return $header;
+    }
+
+    public function getEmailContent(){
+        $emailContent = $this->getHeader();
+        $emailContent .= $this->getSanitizedContent();
+        $emailContent .= $this->getFooter();
+        return $emailContent;
+    }
+
+    public function getSanitizedContent(){
+        $raw = $this->getContent();
+        $sanitized = str_replace("contenteditable='true'", '', $raw);
+        $sanitized = str_replace('contenteditable="true"', '', $sanitized);
+        $sanitized = str_replace('class="editable cke_editable cke_editable_inline cke_contents_ltr cke_show_borders"', '', $sanitized);
+        return $sanitized;
     }
 
 }

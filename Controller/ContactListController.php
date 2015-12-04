@@ -6,6 +6,7 @@ use Ddeboer\DataImport\Reader\CsvReader;
 use Doctrine\ORM\QueryBuilder;
 use Flower\MarketingBundle\Form\Type\ContactListFilterType;
 use Flower\MarketingBundle\Form\Type\ContactListType;
+use Flower\MarketingBundle\Model\ContactListStatus;
 use Flower\ModelBundle\Entity\Marketing\ContactList;
 use Flower\ModelBundle\Entity\Marketing\ImportProcess;
 use Flower\ModelBundle\Entity\Clients\Contact;
@@ -125,6 +126,7 @@ class ContactListController extends Controller
 
         return array(
             'contactlist' => $contactlist,
+            'status' => $contactlist->getStatus(),
             'availablelists' => $availableLists,
             'contacts' => $contacts
         );
@@ -545,6 +547,29 @@ class ContactListController extends Controller
         return array(
             'contact' => $contact,
         );
+    }
+
+
+    /**
+     *
+     *
+     * @Route("/{id}/validate", name="contactlist_validate")
+     * @Method("GET")
+     */
+    public function validateAction(ContactList $contactList)
+    {
+        /* launch process */
+        $rootDir = $this->get('kernel')->getRootDir();
+        $env = $this->container->get('kernel')->getEnvironment();
+        $commandCall = "php " . $rootDir . "/console flower:marketing:validate --env=" . $env . "  " . $contactList->getId() . " > /dev/null &";
+        exec($commandCall);
+        $this->get("logger")->info("Run: " . $commandCall);
+        $em = $this->getDoctrine()->getManager();
+
+        $contactList->setStatus(ContactListStatus::status_validating);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('contactlist_show', array("id" => $contactList->getId())));
     }
 
 }

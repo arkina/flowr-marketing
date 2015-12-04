@@ -3,15 +3,9 @@
 {% block title %}{{ '%entity% edit'|trans({'%entity%': 'ContactList'}) }} - {{ parent() }}{% endblock %}
 
 {% block body %}
-    <section class="content-header">
-        <h1>{{ 'contactlists' | trans|capitalize }}</h1>
-        <ol class="breadcrumb">
-            <li><a href={{ path('dashboard') }}><i class="fa fa-dashboard"></i> {{"Dashboard" | trans({})}}</a></li>
-            <li><a href="{{ path('contactlist') }}"> {{ '%entity% list'|trans({'%entity%': 'ContactList'}) }}</a></li>
-            <li class="active" >{{ '%entity% edit'|trans({'%entity%': 'ContactList'}) }}</li>
-        </ol>
-    </section>    
+
     <section class="content">
+        {{ include("FlowerMarketingBundle::appnav-campaignmail.html.twig", {'app_contactlist':true}) }}
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title">{{ '%entity% edit'|trans({'%entity%': 'ContactList'}) }}</h3>
@@ -60,5 +54,3 @@
         </div>
     </section>
 {% endblock %}
-
-

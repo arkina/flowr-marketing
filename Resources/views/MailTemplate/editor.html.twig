@@ -31,17 +31,8 @@
 
     </style>
     <section class="content-header">
-        <h1>
-            {{ 'MailTemplate' | trans({}, 'MailTemplate')}}
-            <i class="fa fa-angle-right"></i>
-            <a href="{{ path('mailtemplate_show', { 'id': mailtemplate.id }) }}">{{ mailtemplate|capitalize}}</a>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href={{ path('dashboard') }}><i class="fa fa-dashboard"></i> {{"Dashboard" | trans({}, 'MailTemplate')}}</a></li>
-            <li><a href="{{ path('mailtemplate') }}"> {{ '%entity% list'|trans({'%entity%': 'MailTemplate'}, 'MailTemplate') }}</a></li>
-            <li class="active" >{{ '%entity% edit'|trans({'%entity%': 'MailTemplate'}, 'MailTemplate') }}</li>
-        </ol>
-    </section>    
+        {{ include("FlowerMarketingBundle::appnav-campaignmail.html.twig", {'app_mailtemplate':true}) }}
+    </section>
     <section class="content" multi-app="templateBuilder">
 
         <div  ng-view class="row">
@@ -61,9 +52,9 @@
     <script src="{{ asset('bundles/flowercore/js/angular/sortable.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bundles/flowermarketing/plugin/jscolor/jscolor.js') }}" type="text/javascript"></script>
 
-    
+
     <script src="{{ asset('bundles/ivoryckeditor/ckeditor.js') }}"></script>
-    
+
     <script src="{{ asset('bundles/flowermarketing/plugin/ng-ckeditor.js') }}"></script>
     <script src="{{ asset('bundles/flowermarketing/plugin/ngDraggable.js') }}"></script>
     <script src="{{ asset('bundles/flowermarketing/js/angular/templateBuilder/app-templateBuilder.js') }}" type="text/javascript"></script>

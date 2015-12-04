@@ -128,7 +128,7 @@ angular.module('templateBuilder').controller("templateBuilderController", functi
     };
 
     $scope.addNewItem = function (itemType) {
-        
+
         var itemHtml = null;
         var id = "";
         $scope.nextId++;
@@ -145,14 +145,23 @@ angular.module('templateBuilder').controller("templateBuilderController", functi
                 break;
             case 'placeholder_row':
                 id = "placeholder_" + $scope.nextId;
-                itemHtml = "<div style='display:table;width:100%;'>";
-                itemHtml += "<div class='placeholder' placeholder_row='true' id ='" + id + "' style='width: 100%;float:left; display: table;  -moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;-ms-box-sizing: border-box;-o-box-sizing: border-box'></div>";
-                itemHtml += "</div>";
+                ideditor = "editor" + $scope.nextId;
+                itemHtml = "<table style=';width:100%;' cellpadding='0' cellspacing='0' >";
+                itemHtml +=     "<tr style='height:30px;'>";
+                itemHtml +=         "<td class='placeholder' placeholder_row='true' id ='" + id + "' style='width: 100%;padding: 10px;'></td>";
+                itemHtml =              "<div id='" + ideditor + "' contenteditable='true' default_content='true' class='editable'  style='width: 100%;float:left;  -moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;-ms-box-sizing: border-box;-o-box-sizing: border-box'>Click to edit</div>";
+                itemHtml +=         "</td>";
+                itemHtml +=     "</tr>";
+                itemHtml += "</table>";
                 $("#template-content").append(itemHtml);
                 break;
             case 'placeholder_6':
                 id = "placeholder_" + $scope.nextId;
-                itemHtml = "<div class='placeholder' placeholder_6='true' id ='" + id + "'  style='width: 50%;float:left;  -moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;-ms-box-sizing: border-box;-o-box-sizing: border-box'></div>";
+                itemHtml = "<table style=';width:50%;'>";
+                itemHtml +=     "<tr style='height:30px;'>";
+                itemHtml +=         "<td class='placeholder' placeholder_6='true' id ='" + id + "'  style='padding: 10px;'></td>";
+                itemHtml +=     "</tr>";
+                itemHtml += "</table>";
                 $("#template-content").append(itemHtml);
                 break;
         }
@@ -182,5 +191,3 @@ angular.module('templateBuilder').controller("templateBuilderController", functi
         });
     };
 });
-
-

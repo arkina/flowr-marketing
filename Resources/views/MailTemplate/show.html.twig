@@ -3,17 +3,11 @@
 {% block title %}MailTemplate - {{ parent() }}{% endblock %}
 
 {% block body %}
-    <section class="content-header">
-        <h1>{{ 'MailTemplate' | trans({}, 'MailTemplate')}}</h1>
-        <ol class="breadcrumb">
-            <li><a href={{ path('dashboard') }}><i class="fa fa-dashboard"></i> {{"Dashboard" | trans({}, 'MailTemplate')}}</a></li>
-            <li><a href="{{ path('mailtemplate') }}"> {{ '%entity% list'|trans({'%entity%': 'MailTemplate'}, 'MailTemplate') }}</a></li>
-            <li class="active" >{{ '%entity%'|trans({'%entity%': 'MailTemplate'}, 'MailTemplate') }}</li>
-        </ol>
-    </section>
-    <section class="content">    
+
+    <section class="content">
         <div class="row">
             <div class="col-sm-8">
+                {{ include("FlowerMarketingBundle::appnav-campaignmail.html.twig", {'app_mailtemplate':true}) }}
                 <div class="box">
                     <div class="box-header">
                         <h3 class="box-title">{{ mailtemplate.name|capitalize }}</h3>
@@ -62,8 +56,8 @@
                         </div>
                     </div>
                     <div class="box-body">
-                            
-                        {{ mailtemplate.content|raw }}
+
+                        {{ mailtemplate.getSanitizedContent|raw }}
                     </div>
                     <div class="box-footer">
 

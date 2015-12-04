@@ -20,14 +20,8 @@
 
 
 {% block body %}
-    <section class="content-header">
-        <h1>{{ 'contactlists' | trans|capitalize }}</h1>
-        <ol class="breadcrumb">
-            <li><a href={{ path('dashboard') }}><i class="fa fa-dashboard"></i> {{"Dashboard" | trans({})}}</a></li>
-            <li class="active" >{{ '%entity% list'|trans({'%entity%': 'ContactList'}) }}</li>
-        </ol>
-    </section>
-    <section class="content">    
+    <section class="content">
+        {{ include("FlowerMarketingBundle::appnav-campaignmail.html.twig", {'app_contactlist':true}) }}
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title">{{ 'lists'|trans|capitalize }}</h3>
@@ -37,7 +31,7 @@
                     {% include 'FlowerMarketingBundle:ContactList:filter.html.twig' with {form: form} %}
                 </div>
             </div>
-            <div class="box-body">    
+            <div class="box-body">
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -67,6 +61,6 @@
 
             </div>
 
-    </section>        
+    </section>
 
 {% endblock %}

@@ -1,27 +1,26 @@
 {% extends "FlowerCoreBundle::layout.html.twig" %}
 
-{% block title %}CampaignMail - {{ parent() }}{% endblock %}
+{% block title %}{{"CampaignMail"|trans({},'CampaignMail')}} - {{ parent() }}{% endblock %}
 
 {% block body %}
-    <section class="content-header">
-        <h1>{{ 'CampaignMail' | trans({}, 'CampaignMail')}}</h1>
-    </section>
-    <section class="content">    
+
+    <section class="content">
         <div class="row">
             <div class="col-sm-6">
+                {{ include("FlowerMarketingBundle::appnav-campaignmail.html.twig", {'app_campaignmail':true}) }}
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">{{ campaignmail.name }}</h3>
+                        <h3 class="box-title">{{ campaignmail.name|title }}</h3>
                         <div class="box-tools">
                             {{ form_start(delete_form) }}
                             {{ form_widget(delete_form) }}
 
                             <div class="btn-group record_actions">
 
-                                <a class="btn btn-link" href="{{ path('campaignmail_edit', {id: campaignmail.id}) }}">
+                                <a class="btn btn-link btn-xs" href="{{ path('campaignmail_edit', {id: campaignmail.id}) }}">
                                     <i class="fa fa-edit"></i> {{ 'Edit'|trans({}, 'CampaignMail') }}
                                 </a>
-                                <button class="btn btn-link" type="submit"><i class="fa fa-trash-o"></i> {{ 'Delete'|trans({}, 'CampaignMail') }}</button>
+                                <button class="btn btn-link btn-xs" type="submit"><i class="fa fa-trash-o"></i> {{ 'Delete'|trans({}, 'CampaignMail') }}</button>
 
                             </div>
 
@@ -55,11 +54,11 @@
                                     <th scope="row">{{'Status'|trans}}</th>
                                     <td>
                                         {% if campaignmail.status == 'status_finished' %}
-                                            <span class="label label-success">{{ 'finished'|trans|capitalize}}</span>    
+                                            <span class="label label-success">{{ 'finished'|trans|capitalize}}</span>
                                         {% elseif campaignmail.status == 'status_in_progress' %}
-                                            <span class="label label-warning">{{ 'in progress'|trans|capitalize}}</span>    
+                                            <span class="label label-warning">{{ 'in progress'|trans|capitalize}}</span>
                                         {% else %}
-                                            <span class="label label-default">{{ 'draft'|trans|capitalize}}</span>    
+                                            <span class="label label-default">{{ 'draft'|trans|capitalize}}</span>
                                         {% endif%}
                                     </td>
                                 </tr>
@@ -76,16 +75,39 @@
                                     <td>{{ campaignmail.mailFromName }}</td>
                                 </tr>
                                 <tr>
+                                    <th scope="row">{{'Template'|trans({}, 'CampaignMail')}}</th>
+                                    <td>{{ campaignmail.template }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">{{'ContactLists'|trans({}, 'CampaignMail')}}</th>
+                                    <td>
+                                    {% for contactList in campaignmail.contactLists %}
+                                        {{contactList.name}}
+                                        {% if not loop.last %},{% endif %}
+                                    {% endfor %}
+                                    </td>
+                                </tr>
+                                <tr>
                                     <th scope="row">{{'Enabled'|trans({}, 'CampaignMail')}}</th>
                                     <td>{% if campaignmail.enabled %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
                                 </tr>
+                                {% if haveNotValidatedContactLists %}
+                                <tr>
+                                    <th scope="row">{{'Issues'|trans({}, 'CampaignMail')}}</th>
+                                    <td>
+                                        {% if haveNotValidatedContactLists %}
+                                            <i class="fa fa-exclamation-triangle"></i> {{"issues_notvalidated_contactlist"|trans({},'CampaignMail')}}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endif %}
                             </tbody>
                         </table>
                     </div>
                     <div class="box-footer">
 
                     </div>
-                </div>        
+                </div>
             </div>
             <div class="col-sm-6">
                 <div class="box">
@@ -94,7 +116,7 @@
                     </div>
                     <div class="box-body">
                         {% set launch_active = 'disabled' %}
-                        {% if campaignmail.status == 'status_draft' %}
+                        {% if canLaunch %}
                             {% set launch_active = 'bg-red' %}
                         {% endif %}
                         <a href="{{ path('campaignmail_launch', { id: campaignmail.id}) }}" class="btn btn-app {{launch_active}}">
@@ -138,7 +160,7 @@
                     {% set opens_bg = 'bg-yellow' %}
                 {% elseif emailOpensRatio >= 40 %}
                     {% set opens_bg = 'bg-green' %}
-                {% endif %}        
+                {% endif %}
                 <div class="info-box {{opens_bg}}">
                     <span class="info-box-icon">
                         <i class="ion-android-drafts"></i>
