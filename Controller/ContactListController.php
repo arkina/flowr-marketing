@@ -72,9 +72,6 @@ class ContactListController extends Controller
             $contact = $em->getRepository('FlowerModelBundle:Clients\Contact')->find($contactId);
 
             $contactlist->removeContact($contact);
-            $contact->removeContactList($contactlist);
-
-            $contact->addContactList($contactListDest);
             $contactListDest->addContact($contact);
         }
         $em->flush();

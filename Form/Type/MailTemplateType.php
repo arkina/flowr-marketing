@@ -16,6 +16,7 @@ class MailTemplateType extends AbstractType
     {
         $builder
                 ->add('name')
+                ->add('content', 'hidden')
                 ->add('type', 'choice', array(
                     'choices' => array('html' => "html", 'plain' => "plain text")
                 ))

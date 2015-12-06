@@ -65,7 +65,7 @@ class SendMailCommand extends ContainerAwareCommand
         foreach ($contactLists as $list) {
             $ids[] = $list->getId();
         }
-        $pageCount = $this->getEM()->getRepository("FlowerModelBundle:Clients\Contact")->getPageCountByContactsLists($ids, $this->getBatchSize());
+        $pageCount = $this->getEM()->getRepository("FlowerModelBundle:Clients\Contact")->getDistinctPageCountByContactsLists($ids, $this->getBatchSize());
             for ($page = 0; $page < $pageCount; $page++) {
                 $contacts = $this->getEM()->getRepository("FlowerModelBundle:Clients\Contact")->getDistinctEmailsByContactsLists($ids, $page, $this->getBatchSize());
                 foreach ($contacts as $contactEmail) {

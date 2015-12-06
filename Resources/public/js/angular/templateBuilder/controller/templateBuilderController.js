@@ -133,40 +133,48 @@ angular.module('templateBuilder').controller("templateBuilderController", functi
         var id = "";
         $scope.nextId++;
         switch (itemType) {
-            case 'default_content':
-                id = "editor" + $scope.nextId;
-                itemHtml = "<div id='" + id + "' contenteditable='true' default_content='true' class='editable'  style='width: 100%;float:left;  -moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;-ms-box-sizing: border-box;-o-box-sizing: border-box'>Click to edit</div>";
-                $(".placeholder.active").append(itemHtml);
-                break;
-            case 'default_content_6':
-                id = "editor" + $scope.nextId;
-                itemHtml = "<div id='" + id + "' contenteditable='true' default_content_6='true' class='editable' style='width: 50%;float:left; padding-right:15px; padding-left:15px;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;-ms-box-sizing: border-box;-o-box-sizing: border-box'>Click to edit</div>";
-                $(".placeholder.active").append(itemHtml);
-                break;
             case 'placeholder_row':
+
                 id = "placeholder_" + $scope.nextId;
                 ideditor = "editor" + $scope.nextId;
+
                 itemHtml = "<table style=';width:100%;' cellpadding='0' cellspacing='0' >";
                 itemHtml +=     "<tr style='height:30px;'>";
-                itemHtml +=         "<td class='placeholder' placeholder_row='true' id ='" + id + "' style='width: 100%;padding: 10px;'></td>";
-                itemHtml =              "<div id='" + ideditor + "' contenteditable='true' default_content='true' class='editable'  style='width: 100%;float:left;  -moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;-ms-box-sizing: border-box;-o-box-sizing: border-box'>Click to edit</div>";
+                itemHtml +=         "<td class='placeholder' placeholder_row='true' id ='" + id + "' style='width: 100%; padding: 15px;'>";
+                itemHtml +=              "<div id='" + ideditor + "' contenteditable='true' default_content='true' class='editable'><p>Click to edit</p></div>";
                 itemHtml +=         "</td>";
                 itemHtml +=     "</tr>";
                 itemHtml += "</table>";
                 $("#template-content").append(itemHtml);
+                $scope.attachEvents(id);
+                $scope.attachEvents(ideditor);
                 break;
             case 'placeholder_6':
-                id = "placeholder_" + $scope.nextId;
-                itemHtml = "<table style=';width:50%;'>";
+
+                idph1 = "placeholder_" + $scope.nextId
+                $scope.nextId++;
+                idph2 = "placeholder_" + $scope.nextId;
+                $scope.nextId++;
+                ideditor1 = "editor" + $scope.nextId;
+                $scope.nextId++;
+                ideditor2 = "editor" + $scope.nextId;
+
+                itemHtml = "<table style=';width:100%;' cellpadding='0' cellspacing='1' >";
                 itemHtml +=     "<tr style='height:30px;'>";
-                itemHtml +=         "<td class='placeholder' placeholder_6='true' id ='" + id + "'  style='padding: 10px;'></td>";
+                itemHtml +=         "<td class='placeholder' placeholder_row='true' id ='" + idph1 + "' style='width: 50%; padding: 15px;'>";
+                itemHtml +=              "<div id='" + ideditor1 + "' contenteditable='true' default_content='true' class='editable'><p>Click to edit</p></div>";
+                itemHtml +=         "</td>";
+                itemHtml +=         "<td class='placeholder' placeholder_row='true' id ='" + idph2 + "' style='width: 50%; padding: 15px;'>";
+                itemHtml +=              "<div id='" + ideditor2 + "' contenteditable='true' default_content='true' class='editable'><p>Click to edit</p></div>";
+                itemHtml +=         "</td>";
                 itemHtml +=     "</tr>";
                 itemHtml += "</table>";
                 $("#template-content").append(itemHtml);
+                $scope.attachEvents(idph1);
+                $scope.attachEvents(idph2);
+                $scope.attachEvents(ideditor1);
+                $scope.attachEvents(ideditor2);
                 break;
-        }
-        if (id) {
-            $scope.attachEvents(id);
         }
     };
 

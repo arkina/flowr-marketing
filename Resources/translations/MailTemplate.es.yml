@@ -1,7 +1,10 @@
 '%entity%': 'Template de emails'
 '%entity% creation': 'Creación de %entity%'
 '%entity% edit': 'Edición de %entity%'
-'%entity% list': 'Lista de %entity%'
+mailtemplate:
+    list: 'Plantillas de mail'
+    create: 'Nueva plantilla'
+
 'Confirm delete': 'Confirmar borrado'
 Copy: Copiar
 Create: Crear
@@ -10,7 +13,7 @@ Dashboard: Dashboard
 Delete: Borrar
 'Do you want to proceed?': '¿Desea continuar de todos modos?'
 Edit: Editar
-MailTemplate: Template de emails
+MailTemplate: Plantilla de emails
 'New %entity%': 'Nuevo %entity%'
 'No': 'No'
 'Yes': 'Si'
@@ -18,3 +21,4 @@ MailTemplate: Template de emails
 html: html
 'plain text': 'texto plano'
 'this procedure is irreversible': 'esta accion será irreversible'
+mailtemplate selection: Elegí un modelo de plantilla

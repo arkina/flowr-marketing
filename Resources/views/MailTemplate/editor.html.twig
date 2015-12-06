@@ -36,7 +36,9 @@
     <section class="content" multi-app="templateBuilder">
 
         <div  ng-view class="row">
-            Loading....
+            <div class="col-sm-4 col-sm-offset-4" style="margin-top:40px;">
+                <img src="{{ asset('bundles/flowercore/images/loading.gif') }}" alt="Loading..."/>
+            </div>
         </div>
         <toaster-container ></toaster-container>
     </section>
