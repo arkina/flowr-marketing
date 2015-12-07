@@ -16,18 +16,20 @@ class MailgunWebhookController extends FOSRestController
 {
     public function trackEventAction(Request $request)
     {
+        $this->get("logger")->info("mailgun webhook >>>>> ".json_encode($request->request->all(), true));
+
         $event = $request->get("event");
+        $email = $request->get("recipient");
+        $messageId = $request->get("message-id");
+
         if($event){
 
             $em = $this->getDoctrine()->getManager();
             $campaignEmailMessageRepo = $em->getRepository("FlowerModelBundle:Marketing\CampaignEmailMessage");
+            $message = $campaignEmailMessageRepo->findOneBy(array("providerId" => $messageId));
 
             switch ($event) {
                 case 'opened':
-                    $email = $request->get("recipient");
-                    $campaignId = $request->get("campaign-id");
-
-                    $message = $campaignEmailMessageRepo->findOneBy(array("toemail" => $email, "campaign" => $campaignId));
                     if($message){
                         $message->setOpens($message->getOpens()+1);
                         $em->flush();
@@ -35,10 +37,6 @@ class MailgunWebhookController extends FOSRestController
                     break;
 
                 case 'clicked':
-                    $email = $request->get("recipient");
-                    $campaignId = $request->get("campaign-id");
-
-                    $message = $campaignEmailMessageRepo->findOneBy(array("toemail" => $email, "campaign" => $campaignId));
                     if($message){
                         $message->setClicks($message->getClicks()+1);
                         $em->flush();
@@ -46,10 +44,6 @@ class MailgunWebhookController extends FOSRestController
 
                     break;
                 default:
-                    $email = $request->get("recipient");
-                    $campaignId = $request->get("campaign-id");
-
-                    $message = $campaignEmailMessageRepo->findOneBy(array("toemail" => $email, "campaign" => $campaignId));
                     if($message){
                         $this->get("flower.contactlist")->disableCampaignMail($message->getProviderId());
                     }

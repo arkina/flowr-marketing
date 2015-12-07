@@ -80,23 +80,21 @@ class SendMailCommand extends ContainerAwareCommand
 
                 $this->getContainer()->get("logger")->debug("About to send mail to " . $contactEmail);
 
+                $messageBldr = $mgClient->MessageBuilder();
+                $messageBldr->setFromAddress($mailFrom, array("first" => $mailFromName));
+                $messageBldr->addToRecipient($contactEmail);
+                $messageBldr->setSubject($mailSubject);
 
-                $message = array(
-                    'from'    => $mailFromName . ' <' . $mailFrom . '>',
-                    'to'      => $contactEmail,
-                    'subject' => $mailSubject,
-                    'o:campaign' => $campaignId,
-                );
                 $body = $campaignEmail->getTemplate()->getEmailContent();
-
                 if ($campaignEmail->getTemplate()->getType() == MailTemplate::TYPE_HTML) {
-                    $message['html'] = $body;
+                    $messageBldr->setHtmlBody($body);
                 } else {
-                    $message['text'] = $body;
+                    $messageBldr->setTextBody($body);
                 }
 
+                $message = $messageBldr->getMessage();
+
                 # Make the call to the client.
-                $output->writeln("About to send mail to " . $message["to"] . " from " . $message["from"]);
                 $resultRaw = $mgClient->sendMessage($domain, $message);
                 $result = $resultRaw->http_response_body;
 
