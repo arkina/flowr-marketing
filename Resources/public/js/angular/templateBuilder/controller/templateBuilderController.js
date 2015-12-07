@@ -13,14 +13,6 @@ angular.module('templateBuilder').controller("templateBuilderController", functi
         var promise = $http.get(rootPath + 'mailtemplate/' + templateId + '/editor_get');
         promise.then(
                 function (response) {
-                    if(response.data.content === null){
-                        response.data.content = "<div id='template-background' style='display: inline-block; width: 100%;'> <div style='margin: auto;width: 580px;' id='template-content' class='wrapper-fw'></div></div>";
-                    }else{
-                        var hasWrapper =  response.data.content.search("id=\"template-content\"");
-                        if(hasWrapper < 0){
-                            response.data.content = "<div id='template-background'><div style='margin: auto;width: 580px;  display: table;' id='template-content' class='wrapper-fw'>"+response.data.content+"</div></div>";
-                        }
-                    }
 
                     $scope.template = response.data;
 
@@ -183,7 +175,7 @@ angular.module('templateBuilder').controller("templateBuilderController", functi
     };
 
     $scope.removeElement = function () {
-        $(".placeholder.active, .editable.active").remove();
+        $(".placeholder.active").parents("table").remove();
     };
 
     $scope.save = function () {

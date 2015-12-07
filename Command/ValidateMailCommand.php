@@ -83,6 +83,9 @@ class ValidateMailCommand extends ContainerAwareCommand
         $contactList->setLastValidation(new \DateTime());
         $contactList->setStatus(ContactListStatus::status_ready);
 
+        $notifService = $this->getContainer()->get("flower.core.service.notification");
+        $notifService->notificateContactListValidationFinished($contactList);
+
         $this->reEnableLogging();
         $this->finish();
     }

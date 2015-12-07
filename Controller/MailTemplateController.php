@@ -80,7 +80,8 @@ class MailTemplateController extends Controller
     public function editorGetAction(MailTemplate $template)
     {
         return new JsonResponse(array(
-            "content" => $template->getContent()
+            "name" => $template->getName(),
+            "content" => $template->getContent(),
         ));
     }
 
