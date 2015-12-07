@@ -20,7 +20,7 @@ class MailgunWebhookController extends FOSRestController
 
         $event = $request->get("event");
         $email = $request->get("recipient");
-        $messageId = $request->get("message-id");
+        $messageId = "<".$request->get("message-id").">";
 
         if($event){
 
