@@ -8,49 +8,59 @@ use FOS\RestBundle\View\View as FOSView;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Description of MailgunWebhookController
- *
- * @author Juan Manuel Agüero <jaguero@flowcode.com.ar>
- */
+* Description of MailgunWebhookController
+*
+* @author Juan Manuel Agüero <jaguero@flowcode.com.ar>
+*/
 class MailgunWebhookController extends FOSRestController
 {
-    public function disableCampaignsAction(Request $request)
+    public function trackEventAction(Request $request)
     {
-        $events = $request->get("mandrill_events");
-        $this->get("logger")->info("WebHook: \n".json_encode($events));
-        foreach ($events as $event) {
+        $event = $request->get("event");
+        if($event){
 
-            /* every dangerous event */
-            if ($event["event"] == "spam" || $event["event"] == "unsub" || $event["event"] == "reject" || $event["event"] == "hard_bounce" || $event["event"] == "soft_bounce") {
+            $em = $this->getDoctrine()->getManager();
+            $campaignEmailMessageRepo = $em->getRepository("FlowerModelBundle:Marketing\CampaignEmailMessage");
 
-                /* the unique identifier assigned to each email sent via Mandrill */
-                $providerId = $event["_id"];
+            switch ($event) {
+                case 'opened':
+                    $email = $request->get("recipient");
+                    $campaignId = $request->get("campaign-id");
 
-                $this->get("flower.contactlist")->disableCampaignMail($providerId);
+                    $message = $campaignEmailMessageRepo->findOneBy(array("toemail" => $email, "campaign" => $campaignId));
+                    if($message){
+                        $message->setOpens($message->getOpens()+1);
+                        $em->flush();
+                    }
+                    break;
+
+                case 'clicked':
+                    $email = $request->get("recipient");
+                    $campaignId = $request->get("campaign-id");
+
+                    $message = $campaignEmailMessageRepo->findOneBy(array("toemail" => $email, "campaign" => $campaignId));
+                    if($message){
+                        $message->setClicks($message->getClicks()+1);
+                        $em->flush();
+                    }
+
+                    break;
+                default:
+                    $email = $request->get("recipient");
+                    $campaignId = $request->get("campaign-id");
+
+                    $message = $campaignEmailMessageRepo->findOneBy(array("toemail" => $email, "campaign" => $campaignId));
+                    if($message){
+                        $this->get("flower.contactlist")->disableCampaignMail($message->getProviderId());
+                    }
+                    break;
             }
+
         }
 
         $view = FOSView::create(array(), Codes::HTTP_OK)->setFormat('json');
         return $this->handleView($view);
     }
 
-    public function trackOpenAction(Request $request)
-    {
-        $events = $request->get("mandrill_events");
-        $this->get("logger")->info("WebHook: \n".json_encode($events));
-        foreach ($events as $event) {
 
-            /* every dangerous event */
-            if ($event["event"] == "spam" || $event["event"] == "unsub" || $event["event"] == "reject" || $event["event"] == "hard_bounce" || $event["event"] == "soft_bounce") {
-
-                /* the unique identifier assigned to each email sent via Mandrill */
-                $providerId = $event["_id"];
-
-                $this->get("flower.contactlist")->disableCampaignMail($providerId);
-            }
-        }
-
-        $view = FOSView::create(array(), Codes::HTTP_OK)->setFormat('json');
-        return $this->handleView($view);
-    }
 }
