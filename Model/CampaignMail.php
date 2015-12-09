@@ -41,6 +41,12 @@ abstract class CampaignMail
     protected $name;
 
     /**
+     * @ManyToOne(targetEntity="\Flower\ModelBundle\Entity\User\User")
+     * @JoinColumn(name="user_id", referencedColumnName="id")
+     * */
+    protected $assignee;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="queued", type="integer")
@@ -130,7 +136,7 @@ abstract class CampaignMail
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -153,7 +159,7 @@ abstract class CampaignMail
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -176,7 +182,7 @@ abstract class CampaignMail
     /**
      * Get mailFrom
      *
-     * @return string 
+     * @return string
      */
     public function getMailFrom()
     {
@@ -199,7 +205,7 @@ abstract class CampaignMail
     /**
      * Get mailSubject
      *
-     * @return string 
+     * @return string
      */
     public function getMailSubject()
     {
@@ -222,7 +228,7 @@ abstract class CampaignMail
     /**
      * Get mailFromName
      *
-     * @return string 
+     * @return string
      */
     public function getMailFromName()
     {
@@ -245,7 +251,7 @@ abstract class CampaignMail
     /**
      * Get enabled
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEnabled()
     {
@@ -268,7 +274,7 @@ abstract class CampaignMail
     /**
      * Get created
      *
-     * @return DateTime 
+     * @return DateTime
      */
     public function getCreated()
     {
@@ -291,7 +297,7 @@ abstract class CampaignMail
     /**
      * Get updated
      *
-     * @return DateTime 
+     * @return DateTime
      */
     public function getUpdated()
     {
@@ -314,7 +320,7 @@ abstract class CampaignMail
     /**
      * Get template
      *
-     * @return \Flower\ModelBundle\Entity\Marketing\MailTemplate 
+     * @return \Flower\ModelBundle\Entity\Marketing\MailTemplate
      */
     public function getTemplate()
     {
@@ -347,7 +353,7 @@ abstract class CampaignMail
     /**
      * Get contactLists
      *
-     * @return Collection 
+     * @return Collection
      */
     public function getContactLists()
     {
@@ -375,7 +381,7 @@ abstract class CampaignMail
     /**
      * Get status
      *
-     * @return string 
+     * @return string
      */
     public function getStatus()
     {
@@ -408,7 +414,7 @@ abstract class CampaignMail
     /**
      * Get messages
      *
-     * @return Collection 
+     * @return Collection
      */
     public function getMessages()
     {
@@ -432,10 +438,36 @@ abstract class CampaignMail
     /**
      * Get queued
      *
-     * @return integer 
+     * @return integer
      */
     public function getQueued()
     {
         return $this->queued;
     }
+
+
+    /**
+     * Set assignee
+     *
+     * @param \Flower\ModelBundle\Entity\User\User $assignee
+     * @return Account
+     */
+    public function setAssignee(\Flower\ModelBundle\Entity\User\User $assignee = null)
+    {
+        $this->assignee = $assignee;
+
+        return $this;
+    }
+
+    /**
+     * Get assignee
+     *
+     * @return \Flower\ModelBundle\Entity\User\User
+     */
+    public function getAssignee()
+    {
+        return $this->assignee;
+    }
+
+
 }

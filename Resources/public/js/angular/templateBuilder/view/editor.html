@@ -64,25 +64,16 @@
         <div class="box-body">
             <div class="row">
                 <div class="col-sm-4">
-                    <button title="Agregar Item" ng-click="addNewItem('default_content')" class="btn btn-app bg-fuchsia">
-                        <i class="fa fa-edit"></i> {{'Editor row'  }}
-                    </button>
-                </div>
-                <div class="col-sm-4">
-                    <button title="Agregar Item" ng-click="addNewItem('default_content_6')" class="btn btn-app bg-fuchsia">
-                        <i class="fa fa-edit"></i> {{'Editor column'  }}
-                    </button>
-                </div>
-                <div class="col-sm-4">
                     <button title="Agregar Item" ng-click="addNewItem('placeholder_row')" class="btn btn-app bg-maroon">
-                        <i class="fa fa-square-o"></i> {{'Add row'  }}
+                        <i class="fa fa-square-o"></i> {{'Row block'}}
                     </button>
                 </div>
                 <div class="col-sm-4">
                     <button title="Agregar Item" ng-click="addNewItem('placeholder_6')" class="btn btn-app bg-maroon">
-                        <i class="fa fa-square-o"></i> {{'Add column'  }} 
+                        <i class="fa fa-columns"></i> {{'Two Col block'}}
                     </button>
                 </div>
+
             </div>
         </div>
     </div>
@@ -100,7 +91,7 @@
             <button ng-click="replicateElement()" ng-disabled='!replicable' class="btn btn-default">
                 <i class="fa fa-copy"></i> {{'Copiar' }}
             </button>
-            
+
             <table class="table table-condensed">
                 <tr>
                     <td>{{'Background' }}</td>

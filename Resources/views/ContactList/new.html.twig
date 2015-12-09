@@ -2,16 +2,15 @@
 
 {% block title %}{{ '%entity% creation'|trans({'%entity%': 'ContactList'}) }} - {{ parent() }}{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ form_stylesheet(form) }}
+{% endblock %}
+
 {% block body %}
-    <section class="content-header">
-        <h1>{{ 'contactlists' | trans|capitalize }}</h1>
-        <ol class="breadcrumb">
-            <li><a href={{ path('dashboard') }}><i class="fa fa-dashboard"></i> {{"Dashboard" | trans({})}}</a></li>
-            <li><a href="{{ path('contactlist') }}"> {{ '%entity% List'|trans({'%entity%': 'ContactList'}) }}</a></li>
-            <li class="active" >{{ 'New %entity%'|trans({'%entity%': 'ContactList'}) }}</li>
-        </ol>
-    </section>        
+
     <section class="content">
+        {{ include("FlowerMarketingBundle::appnav-campaignmail.html.twig", {'app_contactlist':true}) }}
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title">{{ 'new contactlist'|trans|capitalize }}</h3>
@@ -19,9 +18,11 @@
             <div class="box-body">
                 {{ form_start(form, {action: path('contactlist_create')}) }}
                 {{ form_widget(form) }}
-                <p>
-                    <button class="btn btn-primary" type="submit">{{ 'save'|trans|capitalize }}</button>
-                </p>
+                <div class="form-group">
+                    <div class="col-sm-10 col-sm-offset-2">
+                        <button class="btn btn-primary" type="submit">{{ 'save'|trans|capitalize }}</button>
+                    </div>
+                </div>
                 {{ form_end(form) }}
             </div>
             <div class="box-footer">
@@ -30,4 +31,9 @@
             </div>
         </div>
     </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ form_javascript(form) }}
 {% endblock %}

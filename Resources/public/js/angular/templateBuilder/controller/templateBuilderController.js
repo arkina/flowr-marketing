@@ -13,14 +13,6 @@ angular.module('templateBuilder').controller("templateBuilderController", functi
         var promise = $http.get(rootPath + 'mailtemplate/' + templateId + '/editor_get');
         promise.then(
                 function (response) {
-                    if(response.data.content === null){
-                        response.data.content = "<div id='template-background' style='display: inline-block; width: 100%;'> <div style='margin: auto;width: 580px;' id='template-content' class='wrapper-fw'></div></div>";
-                    }else{
-                        var hasWrapper =  response.data.content.search("id=\"template-content\"");
-                        if(hasWrapper < 0){
-                            response.data.content = "<div id='template-background'><div style='margin: auto;width: 580px;  display: table;' id='template-content' class='wrapper-fw'>"+response.data.content+"</div></div>";
-                        }
-                    }
 
                     $scope.template = response.data;
 
@@ -128,36 +120,53 @@ angular.module('templateBuilder').controller("templateBuilderController", functi
     };
 
     $scope.addNewItem = function (itemType) {
-        
+
         var itemHtml = null;
         var id = "";
         $scope.nextId++;
         switch (itemType) {
-            case 'default_content':
-                id = "editor" + $scope.nextId;
-                itemHtml = "<div id='" + id + "' contenteditable='true' default_content='true' class='editable'  style='width: 100%;float:left;  -moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;-ms-box-sizing: border-box;-o-box-sizing: border-box'>Click to edit</div>";
-                $(".placeholder.active").append(itemHtml);
-                break;
-            case 'default_content_6':
-                id = "editor" + $scope.nextId;
-                itemHtml = "<div id='" + id + "' contenteditable='true' default_content_6='true' class='editable' style='width: 50%;float:left; padding-right:15px; padding-left:15px;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;-ms-box-sizing: border-box;-o-box-sizing: border-box'>Click to edit</div>";
-                $(".placeholder.active").append(itemHtml);
-                break;
             case 'placeholder_row':
+
                 id = "placeholder_" + $scope.nextId;
-                itemHtml = "<div style='display:table;width:100%;'>";
-                itemHtml += "<div class='placeholder' placeholder_row='true' id ='" + id + "' style='width: 100%;float:left; display: table;  -moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;-ms-box-sizing: border-box;-o-box-sizing: border-box'></div>";
-                itemHtml += "</div>";
+                ideditor = "editor" + $scope.nextId;
+
+                itemHtml = "<table style=';width:100%;' cellpadding='0' cellspacing='0' >";
+                itemHtml +=     "<tr style='height:30px;'>";
+                itemHtml +=         "<td class='placeholder' placeholder_row='true' id ='" + id + "' style='width: 100%; padding: 15px;'>";
+                itemHtml +=              "<div id='" + ideditor + "' contenteditable='true' default_content='true' class='editable'><p>Click to edit</p></div>";
+                itemHtml +=         "</td>";
+                itemHtml +=     "</tr>";
+                itemHtml += "</table>";
                 $("#template-content").append(itemHtml);
+                $scope.attachEvents(id);
+                $scope.attachEvents(ideditor);
                 break;
             case 'placeholder_6':
-                id = "placeholder_" + $scope.nextId;
-                itemHtml = "<div class='placeholder' placeholder_6='true' id ='" + id + "'  style='width: 50%;float:left;  -moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;-ms-box-sizing: border-box;-o-box-sizing: border-box'></div>";
+
+                idph1 = "placeholder_" + $scope.nextId
+                $scope.nextId++;
+                idph2 = "placeholder_" + $scope.nextId;
+                $scope.nextId++;
+                ideditor1 = "editor" + $scope.nextId;
+                $scope.nextId++;
+                ideditor2 = "editor" + $scope.nextId;
+
+                itemHtml = "<table style=';width:100%;' cellpadding='0' cellspacing='1' >";
+                itemHtml +=     "<tr style='height:30px;'>";
+                itemHtml +=         "<td class='placeholder' placeholder_row='true' id ='" + idph1 + "' style='width: 50%; padding: 15px;'>";
+                itemHtml +=              "<div id='" + ideditor1 + "' contenteditable='true' default_content='true' class='editable'><p>Click to edit</p></div>";
+                itemHtml +=         "</td>";
+                itemHtml +=         "<td class='placeholder' placeholder_row='true' id ='" + idph2 + "' style='width: 50%; padding: 15px;'>";
+                itemHtml +=              "<div id='" + ideditor2 + "' contenteditable='true' default_content='true' class='editable'><p>Click to edit</p></div>";
+                itemHtml +=         "</td>";
+                itemHtml +=     "</tr>";
+                itemHtml += "</table>";
                 $("#template-content").append(itemHtml);
+                $scope.attachEvents(idph1);
+                $scope.attachEvents(idph2);
+                $scope.attachEvents(ideditor1);
+                $scope.attachEvents(ideditor2);
                 break;
-        }
-        if (id) {
-            $scope.attachEvents(id);
         }
     };
 
@@ -166,7 +175,7 @@ angular.module('templateBuilder').controller("templateBuilderController", functi
     };
 
     $scope.removeElement = function () {
-        $(".placeholder.active, .editable.active").remove();
+        $(".placeholder.active").parents("table").remove();
     };
 
     $scope.save = function () {
@@ -182,5 +191,3 @@ angular.module('templateBuilder').controller("templateBuilderController", functi
         });
     };
 });
-
-

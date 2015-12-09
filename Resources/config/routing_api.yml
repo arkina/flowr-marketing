@@ -1,0 +1,8 @@
+
+# open rest service
+flower_api_marketing_webhook_mailgun:
+    path:     /mailgun_webhook/track_events
+    defaults: { _controller: FlowerMarketingBundle:Api\MailgunWebhook:trackEvent }
+    methods: [POST]
+
+# standard api

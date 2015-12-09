@@ -3,15 +3,8 @@
 {% block title %}ContactList - {{ parent() }}{% endblock %}
 
 {% block body %}
-    <section class="content-header">
-        <h1>{{ 'ContactList' | trans({}, 'ContactList')}}</h1>
-        <ol class="breadcrumb">
-            <li><a href={{ path('dashboard') }}><i class="fa fa-dashboard"></i> {{"Dashboard" | trans({}, 'ContactList')}}</a></li>
-            <li><a href="{{ path('contactlist') }}"> {{ '%entity% list'|trans({'%entity%': 'ContactList'}, 'ContactList') }}</a></li>
-            <li class="active" >{{ '%entity%'|trans({'%entity%': 'ContactList'}, 'ContactList') }}</li>
-        </ol>
-    </section>
     <section class="content">
+        {{ include("FlowerMarketingBundle::appnav-campaignmail.html.twig", {'app_contactlist':true}) }}
         <div class="box">
             <div class="box-header">
                 <h2 class="box-title">{{ contactlist.name|capitalize }}</h2>
@@ -19,10 +12,37 @@
                     <a class="btn btn-link btn-xs" href="{{ path('contactlist_edit', {id: contactlist.id}) }}">
                         {{ 'edit'|trans|capitalize }}
                     </a>
+
                 </div>
             </div>
             <div class="box-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <table class="table table-condensed">
+                            <tr>
+                                <td>Status</td>
+                                <td>
+                                    {% if status == 'status_validation_needed' %}
+                                        <i class="fa fa-exclamation-triangle"></i>
+                                        {{status|trans({},'ContactList')}}
+                                        <a class="btn btn-warning btn-xs" href="{{ path('contactlist_validate', {id: contactlist.id}) }}">
+                                            {{ 'validate now'|trans({},'ContactList')|capitalize }}
+                                        </a>
+                                    {% else %}
+                                        {{status|trans({},'ContactList')}}
+                                    {% endif %}
 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Last validation date</td>
+                                <td>{{ contactlist.lastValidation|date("D M Y H:i") }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-sm-6">
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -82,6 +102,7 @@
                             <th scope="col">{{ 'Email'|trans }}</th>
                             <th scope="col">{{ 'Address'|trans }}</th>
                             <th scope="col">{{ 'Phone'|trans }}</th>
+                            <th scope="col">{{ 'EmailGrade'|trans({},'ContactList') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -99,6 +120,7 @@
                                 </td>
                                 <td>{{ contact.address }}</td>
                                 <td>{{ contact.phone }}</td>
+                                <td>{{ contact.emailGrade }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -119,7 +141,7 @@
     <script type="text/javascript">
         var rootPath = "{{ path('dashboard') }}";
         var bulkMove = "{{ path('contactlist_bulk_move',{'id':contactlist.id}) }}";
-        var bulkCopy = "{{ path('contactlist_bulk_move',{'id':contactlist.id}) }}";
+        var bulkCopy = "{{ path('contactlist_bulk_copy',{'id':contactlist.id}) }}";
 
         $(".bulk-move").click(function () {
             var contactListIdDest = $(this).attr("data-id");

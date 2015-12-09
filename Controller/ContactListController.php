@@ -6,6 +6,7 @@ use Ddeboer\DataImport\Reader\CsvReader;
 use Doctrine\ORM\QueryBuilder;
 use Flower\MarketingBundle\Form\Type\ContactListFilterType;
 use Flower\MarketingBundle\Form\Type\ContactListType;
+use Flower\MarketingBundle\Model\ContactListStatus;
 use Flower\ModelBundle\Entity\Marketing\ContactList;
 use Flower\ModelBundle\Entity\Marketing\ImportProcess;
 use Flower\ModelBundle\Entity\Clients\Contact;
@@ -71,9 +72,6 @@ class ContactListController extends Controller
             $contact = $em->getRepository('FlowerModelBundle:Clients\Contact')->find($contactId);
 
             $contactlist->removeContact($contact);
-            $contact->removeContactList($contactlist);
-
-            $contact->addContactList($contactListDest);
             $contactListDest->addContact($contact);
         }
         $em->flush();
@@ -97,9 +95,8 @@ class ContactListController extends Controller
         $contactListDest = $em->getRepository('FlowerModelBundle:Marketing\ContactList')->find($destListId);
         foreach ($contacts as $contactId) {
             $contact = $em->getRepository('FlowerModelBundle:Clients\Contact')->find($contactId);
-
-            $contact->addContactList($contactListDest);
             $contactListDest->addContact($contact);
+            $contactListDest->setSubscriberCount($contactListDest->getSubscriberCount()+1);
 
             $em->flush();
         }
@@ -125,6 +122,7 @@ class ContactListController extends Controller
 
         return array(
             'contactlist' => $contactlist,
+            'status' => $contactlist->getStatus(),
             'availablelists' => $availableLists,
             'contacts' => $contacts
         );
@@ -242,6 +240,7 @@ class ContactListController extends Controller
     public function newAction()
     {
         $contactlist = new ContactList();
+        $contactlist->setAssignee($this->getUser());
         $form = $this->createForm(new ContactListType(), $contactlist);
 
         return array(
@@ -312,7 +311,12 @@ class ContactListController extends Controller
             'method' => 'PUT',
         ));
         if ($editForm->handleRequest($request)->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+
+            $em = $this->getDoctrine()->getManager();
+            $contactCount = $em->getRepository("FlowerModelBundle:Clients\Contact")->getCountByContactList($contactlist->getId());
+            $contactlist->setSubscriberCount($contactCount);
+
+            $em->flush();
 
             return $this->redirect($this->generateUrl('contactlist_show', array('id' => $contactlist->getId())));
         }
@@ -494,6 +498,7 @@ class ContactListController extends Controller
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
+            $contactList->setSubscriberCount($contactList->getSubscriberCount()+1);
 
             $em->persist($contact);
             $em->flush();
@@ -538,13 +543,38 @@ class ContactListController extends Controller
             foreach ($contactLists as $contactListId) {
                 $em->getRepository("FlowerModelBundle:Marketing\ContactList")->removeContact($contactListId, $contact->getId());
             }
-            $this->addFlash('success', 'unsuscribed_succesfully');
+            $successText = $this->get("translator")->trans("unsuscribed_succesfully");
+            $this->addFlash('success', $successText);
         }else{
-            $this->addFlash('warning', 'unsuscribed_failed');
+            $failedText = $this->get("translator")->trans("unsuscribed_failed");
+            $this->addFlash('warning', $failedText);
         }
         return array(
             'contact' => $contact,
         );
+    }
+
+
+    /**
+     *
+     *
+     * @Route("/{id}/validate", name="contactlist_validate")
+     * @Method("GET")
+     */
+    public function validateAction(ContactList $contactList)
+    {
+        /* launch process */
+        $rootDir = $this->get('kernel')->getRootDir();
+        $env = $this->container->get('kernel')->getEnvironment();
+        $commandCall = "php " . $rootDir . "/console flower:marketing:validate --env=" . $env . "  " . $contactList->getId() . " > /dev/null &";
+        exec($commandCall);
+        $this->get("logger")->info("Run: " . $commandCall);
+        $em = $this->getDoctrine()->getManager();
+
+        $contactList->setStatus(ContactListStatus::status_validating);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('contactlist_show', array("id" => $contactList->getId())));
     }
 
 }

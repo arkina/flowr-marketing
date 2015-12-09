@@ -20,22 +20,14 @@
 
 
 {% block body %}
-    <section class="content-header">
-        <h1>{{ 'CampaignMail' | trans({}, 'CampaignMail')}}</h1>
-    </section>
     <section class="content">
+        {{ include("FlowerMarketingBundle::appnav-campaignmail.html.twig", {'app_campaignmail':true}) }}
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">{{ '%entity% list'|trans({'%entity%': 'CampaignMail'}, 'CampaignMail') }}</h3>
+                <h3 class="box-title">{{ 'CampaignMail list'|trans({},'CampaignMail') }}</h3>
                 <div class="box-tools pull-right">
                     <a class="btn btn-link btn-xs" href={{ path('campaignmail_new') }}>
-                        <i class="fa fa-plus"></i> {{ 'Create a new %entity%'|trans({'%entity%': 'CampaignMail'}, 'CampaignMail') }}
-                    </a>
-                    <a class="btn btn-link btn-xs" href={{ path('contactlist') }}>
-                        <i class="fa fa-users"></i> {{ 'contactlists'|trans|capitalize }}
-                    </a>
-                    <a class="btn btn-link btn-xs" href={{ path('mailtemplate') }}>
-                        <i class="fa fa-users"></i> {{ 'tamplates'|trans|capitalize }}
+                        <i class="fa fa-plus"></i> {{ 'CampaignMail new'|trans({}, 'CampaignMail') }}
                     </a>
                 </div>
             </div>
@@ -45,8 +37,8 @@
                         <tr>
                             <th scope="col">{{ thead('campaignmail', 'name', 'Name') }}</th>
                             <th scope="col">{{ thead('campaignmail', 'status', 'Status') }}</th>
+                            <th scope="col">{{ 'Assignee'|trans }}</th>
                             <th scope="col">{{ thead('campaignmail', 'created', 'Created') }}</th>
-                            <th scope="col">{{ 'Actions'|trans({}, 'CampaignMail') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,14 +54,12 @@
                                         <i class="fa fa-pause"></i>
                                     {% endif %}
                                 </td>
-                                <td>{% if campaignmail.created %}{{ campaignmail.created|date('fullDateTime'|trans) }}{% endif %}</td>
                                 <td>
-                                    <div class="btn-group">
-                                        <a class="btn btn-default btn-sm" href="{{ path('campaignmail_show', {id: campaignmail.id}) }}">
-                                            <i class="fa fa-file-o"></i> {{ 'show'|trans({}, 'CampaignMail') }}
-                                        </a>
-                                    </div>
+                                    {% if campaignmail.assignee %}
+                                        {{ campaignmail.assignee.getHappyName }}
+                                    {% endif %}
                                 </td>
+                                <td>{% if campaignmail.created %}{{ campaignmail.created|date('fullDateTime'|trans) }}{% endif %}</td>
                             </tr>
                         {% endfor %}
                     </tbody>

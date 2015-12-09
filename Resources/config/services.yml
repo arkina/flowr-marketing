@@ -2,3 +2,8 @@ services:
     flower.marketing.service.maildispatcher:
         class: Flower\MarketingBundle\Service\EmailDispatcherService
         arguments: [@flowcode.sender.senderEmailMailgun]
+
+    flower.marketing.service.mailvalidator:
+        class: Flower\MarketingBundle\Service\EmailValidatorService
+        calls:
+            - [setContainer, ["@service_container"]]

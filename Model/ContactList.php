@@ -3,6 +3,7 @@
 namespace Flower\MarketingBundle\Model;
 
 use DateTime;
+use Flower\MarketingBundle\Model\ContactListStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -35,6 +36,12 @@ abstract class ContactList
     protected $name;
 
     /**
+     * @ManyToOne(targetEntity="\Flower\ModelBundle\Entity\User\User")
+     * @JoinColumn(name="user_id", referencedColumnName="id")
+     * */
+    protected $assignee;
+
+    /**
      * @ManyToMany(targetEntity="\Flower\ModelBundle\Entity\Clients\Contact")
      * @JoinTable(name="contactlists_contacts",
      *      joinColumns={@JoinColumn(name="contactlist_id", referencedColumnName="id")},
@@ -51,8 +58,29 @@ abstract class ContactList
     protected $enabled;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="subscriber_count", type="integer", nullable=true)
+     */
+    protected $subscriberCount;
+
+    /**
      * @var DateTime
-     * 
+     *
+     * @ORM\Column(name="last_validation", type="datetime", nullable=true)
+     */
+    protected $lastValidation;
+
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="status", type="string", length=255, nullable=true)
+     */
+    protected $status;
+
+    /**
+     * @var DateTime
+     *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
      */
@@ -65,17 +93,18 @@ abstract class ContactList
      * @ORM\Column(name="updated", type="datetime")
      */
     protected $updated;
-    
+
     public function __construct() {
         $this->contacts = new ArrayCollection();
         $this->enabled = true;
+        $this->status = ContactListStatus::status_validation_needed;
     }
 
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -98,7 +127,7 @@ abstract class ContactList
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -121,7 +150,7 @@ abstract class ContactList
     /**
      * Get enabled
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEnabled()
     {
@@ -144,7 +173,7 @@ abstract class ContactList
     /**
      * Get created
      *
-     * @return DateTime 
+     * @return DateTime
      */
     public function getCreated()
     {
@@ -167,11 +196,57 @@ abstract class ContactList
     /**
      * Get updated
      *
-     * @return DateTime 
+     * @return DateTime
      */
     public function getUpdated()
     {
         return $this->updated;
+    }
+
+    /**
+     * Set lastValidation
+     *
+     * @param DateTime $lastValidation
+     * @return ContactList
+     */
+    public function setLastValidation($lastValidation)
+    {
+        $this->lastValidation = $lastValidation;
+
+        return $this;
+    }
+
+    /**
+     * Get lastValidation
+     *
+     * @return DateTime
+     */
+    public function getLastValidation()
+    {
+        return $this->lastValidation;
+    }
+
+    /**
+     * Set subscriberCount
+     *
+     * @param integer $subscriberCount
+     * @return ContactList
+     */
+    public function setSubscriberCount($subscriberCount)
+    {
+        $this->subscriberCount = $subscriberCount;
+
+        return $this;
+    }
+
+    /**
+     * Get subscriberCount
+     *
+     * @return integer
+     */
+    public function getSubscriberCount()
+    {
+        return $this->subscriberCount;
     }
 
     /**
@@ -200,16 +275,70 @@ abstract class ContactList
     /**
      * Get contacts
      *
-     * @return Collection 
+     * @return Collection
      */
     public function getContacts()
     {
         return $this->contacts;
     }
-    
+
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * Set status
+     *
+     * @param string $status
+     * @return ContactList
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Set assignee
+     *
+     * @param \Flower\ModelBundle\Entity\User\User $assignee
+     * @return Account
+     */
+    public function setAssignee(\Flower\ModelBundle\Entity\User\User $assignee = null)
+    {
+        $this->assignee = $assignee;
+
+        return $this;
+    }
+
+    /**
+     * Get assignee
+     *
+     * @return \Flower\ModelBundle\Entity\User\User
+     */
+    public function getAssignee()
+    {
+        return $this->assignee;
+    }
+
+    /**
+     * Get status
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        $status = $this->status;
+        if($this->status == ContactListStatus::status_ready){
+            if($this->lastValidation->add(new \DateInterval("P3M")) >= new \DateTime()){
+                $status = $this->status;
+            }else{
+                $status = ContactListStatus::status_validation_needed;
+            }
+        }
+        return $status;
     }
 
 }

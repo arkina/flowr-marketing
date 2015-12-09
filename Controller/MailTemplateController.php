@@ -14,20 +14,19 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * MailTemplate controller.
- *
- * @Route("/mailtemplate")
- */
+* MailTemplate controller.
+*
+* @Route("/mailtemplate")
+*/
 class MailTemplateController extends Controller
 {
-
     /**
-     * Lists all MailTemplate entities.
-     *
-     * @Route("/", name="mailtemplate")
-     * @Method("GET")
-     * @Template()
-     */
+    * Lists all MailTemplate entities.
+    *
+    * @Route("/", name="mailtemplate")
+    * @Method("GET")
+    * @Template()
+    */
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -43,26 +42,25 @@ class MailTemplateController extends Controller
     }
 
     /**
-     * Lists all MailTemplate entities.
-     *
-     * @Route("/{id}/editor", name="mailtemplate_editor")
-     * @Method("GET")
-     * @Template()
-     */
+    * Lists all MailTemplate entities.
+    *
+    * @Route("/{id}/editor", name="mailtemplate_editor")
+    * @Method("GET")
+    * @Template()
+    */
     public function editorAction(MailTemplate $template)
     {
-
         return array(
             "mailtemplate" => $template
         );
     }
 
     /**
-     * Lists all MailTemplate entities.
-     *
-     * @Route("/{id}/editor_save", name="mailtemplate_editor_save")
-     * @Method("POST")
-     */
+    * Lists all MailTemplate entities.
+    *
+    * @Route("/{id}/editor_save", name="mailtemplate_editor_save")
+    * @Method("POST")
+    */
     public function editorSaveAction(MailTemplate $template, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -74,26 +72,26 @@ class MailTemplateController extends Controller
     }
 
     /**
-     * Lists all MailTemplate entities.
-     *
-     * @Route("/{id}/editor_get", name="mailtemplate_editor_get")
-     * @Method("GET")
-     */
+    * Lists all MailTemplate entities.
+    *
+    * @Route("/{id}/editor_get", name="mailtemplate_editor_get")
+    * @Method("GET")
+    */
     public function editorGetAction(MailTemplate $template)
     {
-
         return new JsonResponse(array(
-            "content" => $template->getContent()
+            "name" => $template->getName(),
+            "content" => $template->getContent(),
         ));
     }
 
     /**
-     * Finds and displays a MailTemplate entity.
-     *
-     * @Route("/{id}/show", name="mailtemplate_show", requirements={"id"="\d+"})
-     * @Method("GET")
-     * @Template()
-     */
+    * Finds and displays a MailTemplate entity.
+    *
+    * @Route("/{id}/show", name="mailtemplate_show", requirements={"id"="\d+"})
+    * @Method("GET")
+    * @Template()
+    */
     public function showAction(MailTemplate $mailtemplate)
     {
         $deleteForm = $this->createDeleteForm($mailtemplate->getId(), 'mailtemplate_delete');
@@ -105,15 +103,41 @@ class MailTemplateController extends Controller
     }
 
     /**
-     * Displays a form to create a new MailTemplate entity.
-     *
-     * @Route("/new", name="mailtemplate_new")
-     * @Method("GET")
-     * @Template()
-     */
-    public function newAction()
+    * Displays a form to create a new MailTemplate entity.
+    *
+    * @Route("/select_template", name="mailtemplate_selection")
+    * @Method("GET")
+    * @Template()
+    */
+    public function selectionAction()
     {
+        $templates = array(
+            array(
+                "id" => "basic_one_column",
+                "name" => "basic one column",
+                "picture" => "basic_one_column.png",
+                "description" => "Simple basic template",
+            ),
+        );
+
+
+        return array(
+            'templates' => $templates,
+        );
+    }
+
+    /**
+    * Displays a form to create a new MailTemplate entity.
+    *
+    * @Route("/new/{template_id}", name="mailtemplate_new")
+    * @Method("GET")
+    * @Template()
+    */
+    public function newAction($template_id)
+    {
+        $content = $this->get("templating")->render("FlowerMarketingBundle:MailTemplate:templates/$template_id.html.twig");
         $mailtemplate = new MailTemplate();
+        $mailtemplate->setContent($content);
         $form = $this->createForm(new MailTemplateType(), $mailtemplate);
 
         return array(
@@ -123,12 +147,12 @@ class MailTemplateController extends Controller
     }
 
     /**
-     * Creates a new MailTemplate entity.
-     *
-     * @Route("/create", name="mailtemplate_create")
-     * @Method("POST")
-     * @Template("FlowerMarketingBundle:MailTemplate:new.html.twig")
-     */
+    * Creates a new MailTemplate entity.
+    *
+    * @Route("/create", name="mailtemplate_create")
+    * @Method("POST")
+    * @Template("FlowerMarketingBundle:MailTemplate:new.html.twig")
+    */
     public function createAction(Request $request)
     {
         $mailtemplate = new MailTemplate();
@@ -149,12 +173,12 @@ class MailTemplateController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing MailTemplate entity.
-     *
-     * @Route("/{id}/edit", name="mailtemplate_edit", requirements={"id"="\d+"})
-     * @Method("GET")
-     * @Template()
-     */
+    * Displays a form to edit an existing MailTemplate entity.
+    *
+    * @Route("/{id}/edit", name="mailtemplate_edit", requirements={"id"="\d+"})
+    * @Method("GET")
+    * @Template()
+    */
     public function editAction(MailTemplate $mailtemplate)
     {
         $editForm = $this->createForm(new MailTemplateType(), $mailtemplate, array(
@@ -171,12 +195,12 @@ class MailTemplateController extends Controller
     }
 
     /**
-     * Edits an existing MailTemplate entity.
-     *
-     * @Route("/{id}/update", name="mailtemplate_update", requirements={"id"="\d+"})
-     * @Method("PUT")
-     * @Template("FlowerMarketingBundle:MailTemplate:edit.html.twig")
-     */
+    * Edits an existing MailTemplate entity.
+    *
+    * @Route("/{id}/update", name="mailtemplate_update", requirements={"id"="\d+"})
+    * @Method("PUT")
+    * @Template("FlowerMarketingBundle:MailTemplate:edit.html.twig")
+    */
     public function updateAction(MailTemplate $mailtemplate, Request $request)
     {
         $editForm = $this->createForm(new MailTemplateType(), $mailtemplate, array(
@@ -198,10 +222,10 @@ class MailTemplateController extends Controller
     }
 
     /**
-     * Save order.
-     *
-     * @Route("/order/{field}/{type}", name="mailtemplate_sort")
-     */
+    * Save order.
+    *
+    * @Route("/order/{field}/{type}", name="mailtemplate_sort")
+    */
     public function sortAction($field, $type)
     {
         $this->setOrder('mailtemplate', $field, $type);
@@ -210,19 +234,19 @@ class MailTemplateController extends Controller
     }
 
     /**
-     * @param string $name  session name
-     * @param string $field field name
-     * @param string $type  sort type ("ASC"/"DESC")
-     */
+    * @param string $name  session name
+    * @param string $field field name
+    * @param string $type  sort type ("ASC"/"DESC")
+    */
     protected function setOrder($name, $field, $type = 'ASC')
     {
         $this->getRequest()->getSession()->set('sort.' . $name, array('field' => $field, 'type' => $type));
     }
 
     /**
-     * @param  string $name
-     * @return array
-     */
+    * @param  string $name
+    * @return array
+    */
     protected function getOrder($name)
     {
         $session = $this->getRequest()->getSession();
@@ -231,9 +255,9 @@ class MailTemplateController extends Controller
     }
 
     /**
-     * @param QueryBuilder $qb
-     * @param string       $name
-     */
+    * @param QueryBuilder $qb
+    * @param string       $name
+    */
     protected function addQueryBuilderSort(QueryBuilder $qb, $name)
     {
         $alias = current($qb->getDQLPart('from'))->getAlias();
@@ -243,11 +267,11 @@ class MailTemplateController extends Controller
     }
 
     /**
-     * Deletes a MailTemplate entity.
-     *
-     * @Route("/{id}/delete", name="mailtemplate_delete", requirements={"id"="\d+"})
-     * @Method("DELETE")
-     */
+    * Deletes a MailTemplate entity.
+    *
+    * @Route("/{id}/delete", name="mailtemplate_delete", requirements={"id"="\d+"})
+    * @Method("DELETE")
+    */
     public function deleteAction(MailTemplate $mailtemplate, Request $request)
     {
         $form = $this->createDeleteForm($mailtemplate->getId(), 'mailtemplate_delete');
@@ -261,26 +285,27 @@ class MailTemplateController extends Controller
     }
 
     /**
-     * Create Delete form
-     *
-     * @param integer                       $id
-     * @param string                        $route
-     * @return Form
-     */
+    * Create Delete form
+    *
+    * @param integer                       $id
+    * @param string                        $route
+    * @return Form
+    */
     protected function createDeleteForm($id, $route)
     {
         return $this->createFormBuilder(null, array('attr' => array('id' => 'delete')))
-                        ->setAction($this->generateUrl($route, array('id' => $id)))
-                        ->setMethod('DELETE')
-                        ->getForm()
+        ->setAction($this->generateUrl($route, array('id' => $id)))
+        ->setMethod('DELETE')
+        ->getForm()
         ;
     }
     /**
-     * Clonar la entidad
-     *
-     * @Route("/{id}/clone", name="mailtemplate_clone")
-     */
-    public function cloneAction(MailTemplate $template){
+    * Clonar la entidad
+    *
+    * @Route("/{id}/clone", name="mailtemplate_clone")
+    */
+    public function cloneAction(MailTemplate $template)
+    {
         $templateCloned = clone $template;
         $templateCloned->setId(null);
         $templateCloned->setName($templateCloned->getName()."(copiado)");
@@ -289,6 +314,6 @@ class MailTemplateController extends Controller
         $em->flush();
         return $this->redirect($this->generateUrl("mailtemplate_show", array(
             'id'  => $templateCloned->getId()
-                )));
+        )));
     }
 }

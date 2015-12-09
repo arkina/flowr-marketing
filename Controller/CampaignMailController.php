@@ -4,6 +4,7 @@ namespace Flower\MarketingBundle\Controller;
 
 use Doctrine\ORM\QueryBuilder;
 use Flower\MarketingBundle\Form\Type\CampaignMailType;
+use Flower\MarketingBundle\Model\ContactListStatus;
 use Flower\ModelBundle\Entity\Marketing\CampaignMail;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -30,9 +31,9 @@ class CampaignMailController extends Controller
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        
+
         $qb = $em->getRepository('FlowerModelBundle:Marketing\CampaignMail')->createQueryBuilder('c');
-        
+
         $this->addQueryBuilderSort($qb, 'campaignmail');
         $paginator = $this->get('knp_paginator')->paginate($qb, $request->query->get('page', 1), 20, array(
             'defaultSortFieldName' => 'c.created',
@@ -75,6 +76,18 @@ class CampaignMailController extends Controller
             $emailClicksRatio = 0;
         }
 
+        $canLaunch = false;
+        if($campaignmail->getStatus() == CampaignMail::STATUS_DRAFT){
+            $canLaunch = true;
+        }
+
+        $haveNotValidatedContactLists = false;
+        foreach ($campaignmail->getContactLists() as $contactList) {
+            if($contactList->getStatus() != ContactListStatus::status_ready){
+                $haveNotValidatedContactLists = true;
+            }
+        }
+
         return array(
             'emailSent' => $procesed,
             'emailSentRatio' => $emailSentRatio,
@@ -83,7 +96,8 @@ class CampaignMailController extends Controller
             'emailClicks' => $clicks,
             'emailClicksRatio' => $emailClicksRatio,
             'campaignmail' => $campaignmail,
-            
+            'canLaunch' => $canLaunch,
+            'haveNotValidatedContactLists' => $haveNotValidatedContactLists,
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -191,11 +205,13 @@ class CampaignMailController extends Controller
     {
 
         $campaignmailCopy = new CampaignMail();
-        $campaignmailCopy->setName($campaignmail->getName() . " (Copy)");
+        $copyOfText = $this->get('translator')->trans('Copy of');
+        $campaignmailCopy->setName($copyOfText . " " . $campaignmail->getName());
         $campaignmailCopy->setMailFrom($campaignmail->getMailFrom());
         $campaignmailCopy->setMailFromName($campaignmail->getMailFromName());
         $campaignmailCopy->setMailSubject($campaignmail->getMailSubject());
         $campaignmailCopy->setTemplate($campaignmail->getTemplate());
+        $campaignmailCopy->setAssignee( $this->getUser());
 
         foreach ($campaignmail->getContactLists() as $contactList) {
             $campaignmailCopy->addContactList($contactList);
@@ -237,7 +253,7 @@ class CampaignMailController extends Controller
         exec($commandCall);
         $this->get("logger")->info("Run: " . $commandCall);
         $em = $this->getDoctrine()->getManager();
-        
+
         $contactLists = $campaign->getContactLists();
         $queued = 0;
         $ids = array();
@@ -248,7 +264,7 @@ class CampaignMailController extends Controller
 
         $campaign->setStatus(CampaignMail::STATUS_IN_PROGRESS);
         $campaign->setQueued($queued);
-        
+
         $em->flush();
 
         return $this->redirect($this->generateUrl('campaignmail_show', array("id" => $campaign->getId())));

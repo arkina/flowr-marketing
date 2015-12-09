@@ -1,11 +1,12 @@
 '%entity% creation': 'Creación de %entity%'
 '%entity% edit': 'Edición de %entity%'
 '%entity% list': 'Lista de %entity%'
+CampaignMail list: Campañas de mails
 Actions: Acciones
 CampaignMail: Campaña de emails   # FIXME
 'Confirm delete': 'Confirmar borrado'
 Create: Crear
-'Create a new %entity%': 'Crear nueva %entity%'
+'CampaignMail new': 'Nueva Campaña'
 Delete: Borrar
 'Do you want to proceed?': '¿Desea continuar de todos modos?'
 Edit: Editar
@@ -18,3 +19,4 @@ Mailsubject: asunto
 'You are about to delete an item': 'Usted esta por borrar un elemento'
 show: ver
 'this procedure is irreversible': 'esta accion será irreversible'
+issues_notvalidated_contactlist: "La campaña tiene listas de contactos que necesitan ser validadas. La campaña puede ser lanzada, pero no se tienen en cuenta listas no validadas."

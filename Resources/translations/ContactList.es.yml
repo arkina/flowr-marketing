@@ -1,7 +1,15 @@
 '%entity%': 'Lista de contactos'
 '%entity% list': 'Lista de %entity%'
 ContactList: Lista de contactos
+ContactLists: Lista de contactos
 Dashboard: Dashboard
 Filter: Filtros
 'Reset filters': 'Resetear filtros'
 'Show/hide filters': 'mostrar/ocultar filtros'
+
+status_validation_needed: "La lista necesita ser validada"
+status_validating: "En validación"
+status_ready: "Lista para user en campañas."
+
+status: Estado
+EmailGrade: Calificación del Email

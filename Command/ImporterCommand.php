@@ -126,6 +126,12 @@ class ImporterCommand extends ContainerAwareCommand
         $importProcess->setFailCount($failCount);
         $importProcess->setTotalCount($totalCount);
 
+        $contactList->setSubscriberCount($successCount);
+
+        /* notifications */
+        $notifService = $this->getContainer()->get("flower.core.service.notification");
+        $notifService->notificateContactListImportFinished($contactList);
+
         /* finishing import */
         $this->finish();
 

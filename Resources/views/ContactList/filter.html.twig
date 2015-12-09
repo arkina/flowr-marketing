@@ -1,6 +1,6 @@
-<button type="button" class="btn btn-default filter" data-toggle="collapse" data-target="#filter">{{ 'Show/hide filters'|trans({}, 'ContactList') }} <i class="fa fa-angle-{{ app.session.get('filter.contactlist') ? 'right' : 'down' }}"></i></button>
-<div id="filter" class="collapse {% if app.session.get('filter.contactlist') %} in{% endif %}">
-    <form method="get" action="">
+<button type="button" class="btn btn-link btn-xs filter" data-toggle="collapse" data-target="#filter">{{ 'Show/hide filters'|trans({}, 'ContactList') }} <i class="fa fa-angle-{{ app.session.get('filter.contactlist') ? 'right' : 'down' }}"></i></button>
+<div id="filter" class="collapse {% if app.session.get('filter.contactlist') %} in{% endif %}" style="background-color:white; box-shadow: 0px 0px 3px #ddd; padding: 10px;">
+    <form method="get" action="" class="form-horizontal">
         {{ form_widget(form) }}
         <p class="btn-group">
             <button class="btn btn-primary" type="submit" name="submit-filter"><i class="fa fa-filter"></i> {{ 'Filter'|trans({}, 'ContactList') }}</button>

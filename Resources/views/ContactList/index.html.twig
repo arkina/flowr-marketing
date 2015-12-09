@@ -2,71 +2,78 @@
 
 {% block title %}{{ '%entity% list'|trans({'%entity%': 'ContactList'}) }} - {{ parent() }}{% endblock %}
 {% macro thead(name, field, label) %}
-    {% spaceless %}
-        {% set sort = app.session.get('sort.' ~ name) %}
-        {% if sort and sort.field == field %}
-            {% if sort.type == 'DESC' %}
-                <a href="{{ path('contactlist_sort', {field: field, type: 'ASC'}) }}">{{ label | trans({},'ContactList')}} <i class="fa fa-sort-down"></i></a>
-                {% elseif sort.type == 'ASC' %}
-                <a href="{{ path('contactlist_sort', {field: field, type: 'DESC'}) }}">{{ label | trans({},'ContactList')}} <i class="fa fa-sort-up"></i></a>
-                {% endif %}
-            {% else %}
-            <a href="{{ path('contactlist_sort', {field: field, type: 'ASC'}) }}">{{ label | trans({},'ContactList')}} <i class="fa fa-sort"></i></a>
-            {% endif %}
-        {% endspaceless %}
-    {% endmacro %}
+{% spaceless %}
+{% set sort = app.session.get('sort.' ~ name) %}
+{% if sort and sort.field == field %}
+{% if sort.type == 'DESC' %}
+<a href="{{ path('contactlist_sort', {field: field, type: 'ASC'}) }}">{{ label | trans({},'ContactList')}} <i class="fa fa-sort-down"></i></a>
+{% elseif sort.type == 'ASC' %}
+<a href="{{ path('contactlist_sort', {field: field, type: 'DESC'}) }}">{{ label | trans({},'ContactList')}} <i class="fa fa-sort-up"></i></a>
+{% endif %}
+{% else %}
+<a href="{{ path('contactlist_sort', {field: field, type: 'ASC'}) }}">{{ label | trans({},'ContactList')}} <i class="fa fa-sort"></i></a>
+{% endif %}
+{% endspaceless %}
+{% endmacro %}
 
 {% from _self import thead %}
 
 
 {% block body %}
-    <section class="content-header">
-        <h1>{{ 'contactlists' | trans|capitalize }}</h1>
-        <ol class="breadcrumb">
-            <li><a href={{ path('dashboard') }}><i class="fa fa-dashboard"></i> {{"Dashboard" | trans({})}}</a></li>
-            <li class="active" >{{ '%entity% list'|trans({'%entity%': 'ContactList'}) }}</li>
-        </ol>
+<section class="content">
+    {{ include("FlowerMarketingBundle::appnav-campaignmail.html.twig", {'app_contactlist':true}) }}
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">{{ 'lists'|trans|capitalize }}</h3>
+            <div class="box-tools pull-right">
+                <a class="btn btn-link btn-xs" href={{ path('contactlist_new') }}>
+                    <i class="fa fa-plus"></i> {{ 'new contactlist'|trans|capitalize }}
+                </a>
+                {% include 'FlowerMarketingBundle:ContactList:filter.html.twig' with {form: form} %}
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">{{ thead('contactlist', 'name', 'Name') }}</th>
+                        <th scope="col">{{ thead('contactlist', 'updated', 'Updated') }}</th>
+                        <th scope="col">{{ 'Subcriptos'|trans }}</th>
+                        <th scope="col">{{ 'Status'|trans }}</th>
+                        <th scope="col">{{ 'Assignee'|trans }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contactlist in paginator %}
+                    <tr>
+                        <td><a href="{{ path('contactlist_show', {id: contactlist.id}) }}">{{ contactlist.name }}</a></td>
+                        <td>{% if contactlist.updated %}{{ contactlist.updated|date('Y/m/d H:i') }}{% endif %}</td>
+                        <td>
+                            {{contactlist.subscriberCount}}
+                        </td>
+                        <td >
+                            {% if contactlist.status == 'status_ready' %}
+                                <i class="fa fa-check" title="{{ contactlist.status|trans({},"ContactList") }}"></i>
+                            {% else %}
+                                <i class="fa fa-warning text-warning" title="{{ contactlist.status|trans({},"ContactList") }}"></i>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if contactlist.assignee %}
+                            {{ contactlist.assignee.getHappyName }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {{ knp_pagination_render(paginator) }}
+        </div>
+        <div class="box-footer">
+
+        </div>
+
     </section>
-    <section class="content">    
-        <div class="box">
-            <div class="box-header">
-                <h3 class="box-title">{{ 'lists'|trans|capitalize }}</h3>
-                <div class="box-tools pull-right">                    <a class="btn btn-default" href={{ path('contactlist_new') }}>
-                        <i class="fa fa-plus"></i> {{ 'new contactlist'|trans|capitalize }}
-                    </a>
-                    {% include 'FlowerMarketingBundle:ContactList:filter.html.twig' with {form: form} %}
-                </div>
-            </div>
-            <div class="box-body">    
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th scope="col">{{ thead('contactlist', 'name', 'Name') }}</th>
-                            <th scope="col">{{ thead('contactlist', 'updated', 'Updated') }}</th>
-                            <th scope="col">{{ 'Subcriptos'|trans }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for contactlist in paginator %}
-                            <tr>
-                                <td><input type="checkbox" /></td>
-                                <td><a href="{{ path('contactlist_show', {id: contactlist.id}) }}">{{ contactlist.name }}</a></td>
-                                <td>{% if contactlist.updated %}{{ contactlist.updated|date('fullDateTime'|trans) }}{% endif %}</td>
-                                <td>
-                                    2
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-
-                {{ knp_pagination_render(paginator) }}
-            </div>
-            <div class="box-footer">
-
-            </div>
-
-    </section>        
 
 {% endblock %}
