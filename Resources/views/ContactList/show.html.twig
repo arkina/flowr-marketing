@@ -12,9 +12,7 @@
                     <a class="btn btn-link btn-xs" href="{{ path('contactlist_edit', {id: contactlist.id}) }}">
                         {{ 'edit'|trans|capitalize }}
                     </a>
-                    <a class="btn btn-link btn-xs" href="{{ path('contactlist_validate', {id: contactlist.id}) }}">
-                        {{ 'validate'|trans|capitalize }}
-                    </a>
+
                 </div>
             </div>
             <div class="box-body">
@@ -24,7 +22,16 @@
                             <tr>
                                 <td>Status</td>
                                 <td>
-                                    {{status|trans({},'ContactList')}}
+                                    {% if status == 'status_validation_needed' %}
+                                        <i class="fa fa-exclamation-triangle"></i>
+                                        {{status|trans({},'ContactList')}}
+                                        <a class="btn btn-warning btn-xs" href="{{ path('contactlist_validate', {id: contactlist.id}) }}">
+                                            {{ 'validate now'|trans({},'ContactList')|capitalize }}
+                                        </a>
+                                    {% else %}
+                                        {{status|trans({},'ContactList')}}
+                                    {% endif %}
+
                                 </td>
                             </tr>
                             <tr>
@@ -95,7 +102,7 @@
                             <th scope="col">{{ 'Email'|trans }}</th>
                             <th scope="col">{{ 'Address'|trans }}</th>
                             <th scope="col">{{ 'Phone'|trans }}</th>
-                            <th scope="col">{{ 'EmailGrade'|trans }}</th>
+                            <th scope="col">{{ 'EmailGrade'|trans({},'ContactList') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -134,7 +141,7 @@
     <script type="text/javascript">
         var rootPath = "{{ path('dashboard') }}";
         var bulkMove = "{{ path('contactlist_bulk_move',{'id':contactlist.id}) }}";
-        var bulkCopy = "{{ path('contactlist_bulk_move',{'id':contactlist.id}) }}";
+        var bulkCopy = "{{ path('contactlist_bulk_copy',{'id':contactlist.id}) }}";
 
         $(".bulk-move").click(function () {
             var contactListIdDest = $(this).attr("data-id");

@@ -74,8 +74,8 @@ class SendMailCommand extends ContainerAwareCommand
         $pageCount = $this->getEM()->getRepository("FlowerModelBundle:Clients\Contact")->getDistinctPageCountByContactsLists($ids, $this->getBatchSize());
         for ($page = 0; $page < $pageCount; $page++) {
             $contacts = $this->getEM()->getRepository("FlowerModelBundle:Clients\Contact")->getDistinctEmailsByContactsLists($ids, $page, $this->getBatchSize());
-            foreach ($contacts as $contactEmail) {
-                $contactEmail = $contactEmail["email"];
+            foreach ($contacts as $contactArr) {
+                $contactEmail = $contactArr["email"];
                 $this->counter++;
 
                 $this->getContainer()->get("logger")->debug("About to send mail to " . $contactEmail);
@@ -85,7 +85,12 @@ class SendMailCommand extends ContainerAwareCommand
                 $messageBldr->addToRecipient($contactEmail);
                 $messageBldr->setSubject($mailSubject);
 
-                $body = $campaignEmail->getTemplate()->getEmailContent();
+                $urlBase = $this->getContainer()->getParameter("host.scheme") . "://" .  $this->getContainer()->getParameter("host.host");
+                $unsuscribeUrl = $urlBase . $this->getContainer()->get("router")->generate("contactlist_unsuscribe_confirm", array("id" => $contactArr["id"]));
+
+                $messageBldr->addCustomHeader("List-Unsubscribe", $unsuscribeUrl);
+
+                $body = $campaignEmail->getTemplate()->getEmailContent(array("unsuscribeUrl" => $unsuscribeUrl, "email" => $contactEmail));
                 if ($campaignEmail->getTemplate()->getType() == MailTemplate::TYPE_HTML) {
                     $messageBldr->setHtmlBody($body);
                 } else {
@@ -115,6 +120,11 @@ class SendMailCommand extends ContainerAwareCommand
 
         $this->reEnableLogging();
         $this->finish();
+
+        /* notifications */
+        $notifService = $this->getContainer()->get("flower.core.service.notification");
+        $notifService->notificateEmailCampaignFinished($campaignEmail);
+
     }
 
     /**

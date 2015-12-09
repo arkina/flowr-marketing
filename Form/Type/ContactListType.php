@@ -15,6 +15,10 @@ class ContactListType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('assignee', 'genemu_jqueryselect2_entity', array(
+                'class' => 'Flower\ModelBundle\Entity\User\User',
+                'property' => 'getHappyName',
+            ))
         ;
     }
 

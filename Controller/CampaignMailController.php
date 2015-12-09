@@ -205,11 +205,13 @@ class CampaignMailController extends Controller
     {
 
         $campaignmailCopy = new CampaignMail();
-        $campaignmailCopy->setName($campaignmail->getName() . " (Copy)");
+        $copyOfText = $this->get('translator')->trans('Copy of');
+        $campaignmailCopy->setName($copyOfText . " " . $campaignmail->getName());
         $campaignmailCopy->setMailFrom($campaignmail->getMailFrom());
         $campaignmailCopy->setMailFromName($campaignmail->getMailFromName());
         $campaignmailCopy->setMailSubject($campaignmail->getMailSubject());
         $campaignmailCopy->setTemplate($campaignmail->getTemplate());
+        $campaignmailCopy->setAssignee( $this->getUser());
 
         foreach ($campaignmail->getContactLists() as $contactList) {
             $campaignmailCopy->addContactList($contactList);

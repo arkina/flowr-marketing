@@ -36,6 +36,12 @@ abstract class ContactList
     protected $name;
 
     /**
+     * @ManyToOne(targetEntity="\Flower\ModelBundle\Entity\User\User")
+     * @JoinColumn(name="user_id", referencedColumnName="id")
+     * */
+    protected $assignee;
+
+    /**
      * @ManyToMany(targetEntity="\Flower\ModelBundle\Entity\Clients\Contact")
      * @JoinTable(name="contactlists_contacts",
      *      joinColumns={@JoinColumn(name="contactlist_id", referencedColumnName="id")},
@@ -50,6 +56,13 @@ abstract class ContactList
      * @ORM\Column(name="enabled", type="boolean")
      */
     protected $enabled;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="subscriber_count", type="integer", nullable=true)
+     */
+    protected $subscriberCount;
 
     /**
      * @var DateTime
@@ -214,6 +227,29 @@ abstract class ContactList
     }
 
     /**
+     * Set subscriberCount
+     *
+     * @param integer $subscriberCount
+     * @return ContactList
+     */
+    public function setSubscriberCount($subscriberCount)
+    {
+        $this->subscriberCount = $subscriberCount;
+
+        return $this;
+    }
+
+    /**
+     * Get subscriberCount
+     *
+     * @return integer
+     */
+    public function getSubscriberCount()
+    {
+        return $this->subscriberCount;
+    }
+
+    /**
      * Add contacts
      *
      * @param \Flower\ModelBundle\Entity\Clients\Contact $contacts
@@ -262,6 +298,29 @@ abstract class ContactList
         $this->status = $status;
 
         return $this;
+    }
+
+    /**
+     * Set assignee
+     *
+     * @param \Flower\ModelBundle\Entity\User\User $assignee
+     * @return Account
+     */
+    public function setAssignee(\Flower\ModelBundle\Entity\User\User $assignee = null)
+    {
+        $this->assignee = $assignee;
+
+        return $this;
+    }
+
+    /**
+     * Get assignee
+     *
+     * @return \Flower\ModelBundle\Entity\User\User
+     */
+    public function getAssignee()
+    {
+        return $this->assignee;
     }
 
     /**

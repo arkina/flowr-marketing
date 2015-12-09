@@ -2,6 +2,11 @@
 
 {% block title %}{{ '%entity% edit'|trans({'%entity%': 'ContactList'}) }} - {{ parent() }}{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ form_stylesheet(edit_form) }}
+{% endblock %}
+
 {% block body %}
 
     <section class="content">
@@ -53,4 +58,10 @@
 </div>
         </div>
     </section>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ form_javascript(edit_form) }}
 {% endblock %}

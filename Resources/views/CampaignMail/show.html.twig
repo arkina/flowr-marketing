@@ -76,13 +76,19 @@
                                 </tr>
                                 <tr>
                                     <th scope="row">{{'Template'|trans({}, 'CampaignMail')}}</th>
-                                    <td>{{ campaignmail.template }}</td>
+                                    <td>
+                                        <a href="{{ path('mailtemplate_show', {"id": campaignmail.template.id}) }}">
+                                            {{ campaignmail.template }}
+                                        </a>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="row">{{'ContactLists'|trans({}, 'CampaignMail')}}</th>
                                     <td>
                                     {% for contactList in campaignmail.contactLists %}
-                                        {{contactList.name}}
+                                        <a href="{{ path('contactlist_show', {"id": contactList.id}) }}">
+                                            {{contactList.name}}
+                                        </a>
                                         {% if not loop.last %},{% endif %}
                                     {% endfor %}
                                     </td>

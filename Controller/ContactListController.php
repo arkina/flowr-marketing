@@ -95,9 +95,8 @@ class ContactListController extends Controller
         $contactListDest = $em->getRepository('FlowerModelBundle:Marketing\ContactList')->find($destListId);
         foreach ($contacts as $contactId) {
             $contact = $em->getRepository('FlowerModelBundle:Clients\Contact')->find($contactId);
-
-            $contact->addContactList($contactListDest);
             $contactListDest->addContact($contact);
+            $contactListDest->setSubscriberCount($contactListDest->getSubscriberCount()+1);
 
             $em->flush();
         }
@@ -241,6 +240,7 @@ class ContactListController extends Controller
     public function newAction()
     {
         $contactlist = new ContactList();
+        $contactlist->setAssignee($this->getUser());
         $form = $this->createForm(new ContactListType(), $contactlist);
 
         return array(
@@ -311,7 +311,12 @@ class ContactListController extends Controller
             'method' => 'PUT',
         ));
         if ($editForm->handleRequest($request)->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+
+            $em = $this->getDoctrine()->getManager();
+            $contactCount = $em->getRepository("FlowerModelBundle:Clients\Contact")->getCountByContactList($contactlist->getId());
+            $contactlist->setSubscriberCount($contactCount);
+
+            $em->flush();
 
             return $this->redirect($this->generateUrl('contactlist_show', array('id' => $contactlist->getId())));
         }
@@ -493,6 +498,7 @@ class ContactListController extends Controller
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
+            $contactList->setSubscriberCount($contactList->getSubscriberCount()+1);
 
             $em->persist($contact);
             $em->flush();
@@ -537,9 +543,11 @@ class ContactListController extends Controller
             foreach ($contactLists as $contactListId) {
                 $em->getRepository("FlowerModelBundle:Marketing\ContactList")->removeContact($contactListId, $contact->getId());
             }
-            $this->addFlash('success', 'unsuscribed_succesfully');
+            $successText = $this->get("translator")->trans("unsuscribed_succesfully");
+            $this->addFlash('success', $successText);
         }else{
-            $this->addFlash('warning', 'unsuscribed_failed');
+            $failedText = $this->get("translator")->trans("unsuscribed_failed");
+            $this->addFlash('warning', $failedText);
         }
         return array(
             'contact' => $contact,

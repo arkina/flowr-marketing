@@ -37,6 +37,7 @@
                         <tr>
                             <th scope="col">{{ thead('campaignmail', 'name', 'Name') }}</th>
                             <th scope="col">{{ thead('campaignmail', 'status', 'Status') }}</th>
+                            <th scope="col">{{ 'Assignee'|trans }}</th>
                             <th scope="col">{{ thead('campaignmail', 'created', 'Created') }}</th>
                         </tr>
                     </thead>
@@ -51,6 +52,11 @@
                                         <i class="fa fa-play"></i>
                                     {% else %}
                                         <i class="fa fa-pause"></i>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if campaignmail.assignee %}
+                                        {{ campaignmail.assignee.getHappyName }}
                                     {% endif %}
                                 </td>
                                 <td>{% if campaignmail.created %}{{ campaignmail.created|date('Y-m-d H:i:s') }}{% endif %}</td>

@@ -16,6 +16,11 @@ class CampaignMailType extends AbstractType
     {
         $builder
                 ->add('name')
+                ->add('assignee')
+                ->add('assignee', 'genemu_jqueryselect2_entity', array(
+                    'class' => 'Flower\ModelBundle\Entity\User\User',
+                    'property' => 'getHappyName',
+                ))
                 ->add('mailFrom')
                 ->add('mailSubject')
                 ->add('mailFromName')

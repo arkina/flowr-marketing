@@ -2,6 +2,8 @@
 '%entity% creation': 'Creación de %entity%'
 '%entity% edit': 'Edición de %entity%'
 '%entity% list': 'Lista de %entity%'
+contact lists: Listas de contactos
+mail templates: plantillas de email
 Action: Acción
 Address: Dirección
 'Confirm delete': 'Confirmar borrado'
@@ -19,7 +21,7 @@ Status: Estado
 Subcriptos: Subcriptos
 'Yes': 'Si'
 'You are about to delete an item': 'Usted esta por borrar un elemento'
-clicks: clicks 
+clicks: clicks
 contactlists: lista de contactos
 copy: copiar
 'copy to list': 'copiar a lista'
@@ -28,7 +30,7 @@ draft: borrador
 edit: editar
 editor: editor
 finished: finalizado
-import: improtar
+import: importar
 imports: importaciones
 'in progress': 'en progreso'
 launch: lanzado
