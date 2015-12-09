@@ -62,7 +62,7 @@
                                         <i class="fa fa-pause"></i>
                                     {% endif %}
                                 </td>
-                                <td>{% if campaignmail.created %}{{ campaignmail.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                <td>{% if campaignmail.created %}{{ campaignmail.created|date('fullDateTime'|trans) }}{% endif %}</td>
                                 <td>
                                     <div class="btn-group">
                                         <a class="btn btn-default btn-sm" href="{{ path('campaignmail_show', {id: campaignmail.id}) }}">

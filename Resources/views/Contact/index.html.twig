@@ -60,8 +60,8 @@
                             <td>{{ contact.email }}</td>
                             <td>{{ contact.address }}</td>
                             <td>{{ contact.phone }}</td>
-                            <td>{% if contact.created %}{{ contact.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-                            <td>{% if contact.updated %}{{ contact.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                            <td>{% if contact.created %}{{ contact.created|date('fullDateTime'|trans) }}{% endif %}</td>
+                            <td>{% if contact.updated %}{{ contact.updated|date('fullDateTime'|trans) }}{% endif %}</td>
                             <td>
                         <div class="btn-group">
                             <a class="btn btn-default btn-sm" href="{{ path('contact_show', {id: contact.id}) }}">

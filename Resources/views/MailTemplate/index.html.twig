@@ -50,7 +50,7 @@
                             <tr>
                                 <td><a href="{{ path('mailtemplate_show', {id: mailtemplate.id}) }}">{{ mailtemplate.name }}</a></td>
                                 <td>{{ mailtemplate.type }}</td>
-                                <td>{% if mailtemplate.created %}{{ mailtemplate.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                <td>{% if mailtemplate.created %}{{ mailtemplate.created|date('fullDateTime'|trans) }}{% endif %}</td>
                             </tr>
                         {% endfor %}
                     </tbody>

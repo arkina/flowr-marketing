@@ -52,7 +52,7 @@
                             <tr>
                                 <td><input type="checkbox" /></td>
                                 <td><a href="{{ path('contactlist_show', {id: contactlist.id}) }}">{{ contactlist.name }}</a></td>
-                                <td>{% if contactlist.updated %}{{ contactlist.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                <td>{% if contactlist.updated %}{{ contactlist.updated|date('fullDateTime'|trans) }}{% endif %}</td>
                                 <td>
                                     2
                                 </td>

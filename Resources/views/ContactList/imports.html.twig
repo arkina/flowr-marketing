@@ -38,8 +38,8 @@
                                 {% elseif process.status == 1 %}
                                     <td><span class="label label-warning">Procesando</span></td>
                                 {% endif%}
-                                <td>{{ process.created|date('d/m/Y h:i') }}</td>
-                                <td>{{ process.updated|date('d/m/Y h:i') }}</td>
+                                <td>{{ process.created|date('fullDateTime'|trans) }}</td>
+                                <td>{{ process.updated|date('fullDateTime'|trans) }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
