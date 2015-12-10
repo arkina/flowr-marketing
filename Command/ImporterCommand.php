@@ -6,6 +6,7 @@ use Ddeboer\DataImport\Reader\CsvReader;
 use Flower\ModelBundle\Entity\Clients\Contact;
 use Flower\ModelBundle\Entity\Marketing\ImportProcess;
 use SplFileObject;
+use Flower\MarketingBundle\Model\ContactListStatus;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -89,8 +90,17 @@ class ImporterCommand extends ContainerAwareCommand
         $conn = $this->getEM()->getConnection();
         $qInsertContact = 'INSERT INTO contact(firstname, lastname, email, address, phone, allow_campaign_mail, created, updated) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
         $qInsertContactRel = 'INSERT INTO contactlists_contacts(contactlist_id, contact_id) VALUES(?, ?)';
+        $qInsertContactAccount = 'INSERT INTO account_contact(contact_id, account_id) VALUES(?, ?)';
         $stmtContact = $conn->prepare($qInsertContact);
         $stmtContactRel = $conn->prepare($qInsertContactRel);
+        $stmtContactaAccount = $conn->prepare($qInsertContactAccount);
+
+        /* account */
+        $accountId = null;
+        if(isset($coldef->accountId)){
+            $accountId = $coldef->accountId;
+            unset($coldef->accountId);
+        }
 
         foreach ($reader as $index => $row) {
 
@@ -102,6 +112,10 @@ class ImporterCommand extends ContainerAwareCommand
 
             $contactId = $conn->lastInsertId();
             $stmtContactRel->execute(array($contactList->getId(), $contactId));
+
+            if(!is_null($accountId)){
+                $stmtContactaAccount->execute(array($contactId, $accountId));
+            }
 
             $successCount++;
 
@@ -127,6 +141,7 @@ class ImporterCommand extends ContainerAwareCommand
         $importProcess->setTotalCount($totalCount);
 
         $contactList->setSubscriberCount($successCount);
+        $contactList->setStatus(ContactListStatus::status_validation_needed);
 
         /* notifications */
         $notifService = $this->getContainer()->get("flower.core.service.notification");

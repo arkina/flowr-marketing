@@ -1,0 +1,16 @@
+Flower\ModelBundle\Entity\Marketing\CampaignMail:
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                min: 4
+        mailFrom:
+            - Email: ~
+        mailSubject:
+            - NotBlank: ~
+            - Length:
+                min: 4
+        mailFromName:
+            - NotBlank: ~
+            - Length:
+                min: 4

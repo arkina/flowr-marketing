@@ -31,18 +31,11 @@
             width: 0;
         }
     </style>
-    <section class="content-header">
-        <h1>{{ 'contactlists' | trans|capitalize }}</h1>
-        <ol class="breadcrumb">
-            <li><a href={{ path('dashboard') }}><i class="fa fa-dashboard"></i> {{"Dashboard" | trans({}, 'ContactList')}}</a></li>
-            <li><a href="{{ path('contactlist') }}"> {{ '%entity% list'|trans({'%entity%': 'ContactList'}, 'ContactList') }}</a></li>
-            <li class="active" >{{ '%entity%'|trans({'%entity%': 'ContactList'}, 'ContactList') }}</li>
-        </ol>
-    </section>
-    <section class="content" multi-app="flowerImporter">    
+    <section class="content" multi-app="flowerImporter">
+        {{ include("FlowerMarketingBundle::appnav-campaignmail.html.twig", {'app_contactlist':true}) }}
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">Import</h3>
+                <h3 class="box-title">{{"import"|trans|title}}</h3>
             </div>
             <div class="box-body">
                 <div ng-view>

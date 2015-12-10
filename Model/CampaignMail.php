@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation\Groups;
 
 /**
  * CampaignMail
@@ -37,12 +38,14 @@ abstract class CampaignMail
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Groups({"public_api"})
      */
     protected $name;
 
     /**
      * @ManyToOne(targetEntity="\Flower\ModelBundle\Entity\User\User")
      * @JoinColumn(name="user_id", referencedColumnName="id")
+     * @Groups({"public_api"})
      * */
     protected $assignee;
 
@@ -50,6 +53,7 @@ abstract class CampaignMail
      * @var integer
      *
      * @ORM\Column(name="queued", type="integer")
+     * @Groups({"public_api"})
      */
     protected $queued;
 
@@ -57,6 +61,7 @@ abstract class CampaignMail
      * @var string
      *
      * @ORM\Column(name="status", type="string", length=255)
+     * @Groups({"public_api"})
      */
     protected $status;
 
@@ -79,6 +84,7 @@ abstract class CampaignMail
      * @var string
      *
      * @ORM\Column(name="mailFrom", type="string", length=255)
+     * @Groups({"public_api"})
      */
     protected $mailFrom;
 
@@ -86,6 +92,7 @@ abstract class CampaignMail
      * @var string
      *
      * @ORM\Column(name="mailSubject", type="string", length=255)
+     * @Groups({"public_api"})
      */
     protected $mailSubject;
 
@@ -93,6 +100,7 @@ abstract class CampaignMail
      * @var string
      *
      * @ORM\Column(name="mailFromName", type="string", length=255)
+     * @Groups({"public_api"})
      */
     protected $mailFromName;
 
