@@ -1,7 +1,7 @@
 <div class="nav-app">
     <ul class="nav nav-tabs ">
-        <li role="presentation" class="app-icon bg-green">
-            <i class="fa fa-envelope"></i>
+        <li role="presentation" class="app-icon">
+            <img src="{{ asset('bundles/flowercore/images/icons/GroupMessage-100.png') }}">
         </li>
         <li role="presentation" {% if app_campaignmail is defined %}class="active"{% endif %}>
             <a href="{{ path('campaignmail') }}">{{ 'CampaignMail'|trans({},'CampaignMail')|title }}</a>
