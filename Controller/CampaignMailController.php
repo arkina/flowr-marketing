@@ -5,6 +5,7 @@ namespace Flower\MarketingBundle\Controller;
 use Doctrine\ORM\QueryBuilder;
 use Flower\MarketingBundle\Form\Type\CampaignMailType;
 use Flower\MarketingBundle\Model\ContactListStatus;
+use Flower\ModelBundle\Entity\Board\History;
 use Flower\ModelBundle\Entity\Marketing\CampaignMail;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -136,6 +137,8 @@ class CampaignMailController extends Controller
             $em->persist($campaignmail);
             $em->flush();
 
+            $this->get('board.service.history')->addSimpleUserActivity(History::TYPE_CAMPAIGN_MAIL, $this->getUser(), $campaignmail, History::CRUD_CREATE);
+
             return $this->redirect($this->generateUrl('campaignmail_show', array('id' => $campaignmail->getId())));
         }
 
@@ -182,6 +185,8 @@ class CampaignMailController extends Controller
         ));
         if ($editForm->handleRequest($request)->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+
+            $this->get('board.service.history')->addSimpleUserActivity(History::TYPE_CAMPAIGN_MAIL, $this->getUser(), $campaignmail, History::CRUD_UPDATE);
 
             return $this->redirect($this->generateUrl('campaignmail_show', array('id' => $campaignmail->getId())));
         }
