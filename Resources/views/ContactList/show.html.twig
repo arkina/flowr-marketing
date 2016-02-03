@@ -24,14 +24,14 @@
                                 <td>
                                     {% if status == 'status_validation_needed' %}
                                         <i class="fa fa-exclamation-triangle"></i>
-                                        {{status|trans({},'ContactList')}}
-                                        <a class="btn btn-warning btn-xs" href="{{ path('contactlist_validate', {id: contactlist.id}) }}">
+                                        {{ status|trans({},'ContactList') }}
+                                        <a class="btn btn-warning btn-xs"
+                                           href="{{ path('contactlist_validate', {id: contactlist.id}) }}">
                                             {{ 'validate now'|trans({},'ContactList')|capitalize }}
                                         </a>
                                     {% else %}
-                                        {{status|trans({},'ContactList')}}
+                                        {{ status|trans({},'ContactList') }}
                                     {% endif %}
-
                                 </td>
                             </tr>
                             <tr>
@@ -51,31 +51,35 @@
             <div class="box-header">
                 <h4 class="box-title"></h4>
                 <div class="box-tools">
+                    <button class="btn btn-link btn-xs" data-toggle="modal" data-target="#findContactsModal">
+                        <i class="fa fa-plus"></i> {{ 'findContactsModal'|trans|capitalize }}
+                    </button>
                     <a class="btn btn-link btn-xs" href="{{ path('contactlist_contact_new', {id: contactlist.id}) }}">
-                        <i class="fa fa-plus"></i> {{'create contact'|trans|capitalize}}
+                        <i class="fa fa-plus"></i> {{ 'create contact'|trans|capitalize }}
                     </a>
                     <a class="btn btn-link btn-xs" href="{{ path('contactlist_import', {id: contactlist.id}) }}">
-                        <i class="fa fa-plus"></i> {{'import'|trans|capitalize}}
+                        <i class="fa fa-plus"></i> {{ 'import'|trans|capitalize }}
                     </a>
                     <a class="btn btn-link btn-xs" href="{{ path('contactlist_imports', {id: contactlist.id}) }}">
-                        <i class="fa fa-upload"></i> {{'imports'|trans|capitalize}}
+                        <i class="fa fa-upload"></i> {{ 'imports'|trans|capitalize }}
                     </a>
                 </div>
             </div>
             <div class="box-body">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
                         {{ "Action"|trans|capitalize }} <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu multi-level">
                         <li><a href="#">{{ "unsuscribe"|trans|capitalize }}</a></li>
                         <li role="separator" class="divider"></li>
                         <li class="dropdown-submenu">
-                            <a href="#" >{{ "move to list"|trans|capitalize }}</a>
+                            <a href="#">{{ "move to list"|trans|capitalize }}</a>
                             <ul class="dropdown-menu">
                                 {% for list in availablelists %}
                                     <li>
-                                        <a href="#" class="bulk-move" data-id="{{list.id}}" >{{ list|capitalize }}</a>
+                                        <a href="#" class="bulk-move" data-id="{{ list.id }}">{{ list|capitalize }}</a>
                                     </li>
                                 {% endfor %}
                             </ul>
@@ -85,7 +89,7 @@
                             <ul class="dropdown-menu">
                                 {% for list in availablelists %}
                                     <li>
-                                        <a href="#" class="bulk-copy" data-id="{{list.id}}" >{{ list|capitalize }}</a>
+                                        <a href="#" class="bulk-copy" data-id="{{ list.id }}">{{ list|capitalize }}</a>
                                     </li>
                                 {% endfor %}
                             </ul>
@@ -95,34 +99,35 @@
 
                 <table class="table table-hover">
                     <thead>
-                        <tr>
-                            <th scope="col"></th>
-                            <th scope="col">{{ 'Firstname'|trans }}</th>
-                            <th scope="col">{{ 'Lastname'|trans }}</th>
-                            <th scope="col">{{ 'Email'|trans }}</th>
-                            <th scope="col">{{ 'Address'|trans }}</th>
-                            <th scope="col">{{ 'Phone'|trans }}</th>
-                            <th scope="col">{{ 'EmailGrade'|trans({},'ContactList') }}</th>
-                        </tr>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">{{ 'Firstname'|trans }}</th>
+                        <th scope="col">{{ 'Lastname'|trans }}</th>
+                        <th scope="col">{{ 'Email'|trans }}</th>
+                        <th scope="col">{{ 'Address'|trans }}</th>
+                        <th scope="col">{{ 'Phone'|trans }}</th>
+                        <th scope="col">{{ 'EmailGrade'|trans({},'ContactList') }}</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        {% for contact in contacts %}
-                            <tr>
-                                <td><input type="checkbox" value="{{contact.id}}" name="contacts[]" class="bulk-check" ></td>
-                                <td>
-                                    <a href="{{ path('contact_show', {id: contact.id}) }}">{{ contact.firstname }}</a>
-                                </td>
-                                <td>
-                                    <a href="{{ path('contact_show', {id: contact.id}) }}">{{ contact.lastname }}</a>
-                                </td>
-                                <td>
-                                    <a href="{{ path('contact_show', {id: contact.id}) }}">{{ contact.email }}</a>
-                                </td>
-                                <td>{{ contact.address }}</td>
-                                <td>{{ contact.phone }}</td>
-                                <td>{{ contact.emailGrade }}</td>
-                            </tr>
-                        {% endfor %}
+                    {% for contact in contacts %}
+                        <tr>
+                            <td><input type="checkbox" value="{{ contact.id }}" name="contacts[]" class="bulk-check">
+                            </td>
+                            <td>
+                                <a href="{{ path('contact_show', {id: contact.id}) }}">{{ contact.firstname }}</a>
+                            </td>
+                            <td>
+                                <a href="{{ path('contact_show', {id: contact.id}) }}">{{ contact.lastname }}</a>
+                            </td>
+                            <td>
+                                <a href="{{ path('contact_show', {id: contact.id}) }}">{{ contact.email }}</a>
+                            </td>
+                            <td>{{ contact.address }}</td>
+                            <td>{{ contact.phone }}</td>
+                            <td>{{ contact.emailGrade }}</td>
+                        </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
 
@@ -134,6 +139,64 @@
         </div>
 
     </section>
+    <div class="modal fade" tabindex="-1" role="dialog" id="findContactsModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">{{ 'find contacts' }}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label>Cuenta</label>
+                                    <select id="accountsSel" class="form-control" onchange="loadContacts()">
+                                        <option value="4">Cuenta 4</option>
+                                        <option value="5">Cuenta 5</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label>Actividad</label>
+                                    <select id="accountsSel" class="form-control" onchange="loadContacts()">
+                                        <option value="4">Cuenta 4</option>
+                                        <option value="5">Cuenta 5</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label>Asignado</label>
+                                    <select id="accountsSel" class="form-control" onchange="loadContacts()">
+                                        <option value="4">Cuenta 4</option>
+                                        <option value="5">Cuenta 5</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4>Results</h4>
+                            <select id="find-filter-result" multiple="multiple" class="form-control"
+                                    style="height: 300px;">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="addToList()">Add to list</button>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
 {% endblock %}
 {% block javascripts %}
@@ -142,6 +205,7 @@
         var rootPath = "{{ path('dashboard') }}";
         var bulkMove = "{{ path('contactlist_bulk_move',{'id':contactlist.id}) }}";
         var bulkCopy = "{{ path('contactlist_bulk_copy',{'id':contactlist.id}) }}";
+        var addContactsToList = "{{ path('contactlist_add_contacts',{'id':contactlist.id}) }}";
 
         $(".bulk-move").click(function () {
             var contactListIdDest = $(this).attr("data-id");
@@ -176,5 +240,39 @@
             });
 
         });
+
+        function loadContacts() {
+            var accountId = $("#accountsSel").val();
+            $.ajax({
+                'url': rootPath + "p/api/clients/contacts/account/" + accountId,
+                'success': function (contacts) {
+                    var htmlVal = "";
+                    for (var i = 0; i < contacts.length; i++) {
+                        var contact = contacts[i];
+                        htmlVal += '<option value="' + contact.id + '">';
+                        htmlVal += contact.firstname + ' ' + contact.lastname;
+                        htmlVal += '</option>';
+                    }
+                    $("#find-filter-result").html(htmlVal);
+                }
+            });
+        }
+
+        function addToList() {
+            var contactIds = $("#find-filter-result").val();
+            $.ajax({
+                "url": addContactsToList,
+                "type": "post",
+                "data": {"contacts": contactIds},
+                "success": function () {
+                    $('#findContactsModal').modal('hide');
+                },
+                "error": function () {
+                    alert("algo esta mal");
+                }
+            });
+
+        }
+
     </script>
-{% endblock%}
+{% endblock %}

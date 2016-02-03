@@ -81,6 +81,26 @@ class ContactListController extends Controller
     }
 
     /**
+     * Add contacts to contact list.
+     *
+     * @Route("/{id}/add_contacts", name="contactlist_add_contacts", requirements={"id"="\d+"})
+     * @Method("POST")
+     */
+    public function addContactsAction(ContactList $contactlist, Request $request)
+    {
+        $contacts = $request->get("contacts");
+
+        $em = $this->getDoctrine()->getManager();
+        foreach ($contacts as $contactId) {
+            $contact = $em->getRepository('FlowerModelBundle:Clients\Contact')->find($contactId);
+            $contactlist->addContact($contact);
+        }
+        $em->flush();
+
+        return new JsonResponse(null, 200);
+    }
+
+    /**
      * Finds and displays a ContactList entity.
      *
      * @Route("/{id}/bulk_copy", name="contactlist_bulk_copy", requirements={"id"="\d+"})
