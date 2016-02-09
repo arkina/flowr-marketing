@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation\Groups;
 
 /**
  * ContactList
@@ -25,6 +26,7 @@ abstract class ContactList
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Groups({"search", "public_api", "private_api"})
      */
     protected $id;
 
@@ -32,6 +34,7 @@ abstract class ContactList
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Groups({"search", "public_api", "private_api"})
      */
     protected $name;
 
@@ -50,6 +53,13 @@ abstract class ContactList
      **/
     protected $contacts;
 
+
+    /**
+     * @ManyToMany(targetEntity="\Flower\ModelBundle\Entity\User\User", inversedBy="contactLists")
+     * @JoinTable(name="contactlists_users")
+     */
+    protected $users;
+
     /**
      * @var boolean
      *
@@ -61,6 +71,7 @@ abstract class ContactList
      * @var integer
      *
      * @ORM\Column(name="subscriber_count", type="integer", nullable=true)
+     * @Groups({"search", "public_api", "private_api"})
      */
     protected $subscriberCount;
 
@@ -68,6 +79,7 @@ abstract class ContactList
      * @var DateTime
      *
      * @ORM\Column(name="last_validation", type="datetime", nullable=true)
+     * @Groups({"search", "public_api", "private_api"})
      */
     protected $lastValidation;
 
@@ -75,6 +87,7 @@ abstract class ContactList
      * @var DateTime
      *
      * @ORM\Column(name="status", type="string", length=255, nullable=true)
+     * @Groups({"search", "public_api", "private_api"})
      */
     protected $status;
 
@@ -94,8 +107,10 @@ abstract class ContactList
      */
     protected $updated;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->contacts = new ArrayCollection();
+        $this->users = new ArrayCollection();
         $this->enabled = true;
         $this->status = ContactListStatus::status_validation_needed;
     }
@@ -282,6 +297,39 @@ abstract class ContactList
         return $this->contacts;
     }
 
+    /**
+     * Add user
+     *
+     * @param \Flower\ModelBundle\Entity\User\User $user
+     * @return ContactList
+     */
+    public function addUser(\Flower\ModelBundle\Entity\User\User $user)
+    {
+        $this->users[] = $user;
+
+        return $this;
+    }
+
+    /**
+     * Remove user
+     *
+     * @param \Flower\ModelBundle\Entity\User\User $user
+     */
+    public function removeUser(\Flower\ModelBundle\Entity\User\User $user)
+    {
+        $this->users->removeElement($user);
+    }
+
+    /**
+     * Get users
+     *
+     * @return Collection
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
     public function __toString()
     {
         return $this->name;
@@ -331,10 +379,10 @@ abstract class ContactList
     public function getStatus()
     {
         $status = $this->status;
-        if($this->status == ContactListStatus::status_ready){
-            if($this->lastValidation->add(new \DateInterval("P3M")) >= new \DateTime()){
+        if ($this->status == ContactListStatus::status_ready) {
+            if ($this->lastValidation->add(new \DateInterval("P3M")) >= new \DateTime()) {
                 $status = $this->status;
-            }else{
+            } else {
                 $status = ContactListStatus::status_validation_needed;
             }
         }

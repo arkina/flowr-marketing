@@ -1,17 +1,9 @@
-
-# open rest service
-flower_api_marketing_webhook_mailgun:
-    path:     /mailgun_webhook/track_events
-    defaults: { _controller: FlowerMarketingBundle:Api\MailgunWebhook:trackEvent }
-    methods: [POST]
-
-# standard api
-flower_api_marketing_campaign_mail_findall:
-    path:     /campaignmails
-    defaults: { _controller: FlowerMarketingBundle:Api\CampaignMail:getAll }
+flower_api_marketing_contactlist_findcontactsby:
+    path:     /contactlist/{id}/contacts
+    defaults: { _controller: FlowerMarketingBundle:Api\ContactList:getByContactList }
     methods: [GET]
 
-flower_api_marketing_campaign_mail_findone:
-    path:     /campaignmails/{id}
-    defaults: { _controller: FlowerMarketingBundle:Api\CampaignMail:getById }
+flower_api_marketing_contactlist_availables:
+    path:     /availables
+    defaults: { _controller: FlowerMarketingBundle:Api\ContactList:getAvailables }
     methods: [GET]

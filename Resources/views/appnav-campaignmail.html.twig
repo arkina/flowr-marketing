@@ -12,5 +12,8 @@
         <li role="presentation" {% if app_mailtemplate is defined %}class="active"{% endif %}>
             <a href="{{ path('mailtemplate') }}"> {{ 'mail templates'|trans|title }}</a>
         </li>
+        <li role="presentation" {% if app_report is defined %}class="active"{% endif %}>
+            <a href="{{ path('campaignmail_report') }}"> {{ 'reports'|trans|title }}</a>
+        </li>
     </ul>
 </div>

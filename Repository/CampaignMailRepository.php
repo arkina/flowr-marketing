@@ -12,6 +12,67 @@ use Doctrine\ORM\EntityRepository;
  */
 class CampaignMailRepository extends EntityRepository
 {
+
+    /**
+     * @param array $filter
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getAllQB($filter = array())
+    {
+        $qb = $this->createQueryBuilder('c');
+        foreach ($filter as $field => $value) {
+            $qb->orWhere("c." . $field . " LIKE :" . $field . "_value")->setParameter($field . "_value", "%" . $value . "%");
+        }
+        return $qb;
+    }
+
+    /**
+     * @param array $filter
+     * @param int $max
+     * @param int $first
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getAllPagedQB($filter = array(), $max = 20, $first = 0)
+    {
+
+        $qb = $this->getAllQB($filter);
+
+        /* paged */
+        $qb->setMaxResults($max);
+        $qb->setFirstResult($first);
+
+        return $qb;
+    }
+
+    /**
+     * @param array $filter
+     * @param int $max
+     * @param int $first
+     * @return array
+     */
+    public function getAll($filter = array(), $max = 20, $first = 0)
+    {
+        $qb = $this->getAllPagedQB($filter, $max, $first);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param array $filter
+     * @return array
+     */
+    public function getCountAll($filter = array())
+    {
+        $qb = $this->getAllQB($filter);
+
+        $qb->select("COUNT(c)");
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @return mixed
+     */
     public function getCountEnabled()
     {
         $qb = $this->createQueryBuilder("cm");

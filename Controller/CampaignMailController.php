@@ -49,6 +49,25 @@ class CampaignMailController extends Controller
     /**
      * Finds and displays a CampaignMail entity.
      *
+     * @Route("/{id}/show/messages", name="campaignmail_show_messages", requirements={"id"="\d+"})
+     * @Method("GET")
+     * @Template()
+     */
+    public function showMessagesAction(CampaignMail $campaignmail)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $messages = $em->getRepository('FlowerModelBundle:Marketing\CampaignEmailMessage')->getByCampaignPaged($campaignmail->getId(), 0, 20);
+
+
+        return array(
+            'campaign' => $campaignmail,
+            'messages' => $messages,
+        );
+    }
+
+    /**
+     * Finds and displays a CampaignMail entity.
+     *
      * @Route("/{id}/show", name="campaignmail_show", requirements={"id"="\d+"})
      * @Method("GET")
      * @Template()
@@ -57,9 +76,9 @@ class CampaignMailController extends Controller
     {
         $deleteForm = $this->createDeleteForm($campaignmail->getId(), 'campaignmail_delete');
         $em = $this->getDoctrine()->getManager();
-        $procesed = $em->getRepository("FlowerModelBundle:Marketing\CampaignEmailMessage")->getCountByCampaign($campaignmail->getId());
-        $opens = $em->getRepository("FlowerModelBundle:Marketing\CampaignEmailMessage")->getOpensByCampaign($campaignmail->getId());
-        $clicks = $em->getRepository("FlowerModelBundle:Marketing\CampaignEmailMessage")->getClicksByCampaign($campaignmail->getId());
+        $procesed = $em->getRepository('FlowerModelBundle:Marketing\CampaignEmailMessage')->getCountByCampaign($campaignmail->getId());
+        $opens = $em->getRepository('FlowerModelBundle:Marketing\CampaignEmailMessage')->getOpensByCampaign($campaignmail->getId());
+        $clicks = $em->getRepository('FlowerModelBundle:Marketing\CampaignEmailMessage')->getClicksByCampaign($campaignmail->getId());
 
         if (!is_null($campaignmail->getQueued()) && $campaignmail->getQueued() > 0) {
             $emailSentRatio = ($procesed * 100) / $campaignmail->getQueued();
@@ -265,8 +284,9 @@ class CampaignMailController extends Controller
         foreach ($contactLists as $contactlist) {
             $ids[] = $contactlist->getId();
         }
-        $queued = $em->getRepository("FlowerModelBundle:Clients\Contact")->getCountByContactsLists($ids);
+        $queued = $em->getRepository('FlowerModelBundle:Clients\Contact')->getCountByContactsLists($ids);
 
+        $campaign->setLaunched(new \DateTime());
         $campaign->setStatus(CampaignMail::STATUS_IN_PROGRESS);
         $campaign->setQueued($queued);
 

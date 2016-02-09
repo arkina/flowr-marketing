@@ -7,3 +7,19 @@ services:
         class: Flower\MarketingBundle\Service\EmailValidatorService
         calls:
             - [setContainer, ["@service_container"]]
+
+    flower.marketing.repository.campaignmail:
+            class: Doctrine\ORM\EntityRepository
+            factory: [@doctrine.orm.entity_manager, getRepository]
+            arguments:
+                - Flower\ModelBundle\Entity\Marketing\CampaignMail
+
+    flower.marketing.repository.campaignemailmessage:
+                class: Doctrine\ORM\EntityRepository
+                factory: [@doctrine.orm.entity_manager, getRepository]
+                arguments:
+                    - Flower\ModelBundle\Entity\Marketing\CampaignEmailMessage
+
+    flower.marketing.service.campaignmail:
+            class: Flower\MarketingBundle\Service\CampaignMailService
+            arguments: ['@flower.marketing.repository.campaignmail', '@flower.marketing.repository.campaignemailmessage']

@@ -94,10 +94,11 @@ class ContactListController extends Controller
         foreach ($contacts as $contactId) {
             $contact = $em->getRepository('FlowerModelBundle:Clients\Contact')->find($contactId);
             $contactlist->addContact($contact);
+            $contactlist->setSubscriberCount($contactlist->getSubscriberCount()+1);
         }
         $em->flush();
 
-        return new JsonResponse(null, 200);
+        return new JsonResponse($contacts, 200);
     }
 
     /**

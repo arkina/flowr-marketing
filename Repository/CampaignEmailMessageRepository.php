@@ -14,6 +14,17 @@ use Doctrine\ORM\EntityRepository;
 class CampaignEmailMessageRepository extends EntityRepository
 {
 
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getAllQB($filter= array()){
+        return $this->createQueryBuilder('m');
+    }
+
+    /**
+     * @param $campaignId
+     * @return mixed
+     */
     public function getCountByCampaign($campaignId)
     {
         $qb = $this->createQueryBuilder("m");
@@ -22,7 +33,11 @@ class CampaignEmailMessageRepository extends EntityRepository
 
         return $qb->getQuery()->getSingleScalarResult();
     }
-    
+
+    /**
+     * @param $campaignId
+     * @return mixed
+     */
     public function getOpensByCampaign($campaignId)
     {
         $qb = $this->createQueryBuilder("m");
@@ -31,7 +46,11 @@ class CampaignEmailMessageRepository extends EntityRepository
 
         return $qb->getQuery()->getSingleScalarResult();
     }
-    
+
+    /**
+     * @param $campaignId
+     * @return mixed
+     */
     public function getClicksByCampaign($campaignId)
     {
         $qb = $this->createQueryBuilder("m");
@@ -41,6 +60,10 @@ class CampaignEmailMessageRepository extends EntityRepository
         return $qb->getQuery()->getSingleScalarResult();
     }
 
+    /**
+     * @return Statement
+     * @throws \Doctrine\DBAL\DBALException
+     */
     public function prepareRawInsert()
     {
         $statement = "INSERT INTO "
@@ -54,6 +77,16 @@ class CampaignEmailMessageRepository extends EntityRepository
         return $stmt;
     }
 
+    /**
+     * @param Statement $stmt
+     * @param $providerId
+     * @param $campaignMailId
+     * @param $sender
+     * @param $toEmail
+     * @param $state
+     * @param int $opens
+     * @param int $clicks
+     */
     public function rawInsert(Statement $stmt, $providerId, $campaignMailId, $sender,$toEmail, $state, $opens = 0, $clicks = 0)
     {
         $stmt->bindParam("providerId", $providerId);
@@ -67,12 +100,23 @@ class CampaignEmailMessageRepository extends EntityRepository
         $stmt->execute();
     }
 
+    /**
+     * @param $campaignId
+     * @param $pageSize
+     * @return float
+     */
     public function getPageCountByCampaignId($campaignId, $pageSize)
     {
         $count = $this->getCountByCampaign($campaignId);
         return ceil($count / $pageSize);
     }
 
+    /**
+     * @param $campaignId
+     * @param $offset
+     * @param $limit
+     * @return array
+     */
     public function getByCampaignPaged($campaignId, $offset, $limit)
     {
         $qb = $this->createQueryBuilder("m");
@@ -82,6 +126,52 @@ class CampaignEmailMessageRepository extends EntityRepository
         $qb->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param $campaignId
+     * @param $from
+     * @param $to
+     * @return mixed
+     */
+    public function getOpensCount($campaignId, $from, $to)
+    {
+        $qb = $this->createQueryBuilder("m");
+        $qb->select("SUM(m.opens)");
+        $qb->join("m.campaign", "c");
+        $qb->where("c.launched BETWEEN :from AND :to")
+            ->setParameter("from", $from)
+            ->setParameter("to", $to)
+        ;
+        $qb->andWhere("c.id = :campaign_id")->setParameter("campaign_id", $campaignId);
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @param $campaignId
+     * @param $offset
+     * @param $limit
+     * @return array
+     */
+    public function getByCampaignFilteredPaged($campaignId, $filter = array(), $offset = 0, $limit = 20)
+    {
+        $qb = $this->getAllQB($filter);
+
+        $qb->where("m.campaign = :campaign_id")->setParameter("campaign_id", $campaignId);
+
+        $qb->setFirstResult($offset);
+        $qb->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getCountByCampaignFiltered($campaignId, $filter = array()){
+        $qb = $this->getAllQB($filter);
+        $qb->select("COUNT(m)");
+        $qb->where("m.campaign = :campaign_id")->setParameter("campaign_id", $campaignId);
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 
 }

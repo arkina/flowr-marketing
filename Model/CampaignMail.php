@@ -119,6 +119,13 @@ abstract class CampaignMail
     /**
      * @var DateTime
      *
+     * @ORM\Column(name="launched", type="datetime", nullable=true)
+     */
+    protected $launched;
+
+    /**
+     * @var DateTime
+     *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
      */
@@ -476,6 +483,24 @@ abstract class CampaignMail
     {
         return $this->assignee;
     }
+
+    /**
+     * @return DateTime
+     */
+    public function getLaunched()
+    {
+        return $this->launched;
+    }
+
+    /**
+     * @param DateTime $launched
+     */
+    public function setLaunched($launched)
+    {
+        $this->launched = $launched;
+    }
+
+
 
 
 }

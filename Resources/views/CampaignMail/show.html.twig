@@ -1,13 +1,13 @@
 {% extends "FlowerCoreBundle::layout.html.twig" %}
 
-{% block title %}{{"CampaignMail"|trans({},'CampaignMail')}} - {{ parent() }}{% endblock %}
+{% block title %}{{ "CampaignMail"|trans({},'CampaignMail') }} - {{ parent() }}{% endblock %}
 
 {% block body %}
 
     <section class="content">
+        {{ include("FlowerMarketingBundle::appnav-campaignmail.html.twig", {'app_campaignmail':true}) }}
         <div class="row">
             <div class="col-sm-6">
-                {{ include("FlowerMarketingBundle::appnav-campaignmail.html.twig", {'app_campaignmail':true}) }}
                 <div class="box">
                     <div class="box-header">
                         <h3 class="box-title">{{ campaignmail.name|title }}</h3>
@@ -17,10 +17,12 @@
 
                             <div class="btn-group record_actions">
 
-                                <a class="btn btn-link btn-xs" href="{{ path('campaignmail_edit', {id: campaignmail.id}) }}">
+                                <a class="btn btn-link btn-xs"
+                                   href="{{ path('campaignmail_edit', {id: campaignmail.id}) }}">
                                     <i class="fa fa-edit"></i> {{ 'Edit'|trans({}, 'CampaignMail') }}
                                 </a>
-                                <button class="btn btn-link btn-xs" type="submit"><i class="fa fa-trash-o"></i> {{ 'Delete'|trans({}, 'CampaignMail') }}</button>
+                                <button class="btn btn-link btn-xs" type="submit"><i
+                                            class="fa fa-trash-o"></i> {{ 'Delete'|trans({}, 'CampaignMail') }}</button>
 
                             </div>
 
@@ -31,16 +33,19 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                    aria-hidden="true">&times;</button>
                                             <h3>{{ 'Confirm delete'|trans({}, 'CampaignMail') }}</h3>
                                         </div>
                                         <div class="modal-body">
-                                            <p>{{ 'You are about to delete an item'|trans({}, 'CampaignMail') }}, {{ 'this procedure is irreversible'|trans({}, 'CampaignMail') }}.</p>
+                                            <p>{{ 'You are about to delete an item'|trans({}, 'CampaignMail') }}
+                                                , {{ 'this procedure is irreversible'|trans({}, 'CampaignMail') }}.</p>
                                             <p>{{ 'Do you want to proceed?'|trans({}, 'CampaignMail') }}</p>
                                         </div>
                                         <div class="modal-footer">
                                             <button class="btn btn-danger">{{ 'Yes'|trans({}, 'CampaignMail') }}</button>
-                                            <button class="btn btn-default" data-dismiss="modal">{{ 'No'|trans({}, 'CampaignMail') }}</button>
+                                            <button class="btn btn-default"
+                                                    data-dismiss="modal">{{ 'No'|trans({}, 'CampaignMail') }}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -50,63 +55,64 @@
                     <div class="box-body">
                         <table class="table table-hover record_properties">
                             <tbody>
-                                <tr>
-                                    <th scope="row">{{'Status'|trans}}</th>
-                                    <td>
-                                        {% if campaignmail.status == 'status_finished' %}
-                                            <span class="label label-success">{{ 'finished'|trans|capitalize}}</span>
-                                        {% elseif campaignmail.status == 'status_in_progress' %}
-                                            <span class="label label-warning">{{ 'in progress'|trans|capitalize}}</span>
-                                        {% else %}
-                                            <span class="label label-default">{{ 'draft'|trans|capitalize}}</span>
-                                        {% endif%}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">{{'Mailfrom'|trans({}, 'CampaignMail')}}</th>
-                                    <td>{{ campaignmail.mailFrom }}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">{{'Mailsubject'|trans({}, 'CampaignMail')}}</th>
-                                    <td>{{ campaignmail.mailSubject }}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">{{'Mailfromname'|trans({}, 'CampaignMail')}}</th>
-                                    <td>{{ campaignmail.mailFromName }}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">{{'Template'|trans({}, 'CampaignMail')}}</th>
-                                    <td>
-                                        <a href="{{ path('mailtemplate_show', {"id": campaignmail.template.id}) }}">
-                                            {{ campaignmail.template }}
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">{{'ContactLists'|trans({}, 'CampaignMail')}}</th>
-                                    <td>
+                            <tr>
+                                <th scope="row">{{ 'Status'|trans }}</th>
+                                <td>
+                                    {% if campaignmail.status == 'status_finished' %}
+                                        <span class="label label-success">{{ 'finished'|trans|capitalize }}</span>
+                                    {% elseif campaignmail.status == 'status_in_progress' %}
+                                        <span class="label label-warning">{{ 'in progress'|trans|capitalize }}</span>
+                                    {% else %}
+                                        <span class="label label-default">{{ 'draft'|trans|capitalize }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">{{ 'Mailfrom'|trans({}, 'CampaignMail') }}</th>
+                                <td>{{ campaignmail.mailFrom }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">{{ 'Mailsubject'|trans({}, 'CampaignMail') }}</th>
+                                <td>{{ campaignmail.mailSubject }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">{{ 'Mailfromname'|trans({}, 'CampaignMail') }}</th>
+                                <td>{{ campaignmail.mailFromName }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">{{ 'Template'|trans({}, 'CampaignMail') }}</th>
+                                <td>
+                                    <a href="{{ path('mailtemplate_show', {"id": campaignmail.template.id}) }}">
+                                        {{ campaignmail.template }}
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">{{ 'ContactLists'|trans({}, 'CampaignMail') }}</th>
+                                <td>
                                     {% for contactList in campaignmail.contactLists %}
                                         <a href="{{ path('contactlist_show', {"id": contactList.id}) }}">
-                                            {{contactList.name}}
+                                            {{ contactList.name }}
                                         </a>
                                         {% if not loop.last %},{% endif %}
                                     {% endfor %}
-                                    </td>
-                                </tr>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">{{ 'Enabled'|trans({}, 'CampaignMail') }}</th>
+                                <td>{% if campaignmail.enabled %}<i class="fa fa-check-square-o"></i>{% else %}<i
+                                            class="fa fa-square-o"></i>{% endif %}</td>
+                            </tr>
+                            {% if haveNotValidatedContactLists %}
                                 <tr>
-                                    <th scope="row">{{'Enabled'|trans({}, 'CampaignMail')}}</th>
-                                    <td>{% if campaignmail.enabled %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
-                                </tr>
-                                {% if haveNotValidatedContactLists %}
-                                <tr>
-                                    <th scope="row">{{'Issues'|trans({}, 'CampaignMail')}}</th>
+                                    <th scope="row">{{ 'Issues'|trans({}, 'CampaignMail') }}</th>
                                     <td>
                                         {% if haveNotValidatedContactLists %}
-                                            <i class="fa fa-exclamation-triangle"></i> {{"issues_notvalidated_contactlist"|trans({},'CampaignMail')}}
+                                            <i class="fa fa-exclamation-triangle"></i> {{ "issues_notvalidated_contactlist"|trans({},'CampaignMail') }}
                                         {% endif %}
                                     </td>
                                 </tr>
-                                {% endif %}
+                            {% endif %}
                             </tbody>
                         </table>
                     </div>
@@ -125,7 +131,8 @@
                         {% if canLaunch %}
                             {% set launch_active = 'bg-red' %}
                         {% endif %}
-                        <a href="{{ path('campaignmail_launch', { id: campaignmail.id}) }}" class="btn btn-app {{launch_active}}">
+                        <a href="{{ path('campaignmail_launch', { id: campaignmail.id}) }}"
+                           class="btn btn-app {{ launch_active }}">
                             <i class="fa fa-rocket"></i>
                             {{ 'launch'|trans|capitalize }}
                         </a>
@@ -134,75 +141,80 @@
                             {{ 'copy'|trans|capitalize }}
                         </a>
 
+
                     </div>
                     <div class="box-footer">
                     </div>
                 </div>
-                {% set count_color = 'bg-gray' %}
-                {% if campaignmail.status == 'status_finished' %}
-                    {% set count_color = 'bg-green' %}
-                {% elseif campaignmail.status == 'status_in_progress' %}
-                    {% set count_color = 'bg-yellow' %}
-                {% endif %}
-                <div class="info-box {{count_color}}">
-                    <span class="info-box-icon">
-                        <i class="fa fa-send"></i>
-                    </span>
-                    <div class="info-box-content">
-                        <span class="info-box-text">{{ 'sent count' }}</span>
-                        <span class="info-box-number">{{ emailSent }}</span>
-                        <div class="progress">
-                            <div class="progress-bar" style="width: {{ emailSentRatio }}%"></div>
-                        </div>
-                        <span class="progress-description">
-                            {{ emailSentRatio }}% of all queued messages
-                        </span>
-                    </div><!-- /.info-box-content -->
-                </div>
 
 
-                {% set opens_bg = 'bg-gray' %}
-                {% if emailOpensRatio > 5 and emailOpensRatio < 40  %}
-                    {% set opens_bg = 'bg-yellow' %}
-                {% elseif emailOpensRatio >= 40 %}
-                    {% set opens_bg = 'bg-green' %}
-                {% endif %}
-                <div class="info-box {{opens_bg}}">
-                    <span class="info-box-icon">
-                        <i class="ion-android-drafts"></i>
-                    </span>
-                    <div class="info-box-content">
-                        <span class="info-box-text">{{'opens'|trans|capitalize}}</span>
-                        <span class="info-box-number">{{ emailOpens }}</span>
-                        <div class="progress">
-                            <div class="progress-bar" style="width: {{ emailOpensRatio }}%"></div>
-                        </div>
-                        <span class="progress-description">
-                            {{ emailOpensRatio }}% of all queued messages
-                        </span>
-                    </div><!-- /.info-box-content -->
-                </div><!-- /.info-box -->
-
-                {% set clicks_bg = 'bg-gray' %}
-                {% if emailClicksRatio > 5 and emailClicksRatio < 40 %}
-                    {% set clicks_bg = 'bg-yellow' %}
-                {% elseif emailClicksRatio >= 40 %}
-                    {% set clicks_bg = 'bg-green' %}
-                {% endif %}
-                <div class="info-box {{clicks_bg}}">
-                    <span class="info-box-icon">
-                        <i class="ion-mouse"></i>
-                    </span>
-                    <div class="info-box-content">
-                        <span class="info-box-text">{{'clicks'|trans|capitalize}}</span>
-                        <span class="info-box-number">{{ emailClicks }}</span>
-                        <div class="progress">
-                            <div class="progress-bar" style="width: {{ emailClicksRatio }}%"></div>
-                        </div>
-                        <span class="progress-description">
-                            {{ emailClicksRatio }}% of all queued messages
-                        </span>
-                    </div><!-- /.info-box-content -->
+                <div class="box box-solid">
+                    <div class="box-header">
+                        <h3>{{ 'quick stats'|trans|title }}</h3>
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-condensed">
+                            <thead>
+                            <tr>
+                                <th>{{ 'stats'|trans|title }}</th>
+                                <th>{{ 'count'|trans|title }}</th>
+                                <th>{{ 'overral ratio'|trans|title }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{ 'sent count'|trans }}</td>
+                                <td>{{ emailSent }}</td>
+                                {% set count_color = 'text-muted' %}
+                                {% if campaignmail.status == 'status_finished' %}
+                                    {% set count_color = 'text-green' %}
+                                {% elseif campaignmail.status == 'status_in_progress' %}
+                                    {% set count_color = 'text-yellow' %}
+                                {% endif %}
+                                <td>
+                                    <span class="{{ count_color }}">
+                                        <i class="fa fa-caret-up"></i>{{ emailSentRatio }}%
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ 'opens'|trans }}</td>
+                                {% set opens_bg = 'text-muted' %}
+                                {% if emailOpensRatio > 5 and emailOpensRatio < 40 %}
+                                    {% set opens_bg = 'text-yellow' %}
+                                {% elseif emailOpensRatio >= 40 %}
+                                    {% set opens_bg = 'text-green' %}
+                                {% endif %}
+                                <td>{{ emailOpens }}</td>
+                                <td>
+                                    <span class="{{ opens_bg }}">
+                                        <i class="fa fa-caret-up"></i>{{ emailOpensRatio }}%
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ 'clicks'| trans }}</td>
+                                <td>{{ emailClicks }}</td>
+                                {% set clicks_bg = 'text-muted' %}
+                                {% if emailClicksRatio > 5 and emailClicksRatio < 40 %}
+                                    {% set clicks_bg = 'text-yellow' %}
+                                {% elseif emailClicksRatio >= 40 %}
+                                    {% set clicks_bg = 'text-green' %}
+                                {% endif %}
+                                <td>
+                                    <span class="{{ clicks_bg }}">
+                                        <i class="fa fa-caret-up"></i>{{ emailClicksRatio }}%
+                                    </span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box-footer">
+                        <a href="{{ path('campaignmail_report_campaign', { id: campaignmail.id}) }}" class="btn btn-link">
+                            <i class="ionicons ion-stats-bars"></i> {{ 'full report'|trans|capitalize }}
+                        </a>
+                    </div>
                 </div>
 
             </div>
