@@ -15,6 +15,9 @@ abstract class ImportProcess
     const STATUS_READY = 0;
     const STATUS_IN_PROGRESS = 1;
 
+    const TYPE_CONTACT_LIST = 'contact_list';
+    const TYPE_ACCOUNT = 'account';
+
     /**
      * @var integer
      *
@@ -23,6 +26,13 @@ abstract class ImportProcess
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type", type="string", length=255, nullable=true)
+     */
+    protected $type;
 
     /**
      * @var string
@@ -106,7 +116,7 @@ abstract class ImportProcess
         return $this->id;
     }
 
-    
+
     /**
      * Set status
      *
@@ -171,7 +181,7 @@ abstract class ImportProcess
     /**
      * Get fileCode
      *
-     * @return string 
+     * @return string
      */
     public function getFileCode()
     {
@@ -194,7 +204,7 @@ abstract class ImportProcess
     /**
      * Get failCount
      *
-     * @return integer 
+     * @return integer
      */
     public function getFailCount()
     {
@@ -217,7 +227,7 @@ abstract class ImportProcess
     /**
      * Get successCount
      *
-     * @return integer 
+     * @return integer
      */
     public function getSuccessCount()
     {
@@ -240,7 +250,7 @@ abstract class ImportProcess
     /**
      * Get totalCount
      *
-     * @return integer 
+     * @return integer
      */
     public function getTotalCount()
     {
@@ -264,7 +274,7 @@ abstract class ImportProcess
     /**
      * Get filename
      *
-     * @return string 
+     * @return string
      */
     public function getFilename()
     {
@@ -287,7 +297,7 @@ abstract class ImportProcess
     /**
      * Get coldef
      *
-     * @return string 
+     * @return string
      */
     public function getColdef()
     {
@@ -310,7 +320,7 @@ abstract class ImportProcess
     /**
      * Get created
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreated()
     {
@@ -333,10 +343,28 @@ abstract class ImportProcess
     /**
      * Get updated
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdated()
     {
         return $this->updated;
     }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+
 }

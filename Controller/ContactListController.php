@@ -159,7 +159,7 @@ class ContactListController extends Controller
     public function importsAction(ContactList $contactList)
     {
         $em = $this->getDoctrine()->getManager();
-        $proceses = $em->getRepository("FlowerModelBundle:Marketing\ImportProcess")->findByContactList($contactList);
+        $proceses = $em->getRepository('FlowerModelBundle:Marketing\ImportProcess')->findByContactList($contactList);
 
         return array(
             'contactlist' => $contactList,
@@ -185,6 +185,7 @@ class ContactListController extends Controller
 
         $importProcess = new ImportProcess();
         $importProcess->setFileName($filename);
+        $importProcess->setType(ImportProcess::TYPE_CONTACT_LIST);
         $importProcess->setStatus(ImportProcess::STATUS_IN_PROGRESS);
         $importProcess->setColdef(json_encode($colDef, true));
         $importProcess->setContactList($contactList);
