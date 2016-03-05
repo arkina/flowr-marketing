@@ -2,15 +2,22 @@
 
 {% block title %}{{ "CampaignMail"|trans({},'CampaignMail') }} - {{ parent() }}{% endblock %}
 
-{% block body %}
+{% block app_menu %}
+    {{ include("FlowerMarketingBundle::appnav-campaignmail.html.twig", {'app_campaignmail':true}) }}
+{% endblock %}
 
+{% block body %}
+    <section class="content-header">
+        <h1>
+            {{ campaignmail.name|title }}
+        </h1>
+    </section>
     <section class="content">
-        {{ include("FlowerMarketingBundle::appnav-campaignmail.html.twig", {'app_campaignmail':true}) }}
         <div class="row">
             <div class="col-sm-6">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">{{ campaignmail.name|title }}</h3>
+                        <h3 class="box-title"></h3>
                         <div class="box-tools">
                             {{ form_start(delete_form) }}
                             {{ form_widget(delete_form) }}
@@ -211,7 +218,8 @@
                         </table>
                     </div>
                     <div class="box-footer">
-                        <a href="{{ path('campaignmail_report_campaign', { id: campaignmail.id}) }}" class="btn btn-link">
+                        <a href="{{ path('campaignmail_report_campaign', { id: campaignmail.id}) }}"
+                           class="btn btn-link">
                             <i class="ionicons ion-stats-bars"></i> {{ 'full report'|trans|capitalize }}
                         </a>
                     </div>

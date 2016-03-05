@@ -2,12 +2,20 @@
 
 {% block title %}ContactList - {{ parent() }}{% endblock %}
 
+{% block app_menu %}
+    {{ include("FlowerMarketingBundle::appnav-campaignmail.html.twig", {'app_contactlist':true}) }}
+{% endblock %}
+
 {% block body %}
+    <section class="content-header">
+        <h1>
+            {{ contactlist.name|title }}
+        </h1>
+    </section>
     <section class="content">
-        {{ include("FlowerMarketingBundle::appnav-campaignmail.html.twig", {'app_contactlist':true}) }}
         <div class="box">
             <div class="box-header">
-                <h2 class="box-title">{{ contactlist.name|capitalize }}</h2>
+                <h2 class="box-title"></h2>
                 <div class="box-tools">
                     <a class="btn btn-link btn-xs" href="{{ path('contactlist_edit', {id: contactlist.id}) }}">
                         {{ 'edit'|trans|capitalize }}
@@ -48,10 +56,10 @@
 
         </div>
         <div class="row">
-            <div class="col-sm-8">
+            <div class="col-sm-12">
                 <div class="box box-solid" multi-app="contactList">
                     <div id="contactApp" ng-view></div>
-                    <toaster-container ></toaster-container>
+                    <toaster-container></toaster-container>
                 </div>
             </div>
             <div class="col-sm-4">
@@ -85,8 +93,10 @@
     </script>
 
     <script src="{{ asset('bundles/flowercore/js/plugins/events.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('bundles/flowermarketing/js/angular/contactList/app-contactList.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('bundles/flowermarketing/js/angular/contactList/controller/contactListController.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/flowermarketing/js/angular/contactList/app-contactList.js') }}"
+            type="text/javascript"></script>
+    <script src="{{ asset('bundles/flowermarketing/js/angular/contactList/controller/contactListController.js') }}"
+            type="text/javascript"></script>
 
 
 

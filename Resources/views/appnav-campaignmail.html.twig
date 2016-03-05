@@ -1,11 +1,19 @@
-<div class="nav-app">
-    <ul class="nav nav-tabs ">
-        <li role="presentation" class="app-icon">
-            <img src="{{ asset('bundles/flowercore/images/icons/GroupMessage-100.png') }}">
-        </li>
+<section class="sidebar">
+    <div class="app-header">
+        <div class="row">
+            <div class="col-sm-12">
+                <img src="{{ asset('bundles/flowercore/images/icons/GroupMessage-100.png') }}"
+                     class="img-responsive pull-left" width="40">
+                <span>{{ 'CampaignMail'|trans({},'CampaignMail')|title }}</span>
+            </div>
+        </div>
+    </div>
+    <ul class="sidebar-menu">
+
         <li role="presentation" {% if app_campaignmail is defined %}class="active"{% endif %}>
             <a href="{{ path('campaignmail') }}">{{ 'CampaignMail'|trans({},'CampaignMail')|title }}</a>
         </li>
+
         <li role="presentation" {% if app_contactlist is defined %}class="active"{% endif %}>
             <a href="{{ path('contactlist') }}">{{ 'contact lists'|trans|title }}</a>
         </li>
@@ -16,4 +24,4 @@
             <a href="{{ path('campaignmail_report') }}"> {{ 'reports'|trans|title }}</a>
         </li>
     </ul>
-</div>
+</section>

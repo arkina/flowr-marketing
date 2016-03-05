@@ -2,9 +2,17 @@
 
 {% block title %}{{ '%entity% list'|trans({'%entity%': 'CampaignMail'}, 'CampaignMail') }} - {{ parent() }}{% endblock %}
 
+{% block app_menu %}
+    {{ include("FlowerMarketingBundle::appnav-campaignmail.html.twig", {'app_report':true}) }}
+{% endblock %}
+
 {% block body %}
+    <section class="content-header">
+        <h1>
+            {{ 'reports'|trans|title }}
+        </h1>
+    </section>
     <section class="content">
-        {{ include("FlowerMarketingBundle::appnav-campaignmail.html.twig", {'app_report':true}) }}
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title">{{ 'opens by campaign'|trans|title }}</h3>

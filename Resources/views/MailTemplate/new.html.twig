@@ -2,15 +2,16 @@
 
 {% block title %}{{ '%entity% creation'|trans({'%entity%': 'MailTemplate'}, 'MailTemplate') }} - {{ parent() }}{% endblock %}
 
+{% block app_menu %}
+    {{ include("FlowerMarketingBundle::appnav-campaignmail.html.twig", {'app_mailtemplate':true}) }}
+{% endblock %}
+
 {% block body %}
     <section class="content-header">
-        <h1>{{ 'MailTemplate' | trans({}, 'MailTemplate')}}</h1>
-        <ol class="breadcrumb">
-            <li><a href={{ path('dashboard') }}><i class="fa fa-dashboard"></i> {{"Dashboard" | trans({}, 'MailTemplate')}}</a></li>
-            <li><a href="{{ path('mailtemplate') }}"> {{ '%entity% list'|trans({'%entity%': 'MailTemplate'}, 'MailTemplate') }}</a></li>
-            <li class="active" >{{ 'New %entity%'|trans({'%entity%': 'MailTemplate'}, 'MailTemplate') }}</li>
-        </ol>
-    </section>        
+        <h1>
+            {{ 'mailtemplate.list'|trans({}, 'MailTemplate') }}
+        </h1>
+    </section>
     <section class="content">
         <div class="box">
             <div class="box-header">
@@ -18,18 +19,18 @@
             </div>
             <div class="box-body">
                 {{ form_start(form, {action: path('mailtemplate_create')}) }}
-                    {{ form_widget(form) }}
-                    <p>
-                        <button class="btn btn-primary" type="submit">{{ 'Create'|trans({}, 'MailTemplate') }}</button>
-                    </p>
+                {{ form_widget(form) }}
+                <p>
+                    <button class="btn btn-primary" type="submit">{{ 'Create'|trans({}, 'MailTemplate') }}</button>
+                </p>
                 {{ form_end(form) }}
             </div>
             <div class="box-footer">
-                        
-        <div class="btn-group record_actions">
+
+                <div class="btn-group record_actions">
 
 
-        </div>
+                </div>
 
             </div>
         </div>

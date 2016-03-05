@@ -6,25 +6,35 @@
         {% set sort = app.session.get('sort.' ~ name) %}
         {% if sort and sort.field == field %}
             {% if sort.type == 'DESC' %}
-                <a href="{{ path('campaignmail_sort', {field: field, type: 'ASC'}) }}">{{ label | trans({},'CampaignMail')}} <i class="fa fa-sort-down"></i></a>
-                {% elseif sort.type == 'ASC' %}
-                <a href="{{ path('campaignmail_sort', {field: field, type: 'DESC'}) }}">{{ label | trans({},'CampaignMail')}} <i class="fa fa-sort-up"></i></a>
-                {% endif %}
-            {% else %}
-            <a href="{{ path('campaignmail_sort', {field: field, type: 'ASC'}) }}">{{ label | trans({},'CampaignMail')}} <i class="fa fa-sort"></i></a>
+                <a href="{{ path('campaignmail_sort', {field: field, type: 'ASC'}) }}">{{ label | trans({},'CampaignMail') }}
+                    <i class="fa fa-sort-down"></i></a>
+            {% elseif sort.type == 'ASC' %}
+                <a href="{{ path('campaignmail_sort', {field: field, type: 'DESC'}) }}">{{ label | trans({},'CampaignMail') }}
+                    <i class="fa fa-sort-up"></i></a>
             {% endif %}
-        {% endspaceless %}
-    {% endmacro %}
+        {% else %}
+            <a href="{{ path('campaignmail_sort', {field: field, type: 'ASC'}) }}">{{ label | trans({},'CampaignMail') }}
+                <i class="fa fa-sort"></i></a>
+        {% endif %}
+    {% endspaceless %}
+{% endmacro %}
 
 {% from _self import thead %}
 
+{% block app_menu %}
+    {{ include("FlowerMarketingBundle::appnav-campaignmail.html.twig", {'app_campaignmail':true}) }}
+{% endblock %}
 
 {% block body %}
+    <section class="content-header">
+        <h1>
+            {{ 'CampaignMail list'|trans({},'CampaignMail') }}
+        </h1>
+    </section>
     <section class="content">
-        {{ include("FlowerMarketingBundle::appnav-campaignmail.html.twig", {'app_campaignmail':true}) }}
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">{{ 'CampaignMail list'|trans({},'CampaignMail') }}</h3>
+                <h3 class="box-title"></h3>
                 <div class="box-tools pull-right">
                     <a class="btn btn-link btn-xs" href={{ path('campaignmail_new') }}>
                         <i class="fa fa-plus"></i> {{ 'CampaignMail new'|trans({}, 'CampaignMail') }}
@@ -34,34 +44,36 @@
             <div class="box-body">
                 <table class="table table-hover">
                     <thead>
-                        <tr>
-                            <th scope="col">{{ thead('campaignmail', 'name', 'Name') }}</th>
-                            <th scope="col">{{ thead('campaignmail', 'status', 'Status') }}</th>
-                            <th scope="col">{{ 'Assignee'|trans }}</th>
-                            <th scope="col">{{ thead('campaignmail', 'created', 'Created') }}</th>
-                        </tr>
+                    <tr>
+                        <th scope="col">{{ thead('campaignmail', 'name', 'Name') }}</th>
+                        <th scope="col">{{ thead('campaignmail', 'status', 'Status') }}</th>
+                        <th scope="col">{{ 'Assignee'|trans }}</th>
+                        <th scope="col">{{ thead('campaignmail', 'created', 'Created') }}</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        {% for campaignmail in paginator %}
-                            <tr>
-                                <td><a href="{{ path('campaignmail_show', {id: campaignmail.id}) }}">{{ campaignmail.name }}</a></td>
-                                <td>
-                                    {% if campaignmail.status == 'status_finished' %}
-                                        <i class="fa fa-check"></i>
-                                    {% elseif campaignmail.status == 'status_in_progress' %}
-                                        <i class="fa fa-play"></i>
-                                    {% else %}
-                                        <i class="fa fa-pause"></i>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if campaignmail.assignee %}
-                                        {{ campaignmail.assignee.getHappyName }}
-                                    {% endif %}
-                                </td>
-                                <td>{% if campaignmail.created %}{{ campaignmail.created|date('fullDateTime'|trans) }}{% endif %}</td>
-                            </tr>
-                        {% endfor %}
+                    {% for campaignmail in paginator %}
+                        <tr>
+                            <td>
+                                <a href="{{ path('campaignmail_show', {id: campaignmail.id}) }}">{{ campaignmail.name }}</a>
+                            </td>
+                            <td>
+                                {% if campaignmail.status == 'status_finished' %}
+                                    <i class="fa fa-check"></i>
+                                {% elseif campaignmail.status == 'status_in_progress' %}
+                                    <i class="fa fa-play"></i>
+                                {% else %}
+                                    <i class="fa fa-pause"></i>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if campaignmail.assignee %}
+                                    {{ campaignmail.assignee.getHappyName }}
+                                {% endif %}
+                            </td>
+                            <td>{% if campaignmail.created %}{{ campaignmail.created|date('fullDateTime'|trans) }}{% endif %}</td>
+                        </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
 

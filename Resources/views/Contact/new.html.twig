@@ -2,19 +2,18 @@
 
 {% block title %}{{ '%entity% creation'|trans({'%entity%': 'Contact'}, 'Contact') }} - {{ parent() }}{% endblock %}
 
+{% block app_menu %}
+    {{ include("FlowerMarketingBundle::appnav-campaignmail.html.twig", {'app_contactlist':true}) }}
+{% endblock %}
+
 {% block body %}
     <section class="content-header">
-        <h1>{{ 'Contact' | trans({}, 'Contact')}}</h1>
-        <ol class="breadcrumb">
-            <li><a href={{ path('dashboard') }}><i class="fa fa-dashboard"></i> {{"Dashboard" | trans({}, 'Contact')}}</a></li>
-            <li><a href="{{ path('contact') }}"> {{ '%entity% List'|trans({'%entity%': 'Contact'}, 'Contact') }}</a></li>
-            <li class="active" >{{ 'New %entity%'|trans({'%entity%': 'Contact'}, 'Contact') }}</li>
-        </ol>
+        <h1>{{ '%entity% creation'|trans({'%entity%': 'Contact'}, 'Contact') }}</h1>
     </section>        
     <section class="content">
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">{{ '%entity% creation'|trans({'%entity%': 'Contact'}, 'Contact') }}</h3>
+                <h3 class="box-title"></h3>
             </div>
             <div class="box-body">
                 {{ form_start(form, {action: path('contactlist_contact_create', {id: contactList.id})}) }}
