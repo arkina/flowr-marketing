@@ -39,3 +39,6 @@ opens: abiertos
 save: guardar
 'this procedure is irreversible': 'esta accion será irreversible'
 unsuscribe: remover
+
+subscribe_me: "suscribirme"
+subscribe_success: "¡Ya estás suscrito a la lista!"

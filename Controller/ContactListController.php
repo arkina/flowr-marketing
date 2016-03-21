@@ -94,7 +94,7 @@ class ContactListController extends Controller
         foreach ($contacts as $contactId) {
             $contact = $em->getRepository('FlowerModelBundle:Clients\Contact')->find($contactId);
             $contactlist->addContact($contact);
-            $contactlist->setSubscriberCount($contactlist->getSubscriberCount()+1);
+            $contactlist->setSubscriberCount($contactlist->getSubscriberCount() + 1);
         }
         $em->flush();
 
@@ -117,11 +117,10 @@ class ContactListController extends Controller
         foreach ($contacts as $contactId) {
             $contact = $em->getRepository('FlowerModelBundle:Clients\Contact')->find($contactId);
             $contactListDest->addContact($contact);
-            $contactListDest->setSubscriberCount($contactListDest->getSubscriberCount()+1);
+            $contactListDest->setSubscriberCount($contactListDest->getSubscriberCount() + 1);
 
             $em->flush();
         }
-
 
 
         return new JsonResponse(null, 200);
@@ -138,7 +137,7 @@ class ContactListController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $contacts = $em->getRepository('FlowerModelBundle:Clients\Contact')->getByContactList($contactlist->getId(), (($request->query->get('page', 1)-1)*50), 50);
+        $contacts = $em->getRepository('FlowerModelBundle:Clients\Contact')->getByContactList($contactlist->getId(), (($request->query->get('page', 1) - 1) * 50), 50);
         $availableLists = $em->getRepository('FlowerModelBundle:Marketing\ContactList')->findAll();
 
         return array(
@@ -235,7 +234,6 @@ class ContactListController extends Controller
         $tempDir = $this->get('kernel')->getRootDir() . "/../web/uploads/tmp/";
         $filename = $fileCode . ".csv";
         $uploadedFile->move($tempDir, $filename);
-
 
 
         $file = new SplFileObject($tempDir . $filename);
@@ -364,9 +362,9 @@ class ContactListController extends Controller
     }
 
     /**
-     * @param string $name  session name
+     * @param string $name session name
      * @param string $field field name
-     * @param string $type  sort type ("ASC"/"DESC")
+     * @param string $type sort type ("ASC"/"DESC")
      */
     protected function setOrder($name, $field, $type = 'ASC')
     {
@@ -386,7 +384,7 @@ class ContactListController extends Controller
 
     /**
      * @param QueryBuilder $qb
-     * @param string       $name
+     * @param string $name
      */
     protected function addQueryBuilderSort(QueryBuilder $qb, $name)
     {
@@ -400,15 +398,15 @@ class ContactListController extends Controller
      * Save filters
      *
      * @param  FormInterface $form
-     * @param  string        $name   route/entity name
-     * @param  string        $route  route name, if different from entity name
-     * @param  array         $params possible route parameters
+     * @param  string $name route/entity name
+     * @param  string $route route name, if different from entity name
+     * @param  array $params possible route parameters
      * @return Response
      */
     protected function saveFilter(FormInterface $form, $name, $route = null, array $params = null)
     {
         $request = $this->getRequest();
-        $url = $this->generateUrl($route ? : $name, is_null($params) ? array() : $params);
+        $url = $this->generateUrl($route ?: $name, is_null($params) ? array() : $params);
         if ($request->query->has('submit-filter') && $form->handleRequest($request)->isValid()) {
             $request->getSession()->set('filter.' . $name, $request->query->get($form->getName()));
 
@@ -423,9 +421,9 @@ class ContactListController extends Controller
     /**
      * Filter form
      *
-     * @param  FormInterface                                       $form
-     * @param  QueryBuilder                                        $qb
-     * @param  string                                              $name
+     * @param  FormInterface $form
+     * @param  QueryBuilder $qb
+     * @param  string $name
      * @return PaginationInterface
      */
     protected function filter(FormInterface $form, QueryBuilder $qb, $name)
@@ -473,17 +471,16 @@ class ContactListController extends Controller
     /**
      * Create Delete form
      *
-     * @param integer                       $id
-     * @param string                        $route
+     * @param integer $id
+     * @param string $route
      * @return Form
      */
     protected function createDeleteForm($id, $route)
     {
         return $this->createFormBuilder(null, array('attr' => array('id' => 'delete')))
-                        ->setAction($this->generateUrl($route, array('id' => $id)))
-                        ->setMethod('DELETE')
-                        ->getForm()
-        ;
+            ->setAction($this->generateUrl($route, array('id' => $id)))
+            ->setMethod('DELETE')
+            ->getForm();
     }
 
     /**
@@ -520,7 +517,7 @@ class ContactListController extends Controller
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            $contactList->setSubscriberCount($contactList->getSubscriberCount()+1);
+            $contactList->setSubscriberCount($contactList->getSubscriberCount() + 1);
 
             $em->persist($contact);
             $em->flush();
@@ -538,13 +535,70 @@ class ContactListController extends Controller
     /**
      * Unsuscribe confirmation.
      *
+     * @Route("/public/{id}/subscribe", name="contactlist_subscribe_confirm")
+     * @Method("GET")
+     * @Template()
+     */
+    public function subscribeConfirmAction(Request $request, ContactList $contactList)
+    {
+        $contact = new Contact();
+        $contact->setEmail($request->get("email"));
+        $form = $this->createForm($this->get('form.type.contact_public'), $contact);
+
+        return array(
+            'confirmation' => true,
+            'contact' => $contact,
+            'contactList' => $contactList,
+            'form' => $form->createView(),
+        );
+
+    }
+
+    /**
+     * Unsuscribe confirmation.
+     *
+     * @Route("/public/{id}/subscribe", name="contactlist_public_subscribe")
+     * @Method("POST")
+     * @Template("FlowerMarketingBundle:ContactList:subscribeConfirm.html.twig")
+     */
+    public function subscribeAction(Request $request, ContactList $contactList)
+    {
+        $contact = new Contact();
+        $confirmation = true;
+        $form = $this->createForm($this->get('form.type.contact_public'), $contact);
+        if ($form->handleRequest($request)->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $contactList->addContact($contact);
+            $contactList->setSubscriberCount($contactList->getSubscriberCount() + 1);
+
+            $em->persist($contact);
+            $em->flush();
+
+            $confirmation = false;
+        }
+
+        return array(
+            'confirmation' => $confirmation,
+            'contact' => $contact,
+            'contactList' => $contactList,
+            'form' => $form->createView(),
+        );
+
+    }
+
+
+    /**
+     * Unsuscribe confirmation.
+     *
      * @Route("/unsuscribe/{id}", name="contactlist_unsuscribe_confirm")
      * @Method("GET")
      * @Template()
      */
-    public function unsuscribeConfirmAction(Request $request, Contact $contact){
+    public function unsuscribeConfirmAction(Request $request, Contact $contact)
+    {
         $em = $this->getDoctrine()->getManager();
-        $contactLists = $em->getRepository("FlowerModelBundle:Marketing\ContactList")->getByContactId($contact->getId());
+        $contactLists = $em->getRepository('FlowerModelBundle:Marketing\ContactList')->getByContactId($contact->getId());
         return array(
             'contact' => $contact,
             'contactLists' => $contactLists,
@@ -558,16 +612,17 @@ class ContactListController extends Controller
      * @Method("POST")
      * @Template("")
      */
-    public function unsuscribeAction(Request $request, Contact $contact){
+    public function unsuscribeAction(Request $request, Contact $contact)
+    {
         $contactLists = $request->get('contactlists');
         $em = $this->getDoctrine()->getManager();
-        if($contactLists){
+        if ($contactLists) {
             foreach ($contactLists as $contactListId) {
-                $em->getRepository("FlowerModelBundle:Marketing\ContactList")->removeContact($contactListId, $contact->getId());
+                $em->getRepository('FlowerModelBundle:Marketing\ContactList')->removeContact($contactListId, $contact->getId());
             }
             $successText = $this->get("translator")->trans("unsuscribed_succesfully");
             $this->addFlash('success', $successText);
-        }else{
+        } else {
             $failedText = $this->get("translator")->trans("unsuscribed_failed");
             $this->addFlash('warning', $failedText);
         }

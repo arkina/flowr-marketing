@@ -1,0 +1,45 @@
+{% extends 'FlowerCoreBundle::base.html.twig' %}
+
+{% block title %}{{ 'subscribe'|trans|capitalize }} - {{ parent() }}{% endblock %}
+
+{% block wrapper %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <section class="content-header">
+                    <h1>
+                        {{ 'subscribe_me'|trans|title }}
+                    </h1>
+                </section>
+                <section class="content">
+                    <div class="box box-success">
+                        <div class="box-header">
+                            <h3 class="box-title">{{ contactList|title }}</h3>
+                        </div>
+                        <div class="box-body">
+                            {% if confirmation %}
+                                {{ form_start(form, {action: path('contactlist_public_subscribe', {id: contactList.id})}) }}
+                                {{ form_widget(form) }}
+                                <p>
+                                    <button class="btn btn-primary" type="submit">
+                                        {{ 'subscribe_me'|trans|title }}
+                                    </button>
+                                </p>
+                                {{ form_end(form) }}
+                            {% else %}
+                                <div class="callout callout-success">
+                                    <h4>
+                                        {{ 'subscribe_success'|trans }}
+                                    </h4>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="box-footer">
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}

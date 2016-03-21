@@ -14,3 +14,10 @@ Flower\ModelBundle\Entity\Marketing\CampaignMail:
             - NotBlank: ~
             - Length:
                 min: 4
+
+Flower\ModelBundle\Entity\Clients\Contact:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: email
+    properties:
+        email:
+            - Email: ~
