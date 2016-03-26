@@ -175,7 +175,7 @@ angular.module('templateBuilder').controller("templateBuilderController", functi
     };
 
     $scope.removeElement = function () {
-        $(".placeholder.active").parents("table").remove();
+        $(".placeholder.active").parents("table").first().remove();
     };
 
     $scope.save = function () {

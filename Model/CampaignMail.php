@@ -112,9 +112,9 @@ abstract class CampaignMail
     /**
      * @var boolean
      *
-     * @ORM\Column(name="enabled", type="boolean")
+     * @ORM\Column(name="archived", type="boolean", options={"default":0})
      */
-    protected $enabled;
+    protected $archived;
 
     /**
      * @var DateTime
@@ -143,9 +143,9 @@ abstract class CampaignMail
     {
         $this->status = self::STATUS_DRAFT;
         $this->contactLists = new ArrayCollection();
-        $this->enabled = true;
         $this->messages = new ArrayCollection();
         $this->queued = 0;
+        $this->archived = false;
     }
 
     /**
@@ -248,29 +248,6 @@ abstract class CampaignMail
     public function getMailFromName()
     {
         return $this->mailFromName;
-    }
-
-    /**
-     * Set enabled
-     *
-     * @param boolean $enabled
-     * @return CampaignMail
-     */
-    public function setEnabled($enabled)
-    {
-        $this->enabled = $enabled;
-
-        return $this;
-    }
-
-    /**
-     * Get enabled
-     *
-     * @return boolean
-     */
-    public function getEnabled()
-    {
-        return $this->enabled;
     }
 
     /**
@@ -500,7 +477,21 @@ abstract class CampaignMail
         $this->launched = $launched;
     }
 
+    /**
+     * @return boolean
+     */
+    public function isArchived()
+    {
+        return $this->archived;
+    }
 
+    /**
+     * @param boolean $archived
+     */
+    public function setArchived($archived)
+    {
+        $this->archived = $archived;
+    }
 
 
 }

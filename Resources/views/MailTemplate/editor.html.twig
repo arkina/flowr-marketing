@@ -75,4 +75,9 @@
             type="text/javascript"></script>
     <script src="{{ asset('bundles/flowermarketing/js/angular/templateBuilder/controller/templateBuilderController.js') }}"
             type="text/javascript"></script>
+
+    <script type="text/javascript">
+        CKEDITOR.config.filebrowserBrowseUrl = "{{ path('elfinder') }}";
+        CKEDITOR.config.language = 'es';
+    </script>
 {% endblock %}

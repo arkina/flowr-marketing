@@ -77,7 +77,7 @@ class CampaignMailRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder("cm");
         $qb->select("COUNT(cm)");
-        $qb->where("cm.enabled = :enabled")->setParameter("enabled", true);
+        $qb->where("cm.archived = :archived")->setParameter("archived", false);
         return $qb->getQuery()->getSingleScalarResult();
     }
 }

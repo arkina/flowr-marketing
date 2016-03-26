@@ -63,9 +63,9 @@ abstract class ContactList
     /**
      * @var boolean
      *
-     * @ORM\Column(name="enabled", type="boolean")
+     * @ORM\Column(name="archived", type="boolean", options={"default":0})
      */
-    protected $enabled;
+    protected $archived;
 
     /**
      * @var integer
@@ -111,8 +111,8 @@ abstract class ContactList
     {
         $this->contacts = new ArrayCollection();
         $this->users = new ArrayCollection();
-        $this->enabled = true;
         $this->status = ContactListStatus::status_validation_needed;
+        $this->archived = false;
     }
 
 
@@ -147,29 +147,6 @@ abstract class ContactList
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set enabled
-     *
-     * @param boolean $enabled
-     * @return ContactList
-     */
-    public function setEnabled($enabled)
-    {
-        $this->enabled = $enabled;
-
-        return $this;
-    }
-
-    /**
-     * Get enabled
-     *
-     * @return boolean
-     */
-    public function getEnabled()
-    {
-        return $this->enabled;
     }
 
     /**
@@ -370,6 +347,23 @@ abstract class ContactList
     {
         return $this->assignee;
     }
+
+    /**
+     * @return boolean
+     */
+    public function isArchived()
+    {
+        return $this->archived;
+    }
+
+    /**
+     * @param boolean $archived
+     */
+    public function setArchived($archived)
+    {
+        $this->archived = $archived;
+    }
+
 
     /**
      * Get status

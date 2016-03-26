@@ -68,13 +68,13 @@ abstract class MailTemplate
     /**
      * @var boolean
      *
-     * @ORM\Column(name="enabled", type="boolean")
+     * @ORM\Column(name="archived", type="boolean", options={"default":0})
      */
-    protected $enabled;
+    protected $archived;
 
     function __construct()
     {
-        $this->enabled = true;
+        $this->archived = false;
     }
 
 
@@ -90,6 +90,7 @@ abstract class MailTemplate
 
         return $this;
     }
+
     /**
      * Get id
      *
@@ -193,27 +194,21 @@ abstract class MailTemplate
     }
 
     /**
-     * Set enabled
-     *
-     * @param boolean $enabled
-     * @return MailTemplate
+     * @return boolean
      */
-    public function setEnabled($enabled)
+    public function isArchived()
     {
-        $this->enabled = $enabled;
-
-        return $this;
+        return $this->archived;
     }
 
     /**
-     * Get enabled
-     *
-     * @return boolean
+     * @param boolean $archived
      */
-    public function getEnabled()
+    public function setArchived($archived)
     {
-        return $this->enabled;
+        $this->archived = $archived;
     }
+
 
     /**
      * Set content
@@ -243,11 +238,14 @@ abstract class MailTemplate
         return $this->name;
     }
 
-    public function getHeader(){
+    public function getHeader()
+    {
         $header = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> <title>Flowr Template</title> <meta name="viewport" content="width=device-width, initial-scale=1.0"/> </head><body style="margin: 0; padding: 0;">';
         return $header;
     }
-    public function getFooter($unsuscribeUrl = null, $email = null){
+
+    public function getFooter($unsuscribeUrl = null, $email = null)
+    {
         $footer = '<table style=";width:100%;">';
         $footer .= '<tr style="height:30px;">';
         $footer .= '<td style="width: 100%; background-color: rgb(255, 255, 255); margin-top 20px; padding-top: 10px; border-top: solid 1px #ddd; text-align:center;">';
@@ -261,14 +259,16 @@ abstract class MailTemplate
         return $footer;
     }
 
-    public function getEmailContent(array $params = null){
+    public function getEmailContent(array $params = null)
+    {
         $emailContent = $this->getHeader();
         $emailContent .= $this->getSanitizedContent();
         $emailContent .= $this->getFooter($params["unsuscribeUrl"], $params["email"]);
         return $emailContent;
     }
 
-    public function getSanitizedContent(){
+    public function getSanitizedContent()
+    {
         $raw = $this->getContent();
         $sanitized = str_replace("contenteditable='true'", '', $raw);
         $sanitized = str_replace('contenteditable="true"', '', $sanitized);
