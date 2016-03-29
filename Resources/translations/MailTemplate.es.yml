@@ -22,3 +22,6 @@ html: html
 'plain text': 'texto plano'
 'this procedure is irreversible': 'esta accion será irreversible'
 mailtemplate selection: Elegí un modelo de plantilla
+Name: Nombre
+Type: Tipo
+Created: Creado

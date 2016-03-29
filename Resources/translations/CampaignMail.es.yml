@@ -20,3 +20,12 @@ Mailsubject: asunto
 show: ver
 'this procedure is irreversible': 'esta accion será irreversible'
 issues_notvalidated_contactlist: "La campaña tiene listas de contactos que necesitan ser validadas. La campaña puede ser lanzada, pero no se tienen en cuenta listas no validadas."
+Name: Nombre
+Status: Estado
+Created: Creado
+Assignee: Asignado a
+Mail from: Email De
+Mail subject: Asunto
+Mail from name: A nombre de
+Template: Plantilla de email
+Contact lists: Lista de contactos

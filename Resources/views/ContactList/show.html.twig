@@ -24,12 +24,11 @@
                 </div>
             </div>
             <div class="box-body">
-
                 <div class="row">
                     <div class="col-sm-6">
                         <table class="table table-condensed">
                             <tr>
-                                <td>Status</td>
+                                <td>{{'Status'| trans({},"ContactList")}}</td>
                                 <td>
                                     {% if status == 'status_validation_needed' %}
                                         <i class="fa fa-exclamation-triangle"></i>
@@ -44,8 +43,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Last validation date</td>
-                                <td>{{ contactlist.lastValidation|date("D M Y H:i") }}</td>
+                                <td>{{'Last validation date'| trans({},"ContactList")}}</td>
+                                <td>{{ contactlist.lastValidation|date("smallDate"| trans) }}</td>
                             </tr>
                         </table>
                     </div>

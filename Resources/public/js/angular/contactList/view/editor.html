@@ -2,16 +2,16 @@
     <h4 class="box-title"></h4>
     <div class="box-tools">
         <button class="btn btn-link btn-xs" ng-click="findContacts()">
-            <i class="fa fa-plus"></i> Add contacts
+            <i class="fa fa-plus"></i> Agregar contactos
         </button>
         <a class="btn btn-link btn-xs" href="{{createContactUrl}}">
-            <i class="fa fa-plus"></i> Create Contact
+            <i class="fa fa-plus"></i> Crear Contacto
         </a>
         <a class="btn btn-link btn-xs" href="{{importExtUrl}}">
-            <i class="fa fa-plus"></i> Import
+            <i class="fa fa-plus"></i> Improtar
         </a>
         <a class="btn btn-link btn-xs" href="{{ importSExtUrl }}">
-            <i class="fa fa-upload"></i> Imports
+            <i class="fa fa-upload"></i> Importaciones
         </a>
     </div>
 </div>
@@ -23,15 +23,15 @@
             <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false" >
-                    Action <span class="caret"></span>
+                    Acción <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu multi-level">
                     <li>
-                        <a href="#">Unsuscribe</a>
+                        <a href="#">Desuscribir</a>
                     </li>
                     <li role="separator" class="divider"></li>
                     <li class="dropdown-submenu">
-                        <a href="#">Move to list</a>
+                        <a href="#">Mover a lista</a>
                         <ul class="dropdown-menu">
                             <li ng-repeat="contactList in availableContactLists">
                                 <a href="#" class="bulk-move" data-id="{{ contactList.id }}" ng-click="bulkMove(contactList.id)">
@@ -41,7 +41,7 @@
                         </ul>
                     </li>
                     <li class="dropdown-submenu">
-                        <a href="#">Copy to list</a>
+                        <a href="#">Copiar lista</a>
                         <ul class="dropdown-menu">
                             <li ng-repeat="contactList in availableContactLists">
                                 <a href="#" class="bulk-copy" data-id="{{ contactList.id }}" ng-click="bulkCopy(contactList.id)" >
@@ -67,7 +67,7 @@
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Email</th>
-                    <th>EmailGrade</th>
+                    <th>Ranking</th>
                 </tr>
             </thead>
             <tbody>
@@ -95,7 +95,7 @@
             <button type="button" class="close" ng-click="closeModal()">
                 <span aria-hidden="true">&times;</span>
             </button>
-            <h4 class="modal-title">Find Contacts</h4>
+            <h4 class="modal-title">Buscar contactos</h4>
         </div>
         <div class="modal-body">
             <div class="row">
@@ -116,7 +116,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <h4>Results</h4>
+                    <h4>Resultados</h4>
                     <select id="find-filter-result" multiple="multiple" class="form-control"
                             style="height: 300px;" ng-model="selectedContacts">
                         <option ng-repeat="contact in viewingContacts" value="{{contact.id}}">{{ contact.firstname + " " + contact.lastname }}</option>
@@ -125,7 +125,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-default" ng-click="closeModal()">Close</button>
-            <button type="button" class="btn btn-primary" ng-click="addToContactList(selectedContacts)">Add to list</button>
+            <button type="button" class="btn btn-default" ng-click="closeModal()">Cerrar</button>
+            <button type="button" class="btn btn-primary" ng-click="addToContactList(selectedContacts)">Agregar a lista</button>
         </div>
 </script>

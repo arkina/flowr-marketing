@@ -19,7 +19,7 @@
                 {{ form_start(form, {action: path('contactlist_contact_create', {id: contactList.id})}) }}
                     {{ form_widget(form) }}
                     <p>
-                        <button class="btn btn-primary" type="submit">{{ 'Create'|trans({}, 'Contact') }}</button>
+                        <button class="btn btn-primary" type="submit">{{ 'Create'|trans() }}</button>
                     </p>
                 {{ form_end(form) }}
             </div>
