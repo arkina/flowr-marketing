@@ -59,7 +59,7 @@
                             <td>
                                 <a href="{{ path('contactlist_show', {id: contactlist.id}) }}">{{ contactlist.name }}</a>
                             </td>
-                            <td>{% if contactlist.updated %}{{ contactlist.updated|date('Y/m/d H:i') }}{% endif %}</td>
+                            <td>{% if contactlist.updated %}{{ contactlist.updated|date('fullDateTime' | trans) }}{% endif %}</td>
                             <td>
                                 {{ contactlist.subscriberCount }}
                             </td>
